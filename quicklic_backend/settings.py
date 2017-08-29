@@ -44,7 +44,8 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     'website',
-    'entities.contact'
+    'entities.contact',
+    'entities.blog'
 ]
 
 INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -130,5 +131,14 @@ USE_TZ = True
 
 import os
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+
 STATIC_ROOT = os.path.join(PROJECT_DIR, '../static')
 STATIC_URL = '/static/'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+try:
+    from quicklic_backend.local_settings import *
+except ImportError:
+    pass

@@ -519,62 +519,26 @@
 
             <div class="row">
 
-                <!-- Item 1 -->
-                <div class="col-md-4 col-sm-6 col-xs-12">
-                    <div class="item">
-                        <div class="thumb">
-                            <div class="icon-wrap">
-                                <a href="#">
-                                    <span class="icon-attachment icon"></span>
-                                </a>
+                {% if blogs %}
+                    {% for blog in blogs %}
+                        <div class="col-md-4 col-sm-6 col-xs-12">
+                            <div class="item">
+                                <div class="thumb">
+                                    <div class="icon-wrap">
+                                        <a href="#">
+                                            <span class="icon-attachment icon"></span>
+                                        </a>
+                                    </div>
+                                    <div class="overlay"></div>
+                                    <img src="{{ blog.image.url }}" alt="blog" />
+                                </div>
+                                <h2 class="title"><a href="#">{{ blog.title }}</a></h2>
+                                <span class="date">Posted on {{ blog.created_at }}</span>
+                                <a href="#" class="btn btn-default">Read</a>
                             </div>
-                            <div class="overlay"></div>
-                            <img src="{% static 'website/images/blog-1.jpg' %}" alt="blog" />
                         </div>
-                        <h2 class="title"><a href="#">Tutorial: How to reset your Apple ID password</a></h2>
-                        <span class="date">Posted on 24 August, 2016</span>
-                        <p>Lorem ipsum dolor sit amet, cum partem melius nostrum te, cu pri quis dicant accusamus.</p>
-                        <a href="#" class="btn btn-default">Read more</a>
-                    </div>
-                </div>
-
-                <!-- Item 2 -->
-                <div class="col-md-4 col-sm-6 col-xs-12">
-                    <div class="item">
-                        <div class="thumb">
-                            <div class="icon-wrap">
-                                <a href="#">
-                                    <span class="icon-attachment icon"></span>
-                                </a>
-                            </div>
-                            <div class="overlay"></div>
-                            <img src="{% static 'website/images/blog-2.jpg' %}" alt="blog" />
-                        </div>
-                        <h2 class="title"><a href="#">A mega tech merger, Paris bans cars, and more</a></h2>
-                        <span class="date">Posted on 24 August, 2016</span>
-                        <p>Lorem ipsum dolor sit amet, cum partem melius nostrum te, cu pri quis dicant accusamus.</p>
-                        <a href="#" class="btn btn-default">Read more</a>
-                    </div>
-                </div>
-
-                <!-- Item 3 -->
-                <div class="col-md-4 col-sm-6 col-xs-12">
-                    <div class="item">
-                        <div class="thumb">
-                            <div class="icon-wrap">
-                                <a href="#">
-                                    <span class="icon-attachment icon"></span>
-                                </a>
-                            </div>
-                            <div class="overlay"></div>
-                            <img src="{% static 'website/images/blog-3.jpg' %}" alt="blog" />
-                        </div>
-                        <h2 class="title"><a href="#">Google lets devs nominate their beta apps</a></h2>
-                        <span class="date">Posted on 24 August, 2016</span>
-                        <p>Lorem ipsum dolor sit amet, cum partem melius nostrum te, cu pri quis dicant accusamus.</p>
-                        <a href="#" class="btn btn-default">Read more</a>
-                    </div>
-                </div>
+                    {% endfor %}
+                {% endif %}
 
             </div>
 

@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from quicklic_backend.settings import STATIC_ROOT
+from quicklic_backend.settings import STATIC_ROOT, MEDIA_ROOT
 from website import urls as website_urls
 from django.views.static import serve
 
@@ -25,6 +25,7 @@ urlpatterns = [
 ]
 
 urlpatterns += [
-    url(r'^static/(.*)$', serve, {'document_root': STATIC_ROOT, 'show_indexes': True})
+    url(r'^static/(.*)$', serve, {'document_root': STATIC_ROOT, 'show_indexes': True}),
+    url(r'^media/(.*)$', serve, {'document_root': MEDIA_ROOT, 'show_indexes': True})
 ]
 
