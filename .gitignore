@@ -8,4 +8,4 @@ errors_log.out
 logfile
 .DS*
 *.xml
-.idea/workspace.xml
+.idea
