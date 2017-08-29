@@ -1,7 +1,5 @@
 *.pyc
-.xml
-.iml
-.idea
+*.idea
 error.log
 quicklic_backend/local_settings.py
 dump.rdb
