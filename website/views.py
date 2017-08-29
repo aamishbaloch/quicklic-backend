@@ -9,11 +9,11 @@ class HomeView(TemplateView):
 
 
 class ContactUsView(TemplateView):
-    template_name = "website/contact.html"
 
     def post(self, request):
         form = ContactForm(request.POST)
 
         if form.is_valid():
-            return HttpResponseRedirect(reverse('website:contact_us'))
+            instance = form.save()
+            return HttpResponseRedirect(reverse('website:home'))
         return HttpResponseRedirect(reverse('website:home'))

@@ -1,11 +1,10 @@
-from django import forms
+from django.forms.models import ModelForm
+from entities.contact.models import Contact
 
 
-class ContactForm(forms.Form):
-    name = forms.CharField(max_length=50, required=True)
-    email = forms.EmailField(required=True)
-
-    def __init__(self, *args, **kwargs):
-        super(ContactForm, self).__init__(*args, **kwargs)
+class ContactForm(ModelForm):
+    class Meta:
+        model = Contact
+        fields = ['name', 'phone', 'email', 'subject', 'message']
 
 

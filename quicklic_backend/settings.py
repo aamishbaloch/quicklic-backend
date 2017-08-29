@@ -35,7 +35,7 @@ DEFAULT_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    # 'django.contrib.staticfiles',
+    'django.contrib.staticfiles',
 ]
 
 THIRD_PARTY_APPS = [
@@ -43,7 +43,8 @@ THIRD_PARTY_APPS = [
 ]
 
 LOCAL_APPS = [
-    'website'
+    'website',
+    'entities.contact'
 ]
 
 INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
