@@ -1,0 +1,191 @@
+/*
+Template Name: Pixa - App Landing Page with Page Builder
+Version: 1.0
+Author: PxlSolutions
+Author URI: http://themeforest.net/user/pxlsolutions
+Description: Color Pallete 3
+
+[TABLE OF CONTENTS]
+
+01. Background
+02. Background Color
+03. Color Important
+04. Color
+05. Border Color
+06. Overlay Color
+07. Gradient Color
+08. Responsive Color
+	01. Color
+	02. Border Color
+	03. Color Important
+
+*/
+
+/*=================================================================*/
+/*                      1. Background                            
+/*=================================================================*/
+ul.list-style li:before,
+section.colored,
+.work-process .item .icon-wrap span.step,
+.features-3 .icon-wrap,
+.blog .item .thumb,
+.footer-dark .social-icons li a,
+.footer-v2.dark .footer-widget .social-icons li a,
+.social-icons li a:hover,
+ul.icon-button li a.default,
+.btn-default,
+.btn-primary:hover,.btn-primary:focus,
+.slick-next,.slick-prev,
+.slick-dots li.slick-active button:before,
+.navbar-light.shrink .navbar-nav.social li:hover,
+.navbar-default .navbar-nav.social li:hover
+{
+	background: #6762a0;
+}
+
+.navbar-light .navbar-nav.social li:hover a {
+	background: #FFF;
+}
+
+.navbar-light.shrink .navbar-nav.social li:hover a {
+	background: inherit !important;
+}
+
+/*=================================================================*/
+/*                      2. Background Color                            
+/*=================================================================*/
+.navbar-toggle,
+.navbar-default .navbar-toggle:hover,
+.nav > li > a:focus,.nav > li > a:hover,
+.nav-tabs > li.active > a,.nav-tabs > li.active > a:focus,.nav-tabs > li.active > a:hover,
+.panel-default > .panel-heading,
+.pagination > .active > a,.pagination > .active > a:focus,.pagination > .active > a:hover,.pagination > .active > span,.pagination > .active > span:focus,.pagination > .active > span:hover,
+.pagination > li > a:focus,.pagination > li > a:hover,.pagination > li > span:focus,.pagination > li > span:hover
+{
+	background-color: #6762a0;
+}
+
+/*=================================================================*/
+/*                      3. Color Important                            
+/*=================================================================*/
+.navbar-light.shrink .navbar-nav li a.current,
+.navbar-light.shrink .navbar-nav li:hover a,
+.navbar-light .navbar-nav.social li:hover a,
+.navbar-default .navbar-nav li a.current,
+.navbar-light.shrink .navbar-nav.social li a,
+.work-process.process-2 .item .icon-wrap,
+.footer-dark .social-icons li a:hover
+{
+	color: #6762a0 !important;
+}
+
+.navbar-light .navbar-nav li a.current, .navbar-light .navbar-nav.social li a {
+	color: #FFF !important;
+}
+
+/*=================================================================*/
+/*                      4. Color                             
+/*=================================================================*/
+a,
+.navbar-default .navbar-nav li:hover a,
+.navbar-light.shrink .navbar-nav li a:hover,
+.navbar-default .navbar-nav.social li a,
+.work-process .item .icon-wrap,
+.work-process.colored .item .icon-wrap span.step,
+.features-2 .item .feature-icon .icon,
+.pricing .price-table .header span,
+.blog .item .thumb .icon-wrap .icon:hover,
+.blog .item h2.title a:hover,
+.video-1 .button i,
+.video-2 .outer .inner .button i,
+.video-2 .features .item .icon-wrap,
+.team .item .thumb .social-icons li a:hover,
+footer span.copyright i,
+footer ul.footer-menu li a:hover,
+.footer-v2.dark .footer-widget .social-icons li a:hover,
+.blog-item h2 a:hover,
+.widget.latest-posts .post-title h3 a:hover,
+.stats ul li,
+.social-icons li a,
+ul.icon-button li a.primary:hover,
+ul.icon-button li a.light,
+.btn-light,
+.btn-light i,
+.pagination > li > a,.pagination > li > span
+{
+	color: #6762a0;
+}
+
+/*=================================================================*/
+/*                      5. Border Color                             
+/*=================================================================*/
+.preloader:before,
+.work-process .item .icon-wrap span.step,
+.pricing .price-table.recommended,
+.footer-dark .social-icons li a,
+.comment .form-control:focus,
+.stats ul li,
+.social-icons li a,
+.form-control,
+.nav-tabs,
+.navbar-default .navbar-nav.social li,
+.navbar-light.shrink .navbar-nav.social li:hover
+{
+	border-color: #6762a0;
+}
+
+.navbar-light.shrink .navbar-nav.social li {
+	border-color: #6762a0 !important;
+}
+
+.navbar-light .navbar-nav.social li {
+	border-color: #FFF !important;
+}
+
+/*=================================================================*/
+/*                      6. Overlay Color                            
+/*=================================================================*/
+.overlay-colored,
+.blog .item .thumb .overlay
+{
+	background: rgba(103,98,160,0.8);
+}
+
+/*=================================================================*/
+/*                      7. Gradient Color                            
+/*=================================================================*/
+.overlay-gradient
+{
+	background: -webkit-linear-gradient(left top,rgba(103,98,160,0.8),rgba(179, 55, 181, 0.8));
+	/* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(bottom right,rgba(103,98,160,0.8),rgba(179, 55, 181, 0.8));
+	/* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(bottom right,rgba(103,98,160,0.8),rgba(179, 55, 181, 0.8));
+	/* For Firefox 3.6 to 15 */
+    background: linear-gradient(to bottom right,rgba(103,98,160,0.8),rgba(179, 55, 181, 0.8));
+	/* Standard syntax */
+}
+
+/*=================================================================*/
+/*                      8. Responsive Color                            
+/*=================================================================*/
+@media only screen and (max-width: 991px) {
+	/*=================================================================*/
+	/*                      8.1 Color                            
+	/*=================================================================*/
+	.navbar-light .navbar-nav.social li a {
+        color: #6762a0;
+    }
+	/*=================================================================*/
+	/*                      8.2 Border Color                            
+	/*=================================================================*/
+    .navbar-light .navbar-nav.social li {
+        border-color: #6762a0;
+    }
+	/*=================================================================*/
+	/*                      8.3 Color Important                           
+	/*=================================================================*/
+    .navbar-light .navbar-nav li a.current {
+        color: #6762a0 !important;
+    }
+}

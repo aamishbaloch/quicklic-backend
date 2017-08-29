@@ -2,17 +2,117 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="39e162f1-ca37-4f38-9226-02d52f81118b" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/website/__init__.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/website/urls.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/website/views.py" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/encodings.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/markdown-navigator/profiles_settings.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/quicklic_backend.iml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/bootstrap/fonts/glyphicons-halflings-regular-.eot" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/bootstrap/fonts/glyphicons-halflings-regular.eot" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/bootstrap/fonts/glyphicons-halflings-regular.ttf" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/bootstrap/fonts/glyphicons-halflings-regular.woff" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/bootstrap/fonts/glyphicons-halflings-regular.woff2" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/fonts/et-line-.eot" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/fonts/et-line.eot" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/fonts/et-line.ttf" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/fonts/et-line.woff" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/fonts/fontawesome-webfont-.eot" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/fonts/fontawesome-webfont-v=4.6.1.eot" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/fonts/fontawesome-webfont-v=4.6.1.ttf" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/fonts/fontawesome-webfont-v=4.6.1.woff" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/fonts/fontawesome-webfont-v=4.6.1.woff2" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/fonts/slick-.eot" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/fonts/slick.eot" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/fonts/slick.ttf" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/fonts/slick.woff" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/ajax-loader.gif" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/author.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/blog-1.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/blog-2.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/blog-3.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/blog-big-1.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/blog-big-2.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/blog-big-3.jpeg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/blog-big-4.jpeg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/blog-thumb-1.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/blog-thumb-2.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/blog-thumb-3.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/clients/2.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/clients/4.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/favicon.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/handphone.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/hero-01.jpeg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/hero-02.jpeg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/hero-03.jpeg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/hero-04.jpeg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/hero-05.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/hero-06.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/hero-07.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/hero-screen.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/herophones.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/horizontal-phone.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/layer1.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/layer2.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/layer3.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/layer4.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/layer5.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/layer6.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/logo-light.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/phone-single.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/phones.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/screens.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/screens/1.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/screens/11.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/screens/2.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/screens/4.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/screens/5.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/screens/8.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/team1.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/team1.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/team2.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/team2.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/team3.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/team3.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/team4.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/video-bg.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/video.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/watch.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/bootstrap/css/bootstrap.min.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/bootstrap/fonts/glyphicons-halflings-regular.svg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/bootstrap/js/bootstrap.min.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/css/colors/color-1.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/css/colors/color-2.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/css/colors/color-3.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/css/colors/color-4.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/css/colors/color-5.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/css/colors/color-6.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/css/et-line.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/css/font-awesome.min.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/css/hover-min.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/css/magnific-popup.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/css/slick.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/css/style.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/demo/demo.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/demo/style-changer.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/demo/style_switcher.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/fonts/et-line.svg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/fonts/fontawesome-webfont-v=4.6.1.svg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/fonts/slick.svg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/js/classie.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/js/countdown.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/js/custom.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/js/jquery-1.12.3.min.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/js/jquery.ajaxchimp.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/js/jquery.counterup.min.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/js/jquery.easing.min.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/js/jquery.magnific-popup.min.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/js/jquery.single-page.min.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/js/scrollreveal.min.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/js/slick.min.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/js/waypoints.min.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates/website/base.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates/website/includes/footer_includes.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates/website/includes/header.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates/website/main.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/quicklic_backend/settings.py" afterPath="$PROJECT_DIR$/quicklic_backend/settings.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/quicklic_backend/urls.py" afterPath="$PROJECT_DIR$/quicklic_backend/urls.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/website/views.py" afterPath="$PROJECT_DIR$/website/views.py" />
     </list>
     <ignored path="quicklic_backend.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -41,82 +141,17 @@
         <entry file="file://$PROJECT_DIR$/quicklic_backend/settings.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="42" column="0" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
+              <caret line="130" column="0" selection-start-line="130" selection-start-column="0" selection-end-line="130" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/.gitignore">
+      <file leaf-file-name="hover-min.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/static/website/css/hover-min.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.4827586">
-              <caret line="12" column="14" selection-start-line="12" selection-start-column="14" selection-end-line="12" selection-end-column="14" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="README.md" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/README.md">
-          <provider selected="true" editor-type-id="split-provider[text-editor;MarkdownPreviewEditor]">
-            <state split_layout="SPLIT">
-              <first_editor vertical-scroll-proportion="0.8192771">
-                <caret line="50" column="0" selection-start-line="50" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
-                <folding />
-              </first_editor>
-              <second_editor>
-                <js_state />
-              </second_editor>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="requirements.txt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/requirements.txt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/website/urls.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.0">
+            <state vertical-scroll-proportion="251.54903">
               <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="__init__.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/website/__init__.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/website/views.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="wsgi.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/quicklic_backend/wsgi.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="13" column="65" selection-start-line="13" selection-start-column="49" selection-end-line="13" selection-end-column="65" />
               <folding />
             </state>
           </provider>
@@ -126,7 +161,77 @@
         <entry file="file://$PROJECT_DIR$/quicklic_backend/urls.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <caret line="27" column="56" selection-start-line="27" selection-start-column="56" selection-end-line="27" selection-end-column="56" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="main.html" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/templates/website/main.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.32608697">
+              <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="base.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/website/base.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-6.875">
+              <caret line="11" column="7" selection-start-line="11" selection-start-column="7" selection-end-line="11" selection-end-column="7" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="header.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/website/includes/header.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-11.25">
+              <caret line="18" column="15" selection-start-line="18" selection-start-column="15" selection-end-line="18" selection-end-column="15" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="style.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/static/website/css/style.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="267.5">
+              <caret line="50" column="37" selection-start-line="50" selection-start-column="37" selection-end-line="50" selection-end-column="37" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="footer_includes.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/website/includes/footer_includes.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-9.375">
+              <caret line="15" column="82" selection-start-line="15" selection-start-column="82" selection-end-line="15" selection-end-column="82" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="slick.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/static/website/css/slick.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-12.5">
+              <caret line="130" column="23" selection-start-line="130" selection-start-column="23" selection-end-line="130" selection-end-column="23" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/website/urls.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="6" column="1" selection-start-line="6" selection-start-column="1" selection-end-line="6" selection-end-column="1" />
               <folding />
             </state>
           </provider>
@@ -142,8 +247,18 @@
       <list>
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/requirements.txt" />
-        <option value="$PROJECT_DIR$/quicklic_backend/settings.py" />
         <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/quicklic_backend/urls.py" />
+        <option value="$PROJECT_DIR$/website/views.py" />
+        <option value="$PROJECT_DIR$/templates/website/includes/footer.html" />
+        <option value="$PROJECT_DIR$/templates/website/includes/head_style.html" />
+        <option value="$PROJECT_DIR$/templates/website/includes/footer_includes.html" />
+        <option value="$PROJECT_DIR$/templates/website/base.html" />
+        <option value="$PROJECT_DIR$/quicklic_backend/settings.py" />
+        <option value="$PROJECT_DIR$/templates/website/includes/header.html" />
+        <option value="$PROJECT_DIR$/static/website/css/style.css" />
+        <option value="$PROJECT_DIR$/static/website/css/slick.css" />
+        <option value="$PROJECT_DIR$/templates/website/main.html" />
       </list>
     </option>
   </component>
@@ -183,6 +298,7 @@
     </navigator>
     <panes>
       <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -225,13 +341,106 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="templates" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="website" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="quicklic_backend" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="quicklic_backend" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="templates" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="website" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="includes" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="quicklic_backend" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="quicklic_backend" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="static" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="website" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="quicklic_backend" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="quicklic_backend" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="static" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="website" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="css" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="quicklic_backend" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="quicklic_backend" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="static" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="quicklic_backend" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="quicklic_backend" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="quicklic_backend" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -244,7 +453,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/static/website/demo" />
+      <recent name="$PROJECT_DIR$/static/website" />
+      <recent name="$PROJECT_DIR$/static/website/img" />
+      <recent name="$PROJECT_DIR$/quicklic_backend/static" />
+      <recent name="$PROJECT_DIR$/templates" />
     </key>
   </component>
   <component name="RunManager" selected="Django server.quicklic_backend">
@@ -341,6 +554,11 @@
       <method />
     </configuration>
     <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+      <node-options />
+      <gulpfile />
+      <tasks />
+      <arguments />
+      <envs />
       <method />
     </configuration>
     <configuration default="true" type="js.build_tools.npm" factoryName="npm">
@@ -464,6 +682,7 @@
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
+        <env name="DJANGO_SETTINGS_MODULE" value="quicklic_backend.settings" />
       </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="" />
@@ -487,6 +706,9 @@
     </list>
   </component>
   <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="39e162f1-ca37-4f38-9226-02d52f81118b" name="Default" comment="" />
@@ -498,27 +720,35 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="817" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25965664" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26323318" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32904148" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32904148" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.39914164" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32904148" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
+  </component>
+  <component name="Vcs.Log.UiProperties">
+    <option name="RECENTLY_FILTERED_USER_GROUPS">
+      <collection />
+    </option>
+    <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+      <collection />
+    </option>
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
@@ -528,15 +758,7 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/quicklic_backend/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/quicklic_backend/urls.py">
+    <entry file="file://$PROJECT_DIR$/templates/website/main.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -569,6 +791,14 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/quicklic_backend/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/quicklic_backend/settings.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -588,7 +818,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="13" column="65" selection-start-line="13" selection-start-column="49" selection-end-line="13" selection-end-column="65" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -613,7 +842,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/website/urls.py">
+    <entry file="file://$PROJECT_DIR$/website/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.5042017">
+          <caret line="8" column="8" selection-start-line="8" selection-start-column="8" selection-end-line="8" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/website/bootstrap/js/bootstrap.min.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -621,7 +865,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/website/__init__.py">
+    <entry file="file://$PROJECT_DIR$/static/website/demo/demo.css">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -632,7 +876,23 @@
     <entry file="file://$PROJECT_DIR$/website/views.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <caret line="4" column="28" selection-start-line="4" selection-start-column="28" selection-end-line="4" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="6" column="1" selection-start-line="6" selection-start-column="1" selection-end-line="6" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/quicklic_backend/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="27" column="56" selection-start-line="27" selection-start-column="56" selection-end-line="27" selection-end-column="56" />
           <folding />
         </state>
       </provider>
@@ -640,15 +900,63 @@
     <entry file="file://$PROJECT_DIR$/quicklic_backend/settings.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="42" column="0" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
+          <caret line="130" column="0" selection-start-line="130" selection-start-column="0" selection-end-line="130" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
+    <entry file="file://$PROJECT_DIR$/static/website/css/hover-min.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4827586">
-          <caret line="12" column="14" selection-start-line="12" selection-start-column="14" selection-end-line="12" selection-end-column="14" />
+        <state vertical-scroll-proportion="251.54903">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/website/css/slick.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-12.5">
+          <caret line="130" column="23" selection-start-line="130" selection-start-column="23" selection-end-line="130" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/website/css/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="267.5">
+          <caret line="50" column="37" selection-start-line="50" selection-start-column="37" selection-end-line="50" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/website/includes/footer_includes.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-9.375">
+          <caret line="15" column="82" selection-start-line="15" selection-start-column="82" selection-end-line="15" selection-end-column="82" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/website/base.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-6.875">
+          <caret line="11" column="7" selection-start-line="11" selection-start-column="7" selection-end-line="11" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/website/includes/header.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-11.25">
+          <caret line="18" column="15" selection-start-line="18" selection-start-column="15" selection-end-line="18" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/website/main.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.32608697">
+          <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
           <folding />
         </state>
       </provider>

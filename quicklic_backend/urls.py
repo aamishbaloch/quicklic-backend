@@ -13,9 +13,18 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url
+from django.conf.urls import url, include
 from django.contrib import admin
+from quicklic_backend.settings import STATIC_ROOT
+from website import urls as website_urls
+from django.views.static import serve
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^', include(website_urls, namespace="website"))
 ]
+
+urlpatterns += [
+    url(r'^static/(.*)$', serve, {'document_root': STATIC_ROOT, 'show_indexes': True})
+]
+
