@@ -1,7 +1,6 @@
 *.pyc
-*.xml
-*.iml
-/.idea
+.xml
+.iml
 .idea
 error.log
 quicklic_backend/local_settings.py
@@ -10,4 +9,3 @@ eggs.csv
 errors_log.out
 logfile
 .DS*
-.idea/misc.xml

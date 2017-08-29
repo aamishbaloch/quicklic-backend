@@ -2,117 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="39e162f1-ca37-4f38-9226-02d52f81118b" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/bootstrap/fonts/glyphicons-halflings-regular-.eot" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/bootstrap/fonts/glyphicons-halflings-regular.eot" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/bootstrap/fonts/glyphicons-halflings-regular.ttf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/bootstrap/fonts/glyphicons-halflings-regular.woff" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/bootstrap/fonts/glyphicons-halflings-regular.woff2" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/fonts/et-line-.eot" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/fonts/et-line.eot" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/fonts/et-line.ttf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/fonts/et-line.woff" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/fonts/fontawesome-webfont-.eot" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/fonts/fontawesome-webfont-v=4.6.1.eot" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/fonts/fontawesome-webfont-v=4.6.1.ttf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/fonts/fontawesome-webfont-v=4.6.1.woff" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/fonts/fontawesome-webfont-v=4.6.1.woff2" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/fonts/slick-.eot" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/fonts/slick.eot" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/fonts/slick.ttf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/fonts/slick.woff" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/ajax-loader.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/author.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/blog-1.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/blog-2.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/blog-3.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/blog-big-1.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/blog-big-2.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/blog-big-3.jpeg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/blog-big-4.jpeg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/blog-thumb-1.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/blog-thumb-2.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/blog-thumb-3.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/clients/2.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/clients/4.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/favicon.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/handphone.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/hero-01.jpeg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/hero-02.jpeg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/hero-03.jpeg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/hero-04.jpeg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/hero-05.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/hero-06.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/hero-07.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/hero-screen.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/herophones.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/horizontal-phone.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/layer1.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/layer2.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/layer3.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/layer4.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/layer5.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/layer6.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/logo-light.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/phone-single.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/phones.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/screens.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/screens/1.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/screens/11.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/screens/2.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/screens/4.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/screens/5.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/screens/8.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/team1.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/team1.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/team2.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/team2.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/team3.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/team3.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/team4.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/video-bg.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/video.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/images/watch.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/bootstrap/css/bootstrap.min.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/bootstrap/fonts/glyphicons-halflings-regular.svg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/bootstrap/js/bootstrap.min.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/css/colors/color-1.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/css/colors/color-2.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/css/colors/color-3.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/css/colors/color-4.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/css/colors/color-5.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/css/colors/color-6.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/css/et-line.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/css/font-awesome.min.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/css/hover-min.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/css/magnific-popup.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/css/slick.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/css/style.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/demo/demo.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/demo/style-changer.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/demo/style_switcher.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/fonts/et-line.svg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/fonts/fontawesome-webfont-v=4.6.1.svg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/fonts/slick.svg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/js/classie.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/js/countdown.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/js/custom.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/js/jquery-1.12.3.min.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/js/jquery.ajaxchimp.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/js/jquery.counterup.min.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/js/jquery.easing.min.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/js/jquery.magnific-popup.min.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/js/jquery.single-page.min.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/js/scrollreveal.min.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/js/slick.min.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/website/js/waypoints.min.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates/website/base.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates/website/includes/footer_includes.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates/website/includes/header.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates/website/main.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/quicklic_backend/settings.py" afterPath="$PROJECT_DIR$/quicklic_backend/settings.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/quicklic_backend/urls.py" afterPath="$PROJECT_DIR$/quicklic_backend/urls.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/website/views.py" afterPath="$PROJECT_DIR$/website/views.py" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
     </list>
     <ignored path="quicklic_backend.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -167,11 +58,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="main.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/website/main.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.32608697">
+            <state vertical-scroll-proportion="-5.0">
               <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.3181818">
+              <caret line="10" column="4" selection-start-line="10" selection-start-column="4" selection-end-line="10" selection-end-column="4" />
               <folding />
             </state>
           </provider>
@@ -227,16 +128,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/website/urls.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="6" column="1" selection-start-line="6" selection-start-column="1" selection-end-line="6" selection-end-column="1" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="Git.Settings">
@@ -247,7 +138,6 @@
       <list>
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/requirements.txt" />
-        <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/quicklic_backend/urls.py" />
         <option value="$PROJECT_DIR$/website/views.py" />
         <option value="$PROJECT_DIR$/templates/website/includes/footer.html" />
@@ -259,6 +149,7 @@
         <option value="$PROJECT_DIR$/static/website/css/style.css" />
         <option value="$PROJECT_DIR$/static/website/css/slick.css" />
         <option value="$PROJECT_DIR$/templates/website/main.html" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -720,7 +611,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="817" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26323318" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -732,7 +623,7 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32904148" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.39914164" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.39914164" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -849,14 +740,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.5042017">
-          <caret line="8" column="8" selection-start-line="8" selection-start-column="8" selection-end-line="8" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/static/website/bootstrap/js/bootstrap.min.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -955,8 +838,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/website/main.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.32608697">
+        <state vertical-scroll-proportion="-5.0">
           <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3181818">
+          <caret line="10" column="4" selection-start-line="10" selection-start-column="4" selection-end-line="10" selection-end-column="4" />
           <folding />
         </state>
       </provider>
