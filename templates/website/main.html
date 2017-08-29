@@ -2,70 +2,6 @@
 {% load static %}
 
 {% block body_block %}
-    <!-- Preloader -->
-    <div class="preloader-outer">
-        <div class="preloader" aria-busy="true" aria-label="Loading, please wait." role="progressbar"></div>
-    </div>
-
-    <!-- Navbar 2-1 -->
-    <nav class="navbar navbar-default navbar-light navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header flex">
-                <button aria-controls="navbar" aria-expanded="false" class=
-                "navbar-toggle collapsed" data-target="#navbar" data-toggle=
-                "collapse" type="button"><span class="sr-only">Toggle
-                navigation</span> <span class="icon-bar"></span> <span class=
-                "icon-bar"></span> <span class="icon-bar"></span></button>
-
-                <!-- Logo -->
-                <a class="navbar-brand" href="#section-2-1">Quicklic</a>
-                <span class="slogan">Doctor's Partner</span>
-                <!-- Logo end -->
-
-            </div>
-            <div class="navbar-collapse collapse" id="navbar">
-
-                <div class="navbar-right">
-
-                    <!-- Menu -->
-                    <ul id="slide-menu" class="nav navbar-nav">
-                        <li>
-                            <a href="#section-2-1">Home</a>
-                        </li>
-                        <li>
-                            <a href="#section-2-2">How It Works</a>
-                        </li>
-                        <li>
-                            <a href="#section-2-3">Features</a>
-                        </li>
-                        <li>
-                            <a href="#section-2-5">Screenshots</a>
-                        </li>
-                        <li>
-                            <a href="#section-2-7">Team</a>
-                        </li>
-                        <li>
-                            <a href="#section-2-10">Download</a>
-                        </li>
-                    </ul>
-                    <!-- Menu end -->
-
-                    <div class="nav navbar-nav navicon-wrap">
-                        <span class="navicon"></span>
-                    </div>
-
-                    <ul class="nav navbar-nav social">
-                        <li><a href="#" class="external"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-                        <li><a href="#" class="external"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-                    </ul>
-
-                </div>
-
-            </div><!--/.nav-collapse -->
-        </div>
-    </nav>
-    <!-- Navbar 2-1 end -->
-
     <!-- Section Hero 1-2 -->
     <section id="section-2-1" class="hero hero-bg-colored hero-bg-6">
         <div class="container">
@@ -412,13 +348,74 @@
     </section>
     <!-- Section Price 1 end -->
 
+    <!-- Section review 1 -->
+    <section id="section-2-7" class="reviews reviews-parallax">
+        <div class="container container-600 z-1 relative">
+
+            <!-- wrapper -->
+            <div class="reviews-slide-2">
+                <!-- Item 1 -->
+                <div class="item">
+                    <div class="user">
+                        <div class="info clearfix">
+                            <h3>- Steve Doe</h3>
+                            <span>Position at Company</span>
+                        </div>
+                    </div>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip.</p>
+                </div>
+                <!-- Item 2 -->
+                <div class="item">
+                    <div class="user">
+                        <div class="info clearfix">
+                            <h3>- John Doe</h3>
+                            <span>Ceo of Company</span>
+                        </div>
+                    </div>
+                    <p>Has ne albucius deseruisse, eu sea diceret definitiones. Qui an graeci iriure minimum facilisi salutandi vix ad. Mel zril antiopam platonem ut an delenit consequuntur vel ex vis doctus viderer gloriatur.</p>
+                </div>
+                <!-- Item 3 -->
+                <div class="item">
+                    <div class="user">
+                        <div class="info clearfix">
+                            <h3>- Johnatan Doe</h3>
+                            <span>Ceo of Company</span>
+                        </div>
+                    </div>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip.</p>
+                </div>
+            </div>
+
+            <!-- thumbnail navigation -->
+            <div class="reviews-nav">
+                <!-- item 1 -->
+                <div class="thumb">
+                    <img src="{% static 'website/images/team1.png' %}" alt="review" />
+                </div>
+                <!-- item 2 -->
+                <div class="thumb">
+                    <img src="{% static 'website/images/team2.png' %}" alt="review" />
+                </div>
+                <!-- item 3 -->
+                <div class="thumb">
+                    <img src="{% static 'website/images/team3.png' %}" alt="review" />
+                </div>
+            </div>
+
+        </div>
+
+        <div class="overlay-dark"></div>
+
+    </section>
+    <!-- Section review 1 end -->
+
     <!-- Section team -->
-    <section id="section-2-7" class="team">
+    <section id="section-2-8" class="team">
         <div class="container">
 
             <!-- section header -->
             <div class="section-header text-center">
-                <h2>The Developers</h2>
+                <h2>The Team</h2>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud.</p>
             </div>
 
@@ -437,7 +434,7 @@
 
                             <div class="overlay overlay-colored"></div>
 
-                            <img src="assets/images/team1.jpg" alt="team" />
+                            <img src="{% static 'website/images/team1.jpg' %}" alt="team" />
                         </div>
                         <h3>John Doe</h3>
                         <span>Ceo Founder & Developer</span>
@@ -457,7 +454,7 @@
 
                             <div class="overlay overlay-colored"></div>
 
-                            <img src="assets/images/team2.jpg" alt="team" />
+                            <img src="{% static 'website/images/team2.jpg' %}" alt="team" />
                         </div>
                         <h3>Steve Doe</h3>
                         <span>Frontend Developer</span>
@@ -477,7 +474,7 @@
 
                             <div class="overlay overlay-colored"></div>
 
-                            <img src="assets/images/team3.jpg" alt="team" />
+                            <img src="{% static 'website/images/team3.jpg' %}" alt="team" />
                         </div>
                         <h3>Johnatan Doe</h3>
                         <span>UI/UX Designer</span>
@@ -497,7 +494,7 @@
 
                             <div class="overlay overlay-colored"></div>
 
-                            <img src="assets/images/team4.jpg" alt="team" />
+                            <img src="{% static 'website/images/team4.jpg' %}" alt="team" />
                         </div>
                         <h3>Jack Doe</h3>
                         <span>The Developer</span>
@@ -510,101 +507,80 @@
     </section>
     <!-- Section team end -->
 
-    <!-- Section review 2 -->
-    <section id="section-2-8" class="reviews-2 odd">
-        <div class="container container-600">
+    <!-- Section blog 1 -->
+    <section id="section-2-9" class="blog">
+        <div class="container">
 
             <!-- section header -->
             <div class="section-header text-center">
-                <h2>Reviews</h2>
+                <h2>Recent Posts</h2>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud.</p>
             </div>
 
-            <!-- wrapper -->
-            <div class="reviews-slide">
+            <div class="row">
+
                 <!-- Item 1 -->
-                <div class="item">
-                    <div class="user">
+                <div class="col-md-4 col-sm-6 col-xs-12">
+                    <div class="item">
                         <div class="thumb">
-                            <img src="assets/images/team1.png" alt="review" />
+                            <div class="icon-wrap">
+                                <a href="#">
+                                    <span class="icon-attachment icon"></span>
+                                </a>
+                            </div>
+                            <div class="overlay"></div>
+                            <img src="{% static 'website/images/blog-1.jpg' %}" alt="blog" />
                         </div>
-                        <div class="info clearfix">
-                            <h3>- John Doe</h3>
-                            <span>Ceo of Company</span>
-                        </div>
+                        <h2 class="title"><a href="#">Tutorial: How to reset your Apple ID password</a></h2>
+                        <span class="date">Posted on 24 August, 2016</span>
+                        <p>Lorem ipsum dolor sit amet, cum partem melius nostrum te, cu pri quis dicant accusamus.</p>
+                        <a href="#" class="btn btn-default">Read more</a>
                     </div>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip.</p>
                 </div>
+
                 <!-- Item 2 -->
-                <div class="item">
-                    <div class="user">
+                <div class="col-md-4 col-sm-6 col-xs-12">
+                    <div class="item">
                         <div class="thumb">
-                            <img src="assets/images/team1.png" alt="review" />
+                            <div class="icon-wrap">
+                                <a href="#">
+                                    <span class="icon-attachment icon"></span>
+                                </a>
+                            </div>
+                            <div class="overlay"></div>
+                            <img src="{% static 'website/images/blog-2.jpg' %}" alt="blog" />
                         </div>
-                        <div class="info clearfix">
-                            <h3>- John Doe</h3>
-                            <span>Ceo of Company</span>
-                        </div>
+                        <h2 class="title"><a href="#">A mega tech merger, Paris bans cars, and more</a></h2>
+                        <span class="date">Posted on 24 August, 2016</span>
+                        <p>Lorem ipsum dolor sit amet, cum partem melius nostrum te, cu pri quis dicant accusamus.</p>
+                        <a href="#" class="btn btn-default">Read more</a>
                     </div>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip.</p>
                 </div>
+
+                <!-- Item 3 -->
+                <div class="col-md-4 col-sm-6 col-xs-12">
+                    <div class="item">
+                        <div class="thumb">
+                            <div class="icon-wrap">
+                                <a href="#">
+                                    <span class="icon-attachment icon"></span>
+                                </a>
+                            </div>
+                            <div class="overlay"></div>
+                            <img src="{% static 'website/images/blog-3.jpg' %}" alt="blog" />
+                        </div>
+                        <h2 class="title"><a href="#">Google lets devs nominate their beta apps</a></h2>
+                        <span class="date">Posted on 24 August, 2016</span>
+                        <p>Lorem ipsum dolor sit amet, cum partem melius nostrum te, cu pri quis dicant accusamus.</p>
+                        <a href="#" class="btn btn-default">Read more</a>
+                    </div>
+                </div>
+
             </div>
 
         </div>
     </section>
-    <!-- Section review 2 end -->
-
-    <!-- Section clients -->
-    <section id="section-2-9" class="clients">
-        <div class="container">
-            <div class="row text-center">
-
-                <!-- item 1 -->
-                <div class="col-md-2 col-sm-4 col-xs-6">
-                    <div class="client-item">
-                        <img src="assets/images/clients/2.png" alt="clients" />
-                    </div>
-                </div>
-
-                <!-- item 2 -->
-                <div class="col-md-2 col-sm-4 col-xs-6">
-                    <div class="client-item">
-                        <img src="assets/images/clients/4.png" alt="clients" />
-                    </div>
-                </div>
-
-                <!-- item 3 -->
-                <div class="col-md-2 col-sm-4 col-xs-6">
-                    <div class="client-item">
-                        <img src="assets/images/clients/2.png" alt="clients" />
-                    </div>
-                </div>
-
-                <!-- item 4 -->
-                <div class="col-md-2 col-sm-4 col-xs-6">
-                    <div class="client-item">
-                        <img src="assets/images/clients/4.png" alt="clients" />
-                    </div>
-                </div>
-
-                <!-- item 5 -->
-                <div class="col-md-2 col-sm-4 col-xs-6">
-                    <div class="client-item">
-                        <img src="assets/images/clients/2.png" alt="clients" />
-                    </div>
-                </div>
-
-                <!-- item 6 -->
-                <div class="col-md-2 col-sm-4 col-xs-6">
-                    <div class="client-item">
-                        <img src="assets/images/clients/4.png" alt="clients" />
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
-    <!-- Section client end -->
+    <!-- Section blog 1 end -->
 
     <!-- Section download 2 -->
     <section id="section-2-10" class="download-cta-2 colored">
@@ -615,8 +591,8 @@
                 <div class="col-md-8 col-sm-12 col-xs-12">
                     <!-- cta -->
                     <div class="cta">
-                        <h2>Let's start with Pixa Landing Page</h2>
-                        <p>Pixa is specially designed for your Mobile Application</p>
+                        <h2>Let's start with Quicklic</h2>
+                        <p>the ultimate replacement for any and all manual logistics for a hospital automating their entire scheduling processes</p>
                     </div>
                 </div>
 
@@ -626,7 +602,7 @@
                         <a href="#" class="btn btn-primary btn-download hvr-float-shadow">
                             <i class="fa fa-apple" aria-hidden="true"></i>
                             <span class="text">
-                                <span class="little">Download on the</span><br>App Store
+                                <span class="little">Get it on</span><br>App Store
                             </span>
                         </a>
                         <a href="#" class="btn btn-primary btn-download hvr-float-shadow">
@@ -644,81 +620,62 @@
     </section>
     <!-- Section download 2 end -->
 
-    <!-- Section subscribe 2 -->
-    <section id="section-2-11" class="subscribe">
+    <!-- Section contact -->
+    <section id="section-2-11" class="contact">
         <div class="container">
 
             <!-- section header -->
             <div class="section-header text-center">
-                <h2>Request a Demo</h2>
-                <p>Trust us. We never send trash messages to you.</p>
+                <h2>Get In Touch / Request a Demo</h2>
+                <p>Need any kind of information or want to request for a demo.</p>
             </div>
 
-            <!-- form -->
-            <div class="container container-750">
+            <div class="container container-600">
 
+                <!-- forms -->
                 <form method="post" action="{% url 'website:contact_us' %}">
                     {% csrf_token %}
                     <div class="row"><!-- Row -->
 
-                        <div class="col-md-4 col-sm-4 col-xs-12 col-md-offset-1"><!-- Name input -->
-                            <div class="form-group mb-0">
-                                <input type="text" class="form-control" name="name" id="id_name" placeholder="Your name" required>
+                        <div class="col-md-12 col-sm-12 col-xs-12"><!-- Name input -->
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="ContactName" id="ContactName" placeholder="Your name" required>
                             </div>
                         </div>
 
-                        <div class="col-md-4 col-sm-4 col-xs-12"><!-- Email input -->
-                            <div class="form-group mb-0">
-                                <input type="email" class="form-control" id="id_email" name="email" placeholder="Email address" required>
+                        <div class="col-md-6 col-sm-6 col-xs-12"><!-- Email input -->
+                            <div class="form-group">
+                                <input type="email" class="form-control" id="ContactEmail" name="ContactEmail" placeholder="Email address" required>
                             </div>
                         </div>
 
-                        <div class="col-md-3">
-                            <button type="submit" name="submit" value="Submit" class="btn btn-default btn-lg pull-left">Request a Demo</button><!-- Send Button -->
+                        <div class="col-md-6 col-sm-6 col-xs-12"><!-- Email input -->
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="ContactPhone" name="ContactPhone" placeholder="Phone Number" required>
+                            </div>
                         </div>
 
-                        <div class="sub-result"><p class="result"></p></div>
+                        <div class="col-md-12 col-sm-12 col-xs-12"><!-- Subject input -->
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="ContactSubject" name="ContactSubject" placeholder="Subject" required>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 col-sm-12 col-xs-12"><!-- Message textarea -->
+                            <div class="form-group">
+                                <textarea name="InputMessage" id="InputMessage" class="form-control" rows="6" placeholder="Message" required></textarea>
+                            </div>
+                        </div>
 
                     </div><!-- Row end -->
+
+                    <button type="submit" name="submit" id="submit" value="Submit" class="btn btn-default btn-icon pull-left"><i class="fa fa-paper-plane" aria-hidden="true"></i>Send message</button><!-- Send Button -->
 
                 </form>
 
             </div>
-
         </div>
     </section>
-    <!-- Section subscribe 2 end -->
-
-    <!-- Section footer 1 -->
-    <footer id="footer-1" class="footer footer-dark">
-        <div class="container">
-
-            <!-- footer logo -->
-            <img src="{% static 'website/images/logo-light.png' %}" class="footer-logo" alt="logo-footer" />
-
-            <!-- footer menu -->
-            <ul class="footer-menu">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Terms</a></li>
-                <li><a href="#">Privacy</a></li>
-                <li><a href="#">FAQ</a></li>
-                <li><a href="#">Contact</a></li>
-            </ul>
-
-            <!-- copyright text -->
-            <span class="copyright">© Copyright 2017 Quicklic, All Rights Reserved. <br />Designed & Developed with passion and <i class="fa fa-heart" aria-hidden="true"></i> in Pakistan.</span>
-
-            <!-- social icons -->
-            <ul class="social-icons">
-                <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-                <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-                <li><a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
-            </ul>
-
-        </div>
-    </footer>
-    <!-- Section footer 1 end -->
-
-    {% include 'website/includes/footer_includes.html' %}
+    <!-- Section contact end -->
 
 {% endblock %}
