@@ -77,7 +77,7 @@ ul.list-style li {
 
 ul.list-style li:before {
     content: '';
-    background: #2dd0c6;
+    background: #70ab42;
     display: block;
     height: 1px;
     left: -45px;
@@ -145,7 +145,7 @@ p {
 }
 
 a {
-    color: #2dd0c6;
+    color: #70ab42;
     -webkit-transition: all .3s ease-in-out;
     -moz-transition: all .3s ease-in-out;
     transition: all .3s ease-in-out;
@@ -189,7 +189,7 @@ h2.light {
 }
 
 .overlay-colored {
-    background: rgba(45,208,198,0.8);
+    background: rgba(112,170,66,0.8);
     left: 0;
     height: 100%;
     top: 0;
@@ -207,15 +207,15 @@ h2.light {
 }
 
 .overlay-gradient {
-    background: rgba(45,208,198,0.8);
+    background: rgba(112,170,66,0.8);
 /* For browsers that do not support gradients */
-    background: -webkit-linear-gradient(left top,rgba(45,208,198,0.8),rgba(102,98,159,0.8));
+    background: -webkit-linear-gradient(left top,rgba(112,170,66,0.8),rgba(102,98,159,0.8));
 /* For Safari 5.1 to 6.0 */
-    background: -o-linear-gradient(bottom right,rgba(45,208,198,0.8),rgba(102,98,159,0.8));
+    background: -o-linear-gradient(bottom right,rgba(112,170,66,0.8),rgba(102,98,159,0.8));
 /* For Opera 11.1 to 12.0 */
-    background: -moz-linear-gradient(bottom right,rgba(45,208,198,0.8),rgba(102,98,159,0.8));
+    background: -moz-linear-gradient(bottom right,rgba(112,170,66,0.8),rgba(102,98,159,0.8));
 /* For Firefox 3.6 to 15 */
-    background: linear-gradient(to bottom right,rgba(45,208,198,0.8),rgba(102,98,159,0.8));
+    background: linear-gradient(to bottom right,rgba(112,170,66,0.8),rgba(102,98,159,0.8));
 /* Standard syntax */
     left: 0;
     height: 100%;
@@ -304,7 +304,7 @@ h2.light {
     width: 100%;
     -webkit-animation: rotation 1s linear infinite;
     animation: rotation 1s linear infinite;
-    border: 1px solid #2dd0c6;
+    border: 1px solid #70ab42;
     border-top: 1px solid transparent;
     border-radius: 100%;
 }
@@ -437,7 +437,7 @@ h2.light {
 }
 
 .navbar-default .navbar-nav li a.current {
-    color: #2dd0c6 !important;
+    color: #70ab42 !important;
 }
 
 .navbar-default .navbar-nav li a:focus {
@@ -450,7 +450,7 @@ h2.light {
 }
 
 .navbar-default .navbar-nav li:hover a {
-    color: #2dd0c6;
+    color: #70ab42;
 }
 
 .navbar-default .navbar-nav.social {
@@ -459,7 +459,7 @@ h2.light {
 
 .navbar-default .navbar-nav.social li {
     display: inline-block;
-    border: solid 1px #2dd0c6;
+    border: solid 1px #70ab42;
     border-radius: 50%;
     overflow: hidden;
     height: 30px;
@@ -476,7 +476,7 @@ h2.light {
 }
 
 .navbar-default .navbar-nav.social li:hover {
-    background: #2dd0c6;
+    background: #70ab42;
 }
 
 .navbar-default .navbar-nav.social li:hover a {
@@ -484,7 +484,7 @@ h2.light {
 }
 
 .navbar-default .navbar-nav.social li a {
-    color: #2dd0c6;
+    color: #70ab42;
     font-size: 12px;
     line-height: 28px;
     margin: 0;
@@ -554,7 +554,7 @@ h2.light {
     margin-top: -10px;
     margin-right: 15px;
     margin-bottom: 0;
-    background-color: #2dd0c6;
+    background-color: #70ab42;
     border: 0;
     border-radius: 50%;
 }
@@ -564,7 +564,7 @@ h2.light {
 }
 
 .navbar-default .navbar-toggle:hover {
-    background-color: #2dd0c6;
+    background-color: #70ab42;
 }
 
 .navbar-toggle .icon-bar {
@@ -691,7 +691,7 @@ h2.light {
 }
 
 .navbar-light .navbar-nav.social li a:hover {
-    color: #2dd0c6;
+    color: #70ab42;
 }
 
 .navbar-light .navicon {
@@ -719,12 +719,12 @@ h2.light {
 }
 
 .navbar-light.shrink .navbar-nav li a:hover {
-    color: #2dd0c6;
+    color: #70ab42;
     text-decoration: none;
 }
 
 .navbar-light.shrink .navbar-nav.social li a {
-    color: #2dd0c6;
+    color: #70ab42;
 }
 
 .navbar-light.shrink .navbar-nav.social li a:hover {
@@ -736,11 +736,11 @@ h2.light {
 }
 
 .navbar-light.shrink .navbar-nav.social li {
-    border-color: #2dd0c6;
+    border-color: #70ab42;
 }
 
 .navbar-light.shrink .navbar-nav.social li:hover {
-    background: #2dd0c6;
+    background: #70ab42;
 }
 
 .navbar-light.shrink .navicon {
@@ -756,7 +756,7 @@ h2.light {
 }
 
 .navbar-light.shrink .navbar-nav li a.current {
-    color: #2dd0c6 !important;
+    color: #70ab42 !important;
     text-decoration: none;
 }
 
@@ -801,7 +801,7 @@ section.odd {
 }
 
 section.colored {
-    background: #2dd0c6;
+    background: #70ab42;
     color: #FFF;
 }
 
@@ -942,7 +942,7 @@ section.colored {
 /*                      SECTION HOW IT WORKS                              
 /*=================================================================*/
 .work-process .item .icon-wrap {
-    color: #2dd0c6;
+    color: #70aa42;
     border: solid 1px;
     border-radius: 50%;
     height: 80px;
@@ -960,8 +960,8 @@ section.colored {
 
 .work-process .item .icon-wrap span.step {
     color: #FFF;
-    background: #2dd0c6;
-    border: solid 1px #2dd0c6;
+    background: #70aa42;
+    border: solid 1px #70aa42;
     border-radius: 50%;
     font-size: 12px;
     display: block;
@@ -984,7 +984,7 @@ section.colored {
 }
 
 .work-process.process-2 .item .icon-wrap {
-    color: #2dd0c6 !important;
+    color: #70aa42 !important;
     background: #FFF;
     border: 0;
 }
@@ -999,7 +999,7 @@ section.colored {
 }
 
 .work-process.colored .item .icon-wrap span.step {
-    color: #2dd0c6;
+    color: #70aa42;
     background: #FFF;
     border-color: #FFF;
 }
@@ -1118,7 +1118,7 @@ section.colored {
 }
 
 .features-2 .item .feature-icon .icon {
-    color: #2dd0c6;
+    color: #70aa42;
     font-size: 40px;
 }
 
@@ -1139,7 +1139,7 @@ section.colored {
 
 .features-3 .icon-wrap {
     border: 0;
-    background: #2dd0c6;
+    background: #70aa42;
     border-radius: 50%;
     color: #FFF;
     font-size: 28px;
@@ -1178,7 +1178,7 @@ section.colored {
 
 .pricing .price-table .header span {
     font-size: 48px;
-    color: #2dd0c6;
+    color: #70aa42;
 }
 
 .pricing .price-table .header h2 {
@@ -1219,14 +1219,14 @@ section.colored {
 }
 
 .pricing .price-table.recommended {
-    border: solid 1px #2dd0c6;
+    border: solid 1px #70aa42;
 }
 
 /*=================================================================*/
 /*                      SECTION BLOG                              
 /*=================================================================*/
 .blog .item .thumb {
-    background: #2dd0c6;
+    background: #70aa42;
     height: 230px;
     overflow: hidden;
     max-width: 360px;
@@ -1277,7 +1277,7 @@ section.colored {
 
 .blog .item .thumb .icon-wrap .icon:hover {
     background-color: #FFF;
-    color: #2dd0c6;
+    color: #70aa42;
 }
 
 .blog .item .thumb .icon-wrap .icon:hover {
@@ -1289,7 +1289,7 @@ section.colored {
 }
 
 .blog .item .thumb .overlay {
-    background: rgba(45,208,198,0.8);
+    background: rgba(112,170,66,0.8);
     left: 0;
     opacity: 0;
     height: 100%;
@@ -1340,7 +1340,7 @@ section.colored {
 }
 
 .blog .item h2.title a:hover {
-    color: #2dd0c6;
+    color: #70aa42;
 }
 
 .blog .item .date {
@@ -1648,7 +1648,7 @@ section.colored {
 }
 
 .video-1 .button i {
-    color: #2dd0c6;
+    color: #70aa42;
     cursor: pointer;
     font-size: 30px;
     background: #FFF;
@@ -1680,7 +1680,7 @@ section.colored {
 }
 
 .video-2 .outer .inner .button i {
-    color: #2dd0c6;
+    color: #70aa42;
     cursor: pointer;
     font-size: 30px;
     background: #FFF;
@@ -1704,7 +1704,7 @@ section.colored {
 }
 
 .video-2 .features .item .icon-wrap {
-    color: #2dd0c6;
+    color: #70aa42;
     border: solid 1px;
     border-radius: 50%;
     height: 80px;
@@ -1808,7 +1808,7 @@ section.colored {
 
 .team .item .thumb .social-icons li a:hover {
     background: #FFF;
-    color: #2dd0c6;
+    color: #70aa42;
 }
 
 .team .item .thumb .overlay {
@@ -1922,7 +1922,7 @@ footer span.copyright {
 }
 
 footer span.copyright i {
-    color: #2dd0c6;
+    color: #FFF;
 }
 
 footer ul.footer-menu {
@@ -1936,26 +1936,26 @@ footer ul.footer-menu li {
 }
 
 footer ul.footer-menu li a {
-    color: #111;
+    color: #FFF;
     font-size: 14px;
 }
 
 footer ul.footer-menu li a:hover {
-    color: #2dd0c6;
+    color: #FFF;
     text-decoration: none;
 }
 
 .footer-dark {
     border: 0;
-    background: #252525;
+    background: #70aa42;
 }
 
 .footer-dark span.copyright {
-    color: #6b6b6b;
+    color: #FFF;
 }
 
 .footer-dark ul.footer-menu li a {
-    color: #b1b1b1;
+    color: #FFF;
 }
 
 .footer-dark ul.footer-menu li a:hover {
@@ -1963,15 +1963,15 @@ footer ul.footer-menu li a:hover {
 }
 
 .footer-dark .social-icons li a {
-    border-color: #2dd0c6;
-    color: #FFF;
-    background: #2dd0c6;
+    border-color: #FFF;
+    color: #70aa42;
+    background: #FFF;
 }
 
 .footer-dark .social-icons li a:hover {
+    border-color: #70aa42;
+    color: #70aa42;
     background: #FFF;
-    border-color: #FFF;
-    color: #2dd0c6;
 }
 
 /* === Footer v2 === */
@@ -2020,12 +2020,12 @@ footer ul.footer-menu li a:hover {
 
 .footer-v2.dark .footer-widget .social-icons li a {
     color: #FFF;
-    background: #2dd0c6;
+    background: #70aa42;
     border: 0;
 }
 
 .footer-v2.dark .footer-widget .social-icons li a:hover {
-    color: #2dd0c6;
+    color: #70aa42;
     background: #FFF;
 }
 
@@ -2065,7 +2065,7 @@ footer ul.footer-menu li a:hover {
 }
 
 .blog-item h2 a:hover {
-    color: #2dd0c6;
+    color: #70aa42;
 }
 
 .blog-item .meta {
@@ -2096,7 +2096,7 @@ footer ul.footer-menu li a:hover {
 }
 
 .comment .form-control:focus {
-    border-color: #2dd0c6;
+    border-color: #70aa42;
 }
 
 /*=================================================================*/
@@ -2149,7 +2149,7 @@ footer ul.footer-menu li a:hover {
 }
 
 .widget.latest-posts .post-title h3 a:hover {
-    color: #2dd0c6;
+    color: #70aa42;
 }
 
 .widget.latest-posts .post-title span.date {
@@ -2224,8 +2224,8 @@ footer ul.footer-menu li a:hover {
 }
 
 .stats ul li {
-    border: solid 1px #2dd0c6;
-    color: #2dd0c6;
+    border: solid 1px #70aa42;
+    color: #70aa42;
     display: inline-block;
     padding: 24px 0;
     margin: 0 10px;
@@ -2248,9 +2248,9 @@ footer ul.footer-menu li a:hover {
 }
 
 .social-icons li a {
-    border: solid 1px #2dd0c6;
+    border: solid 1px #70aa42;
     border-radius: 50%;
-    color: #2dd0c6;
+    color: #70aa42;
     display: block;
     font-size: 12px;
     line-height: 29px;
@@ -2267,7 +2267,7 @@ footer ul.footer-menu li a:hover {
 }
 
 .social-icons li a:hover {
-    background: #2dd0c6;
+    background: #70aa42;
     color: #FFF;
 }
 
@@ -2321,7 +2321,7 @@ ul.icon-button li a i {
 }
 
 ul.icon-button li a.default {
-    background: #2dd0c6;
+    background: #70aa42;
     color: #FFF;
 }
 
@@ -2337,12 +2337,12 @@ ul.icon-button li a.primary {
 
 ul.icon-button li a.primary:hover {
     background: #FFF;
-    color: #2dd0c6;
+    color: #70aa42;
 }
 
 ul.icon-button li a.light {
     background: #FFF;
-    color: #2dd0c6;
+    color: #70aa42;
 }
 
 ul.icon-button li a.light:hover {
@@ -2398,7 +2398,7 @@ ul#countdown li p {
 
 .btn-default {
     color: #FFF;
-    background: #2dd0c6;
+    background: #70aa42;
 }
 
 .btn-default:hover,.btn-default:focus {
@@ -2407,22 +2407,22 @@ ul#countdown li p {
 }
 
 .btn-primary {
-    background: #111;
-    color: #FFF;
+    background: #FFF;
+    color: #70aa42;
 }
 
 .btn-primary:hover,.btn-primary:focus {
-    background: #2dd0c6;
+    background: #70aa42;
     color: #FFF;
 }
 
 .btn-light {
     background: #FFF;
-    color: #2dd0c6;
+    color: #70aa42;
 }
 
 .btn-light i {
-    color: #2dd0c6;
+    color: #70aa42;
 }
 
 .btn-light:hover i,.btn-light:focus i {
@@ -2482,7 +2482,7 @@ ul#countdown li p {
     color: #555;
     background-color: transparent;
     background-image: none;
-    border: solid 1px #2dd0c6;
+    border: solid 1px #70aa42;
     border-radius: 0;
     -webkit-box-shadow: none;
     box-shadow: none;
@@ -2517,7 +2517,7 @@ ul#countdown li p {
     height: 36px;
     line-height: 50px;
     text-align: center;
-    background: #2dd0c6;
+    background: #70aa42;
     border-radius: 50%;
 }
 
@@ -2567,7 +2567,7 @@ ul#countdown li p {
 }
 
 .slick-dots li.slick-active button:before {
-    background: #2dd0c6;
+    background: #70aa42;
     opacity: 1;
     height: 1px;
     width: 25px;
@@ -2620,12 +2620,12 @@ ul#countdown li p {
     width: 25px;
     height: 1px;
     margin: 0 5px;
-    background-color: #2dd0c6;
+    background-color: #70aa42;
 }
 
 /* Tabs */
 .nav-tabs {
-    border-bottom: 1px solid #2dd0c6;
+    border-bottom: 1px solid #70aa42;
 }
 
 .nav-tabs > li {
@@ -2642,7 +2642,7 @@ ul#countdown li p {
     border-color: transparent;
     text-decoration: none;
     color: #FFF;
-    background-color: #2dd0c6;
+    background-color: #70aa42;
 }
 
 .nav > li > a {
@@ -2654,7 +2654,7 @@ ul#countdown li p {
 .nav-tabs > li.active > a,.nav-tabs > li.active > a:focus,.nav-tabs > li.active > a:hover {
     border: 0;
     color: #FFF;
-    background-color: #2dd0c6;
+    background-color: #70aa42;
 }
 
 .panel {
@@ -2685,7 +2685,7 @@ ul#countdown li p {
 
 .panel-default > .panel-heading {
     color: #FFF;
-    background-color: #2dd0c6;
+    background-color: #70aa42;
     border-color: transparent;
 }
 
@@ -2715,7 +2715,7 @@ ul#countdown li p {
     z-index: 3;
     color: #fff;
     cursor: default;
-    background-color: #2dd0c6;
+    background-color: #70aa42;
     border-color: transparent;
 }
 
@@ -2726,7 +2726,7 @@ ul#countdown li p {
     padding: 12px 18px;
     margin-left: -1px;
     line-height: 1.42857143;
-    color: #2dd0c6;
+    color: #70aa42;
     text-decoration: none;
     background-color: #fff;
     border: 1px solid #EEE;
@@ -2735,7 +2735,7 @@ ul#countdown li p {
 .pagination > li > a:focus,.pagination > li > a:hover,.pagination > li > span:focus,.pagination > li > span:hover {
     z-index: 2;
     color: #FFF;
-    background-color: #2dd0c6;
+    background-color: #70aa42;
     border-color: transparent;
 }
 
@@ -2831,15 +2831,15 @@ ul#countdown li p {
     }
 
     .navbar-light .navbar-nav.social li a {
-        color: #2dd0c6;
+        color: #70aa42;
     }
 
     .navbar-light .navbar-nav.social li {
-        border-color: #2dd0c6;
+        border-color: #70aa42;
     }
 
     .navbar-light .navbar-nav li a.current {
-        color: #2dd0c6 !important;
+        color: #70aa42 !important;
     }
 
     .blog .item {
