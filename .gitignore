@@ -7,3 +7,4 @@ eggs.csv
 errors_log.out
 logfile
 .DS*
+*.xml
