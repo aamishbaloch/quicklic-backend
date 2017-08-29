@@ -7,6 +7,14 @@
 </head>
 
 <body>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="my-alert alert alert-dismissable alert-{{ message.tags }}">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
     {% include 'website/includes/navbar.html' %}
     {% block body_block %}{% endblock %}
     {% include 'website/includes/footer.html' %}

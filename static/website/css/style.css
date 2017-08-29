@@ -1484,7 +1484,7 @@ section.colored {
 
 .reviews-parallax {
     color: #FFF;
-    background: url("../images/hero-04.jpeg") center center;
+    background: url("../images/hero-04.jpg") center center;
     background-size: cover;
     background-attachment: fixed;
 }
@@ -3103,4 +3103,13 @@ h2.light p {
     font-weight: 300;
     letter-spacing: .1em;
     margin: 0 0 30px;
+}
+
+
+/*=================================================================*/
+/*                      Custom CSS
+/*=================================================================*/
+
+.my-alert {
+    margin: 0 !important;
 }
