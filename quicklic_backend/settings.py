@@ -44,6 +44,7 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     'website',
+    'scripts',
     'entities.contact',
     'entities.blog'
 ]
