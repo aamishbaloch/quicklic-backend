@@ -48,3 +48,36 @@ $ sudo vim local_settings.py
 $ cd .. 
 $ python manage.py migrate 
 ```
+Seeds
+-----
+In order to populate mandatory data you need to run the management 
+command that will auto populate items.
+```sh
+$ python manage.py seeds
+```
+This seeds will create a Super User and you can login to Django Admin 
+Dashboard to perform needed actions. General details on the landing page
+are also added with this script.
+
+About the Landing Page
+----------------------
+We have an awesome landing page setup for this app.
+
+### Contact Us
+Contact Us form has been created on the landing page, through which 
+customers or clients can reach us out. You can get the messages from 
+the Admin Dashboard.
+
+### Blog
+We do have Blog posts on the Landing page as well, which can be entered 
+by the Admin Dashboard. You simply need to add the author of the blog 
+and ofcourse the content related to that.
+
+### General Details
+General details about the Application can be added dynamically from
+the Admin Dashboard, that will be used throughout the landing page and
+blog posts. Login to the dashboard to update the relative data.
+
+**Note**: These details also be added to the dashboard when you run 
+the seeds.
+
