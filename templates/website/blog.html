@@ -1,0 +1,70 @@
+{% extends "website/base.html" %}
+{% load static %}
+
+{% block body_block %}
+    {% include 'website/includes/blog_navbar.html' %}
+
+    <section class="page-header colored">
+        <div class="container">
+
+            <div class="row flex">
+
+                <div class="col-md-7 col-sm-7 col-xs-12">
+                    <h2>{{ blog.title }}</h2>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <section class="blog-standard">
+        <div class="container">
+
+            <div class="row">
+
+                <div class="col-md-8 col-sm-8 col-xs-12">
+
+                    <div class="blog-item">
+                        <img src="{{ blog.image.url }}" alt="blog" />
+                        <h2>{{ blog.title }}</h2>
+                        <div class="meta">
+                            <span class="date">Posted on {{ blog.created_at }}</span>
+                        </div>
+                        <p>
+                            {{ blog.body | linebreaks}}
+                        </p>
+                        <ul class="social-icons">
+                            <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                            <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                            <li><a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
+                            <li><a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+                            <li><a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a></li>
+                        </ul>
+                    </div>
+
+                </div>
+
+                <div class="col-md-4 col-sm-4 col-xs-12">
+
+                    <div class="widget about">
+
+                        <h4 class="title">About Author</h4>
+                        <img src="{{ blog.author.image.url }}" alt="author" />
+                        <h3>{{ blog.author.name }}</h3>
+                        <p>{{ blog.author.title }}</p>
+                        <ul class="social-icons">
+                            <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                            <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                            <li><a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
+                        </ul>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+{% endblock %}

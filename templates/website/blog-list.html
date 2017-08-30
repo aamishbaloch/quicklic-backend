@@ -1,0 +1,58 @@
+{% extends "website/base.html" %}
+{% load static %}
+
+{% block body_block %}
+    {% include 'website/includes/blog_navbar.html' %}
+
+    <section class="page-header colored">
+        <div class="container">
+
+            <div class="row flex">
+
+                <div class="col-md-7 col-sm-7 col-xs-12">
+                    <h2>Blog Posts</h2>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Section blog standard -->
+    <section class="blog-standard">
+        <div class="container">
+
+            <div class="row">
+
+                <div class="col-md-8 col-sm-8 col-xs-12">
+
+                    {% if blogs|length > 0 %}
+                        {% for blog in blogs %}
+                            <div class="blog-item">
+                                <img src="{{ blog.image.url }}" alt="blog" />
+                                <h2><a href="{% url 'website:blog' blog.id %}">{{ blog.title }}</a></h2>
+                                <div class="meta">
+                                    <span class="date">Posted on {{ blog.created_at }}</span>
+                                </div>
+                                <p>{{ blog.body|truncatechars:50 }}</p>
+                                <a href="{% url 'website:blog' blog.id %}" class="btn btn-default">Read More</a>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p>Ops! No Blog Posts Found.</p>
+                    {% endif %}
+
+                </div>
+
+                <!-- sidebar -->
+                <div class="col-md-4 col-sm-4 col-xs-12">
+
+
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+{% endblock %}

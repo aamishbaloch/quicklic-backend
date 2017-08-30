@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block body_block %}
+    {% include 'website/includes/navbar.html' %}
     <!-- Section Hero 1-2 -->
     <section id="section-2-1" class="hero hero-bg-colored hero-bg-6">
         <div class="container">
@@ -525,16 +526,16 @@
                             <div class="item">
                                 <div class="thumb">
                                     <div class="icon-wrap">
-                                        <a href="#">
+                                        <a href="{% url 'website:blog' blog.id %}">
                                             <span class="icon-attachment icon"></span>
                                         </a>
                                     </div>
                                     <div class="overlay"></div>
                                     <img src="{{ blog.image.url }}" alt="blog" />
                                 </div>
-                                <h2 class="title"><a href="#">{{ blog.title }}</a></h2>
+                                <h2 class="title"><a href="{% url 'website:blog' blog.id %}">{{ blog.title }}</a></h2>
                                 <span class="date">Posted on {{ blog.created_at }}</span>
-                                <a href="#" class="btn btn-default">Read</a>
+                                <a href="{% url 'website:blog' blog.id %}" class="btn btn-default">Read</a>
                             </div>
                         </div>
                     {% endfor %}
@@ -597,7 +598,7 @@
             <div class="container container-600">
 
                 <!-- forms -->
-                <form method="post" action="{% url 'website:contact_us' %}">
+                <form method="post" action="{% url 'website:contact-us' %}">
                     {% csrf_token %}
                     <div class="row"><!-- Row -->
 

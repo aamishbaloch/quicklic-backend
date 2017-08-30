@@ -11,8 +11,8 @@ $(function(){
     /*=========================================================================
             One Page Nav
     =========================================================================*/
-    $('.navbar-default').singlePageNav({
-        offset: $('.navbar-default').outerHeight(),
+    $('.top-nav').singlePageNav({
+        offset: $('.top-nav').outerHeight(),
         filter: ':not(.external)',
         updateHash: false,
         speed: 1500,
