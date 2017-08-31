@@ -18,7 +18,7 @@ class Author(models.Model):
 
 
 class Blog(models.Model):
-    author = models.ForeignKey(Author)
+    author = models.ForeignKey(Author, related_name="author")
     title = models.CharField(_('title'), max_length=255)
     body = models.TextField(_('message'))
     image = models.ImageField(upload_to='media/uploads/blogs/')
