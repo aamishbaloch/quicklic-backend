@@ -21,7 +21,7 @@ class Blog(models.Model):
     author = models.ForeignKey(Author)
     title = models.CharField(_('title'), max_length=255)
     body = models.TextField(_('message'))
-    image = models.ImageField(upload_to='media/blogs/')
+    image = models.ImageField(upload_to='media/uploads/blogs/')
     is_active = models.BooleanField(default=True, db_index=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
