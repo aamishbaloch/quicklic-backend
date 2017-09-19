@@ -5,7 +5,7 @@ from django.utils.translation import ugettext_lazy as _
 class Author(models.Model):
     name = models.CharField(_('name'), max_length=50, db_index=True)
     title = models.CharField(_('title'), max_length=255)
-    image = models.ImageField(upload_to='media/author/')
+    image = models.ImageField(upload_to='uploads/authors/')
     facebook_url = models.CharField(_('facebook'), max_length=255)
     twitter_url = models.CharField(_('twitter'), max_length=255)
     instagram_url = models.CharField(_('instagram'), max_length=255)
@@ -21,7 +21,7 @@ class Blog(models.Model):
     author = models.ForeignKey(Author, related_name="author")
     title = models.CharField(_('title'), max_length=255)
     body = models.TextField(_('message'))
-    image = models.ImageField(upload_to='media/uploads/blogs/')
+    image = models.ImageField(upload_to='uploads/blogs/')
     is_active = models.BooleanField(default=True, db_index=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
