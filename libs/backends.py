@@ -9,7 +9,8 @@ class CustomAuthBackend(ModelBackend):
     Custom user authentication backend.
     """
 
-    def authenticate(self, email=None, password=None, **kwargs):
+    @staticmethod
+    def authenticate(email=None, password=None, **kwargs):
         try:
             user = User.objects.get(email=email)
             if user:

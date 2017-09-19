@@ -17,11 +17,13 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from quicklic_backend.settings import STATIC_ROOT, MEDIA_ROOT
 from website import urls as website_urls
+from api.v1 import urls as v1_urls
 from django.views.static import serve
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^', include(website_urls, namespace="website"))
+    url(r'^', include(website_urls, namespace="website")),
+    url(r'^api/v1/', include(v1_urls)),
 ]
 
 urlpatterns += [
