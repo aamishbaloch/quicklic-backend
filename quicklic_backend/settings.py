@@ -46,7 +46,8 @@ LOCAL_APPS = [
     'website',
     'scripts',
     'entities.contact',
-    'entities.blog'
+    'entities.blog',
+    'entities.person',
 ]
 
 INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -127,6 +128,14 @@ STATIC_URL = '/static/'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+# Custom User Model Configuration
+AUTH_USER_MODEL = 'person.user'
+AUTHENTICATION_BACKENDS = [
+    'libs.backends.CustomAuthBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
 
 try:
     from quicklic_backend.local_settings import *
