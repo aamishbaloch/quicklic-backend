@@ -90,3 +90,16 @@ class UserLoginAPITests(APITestCase):
         }
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_user_token(self):
+        """
+        Ensure we can login with a valid user.
+        """
+        url = reverse('login')
+        data = {
+            "email": self.user_dict['email'],
+            "password": self.user_dict['password'],
+        }
+        response = self.client.post(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn('token', response.data)
