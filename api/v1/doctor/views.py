@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from libs.authentication import UserAuthentication
-from libs.permission import UserAccessPermission
+from libs.permission import UserAccessPermission, PatientAccessPermission
 from libs.utils import str2bool
 from .serializers import DoctorSerializer
 
@@ -21,7 +21,7 @@ class DoctorView(APIView):
     """
 
     authentication_classes = (UserAuthentication,)
-    permission_classes = (UserAccessPermission,)
+    permission_classes = (PatientAccessPermission,)
 
     def get(self, request):
         doctors = User.objects.filter(
