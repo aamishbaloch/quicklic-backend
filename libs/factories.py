@@ -16,6 +16,7 @@ class PatientFactory(factory.django.DjangoModelFactory):
     email = factory.Sequence(lambda n: 'patient{0}@email.com'.format(n))
     password = factory.PostGenerationMethodCall('set_password', FACTORY_USER_PASSWORD)
     role = User.Role.PATIENT
+    gender = User.Gender.MALE
 
 
 class DoctorFactory(factory.django.DjangoModelFactory):
@@ -27,6 +28,7 @@ class DoctorFactory(factory.django.DjangoModelFactory):
     email = factory.Sequence(lambda n: 'doctor{0}@email.com'.format(n))
     password = factory.PostGenerationMethodCall('set_password', FACTORY_USER_PASSWORD)
     role = User.Role.DOCTOR
+    gender = User.Gender.MALE
 
 
 class AdminFactory(factory.django.DjangoModelFactory):
@@ -38,3 +40,4 @@ class AdminFactory(factory.django.DjangoModelFactory):
     email = factory.Sequence(lambda n: 'admin{0}@email.com'.format(n))
     password = factory.PostGenerationMethodCall('set_password', FACTORY_USER_PASSWORD)
     role = User.Role.ADMIN
+    gender = User.Gender.MALE
