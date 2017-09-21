@@ -1,18 +1,33 @@
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
-from libs.factories import DoctorFactory
+from libs.factories import DoctorFactory, PatientFactory
+from libs.factories import FACTORY_USER_PASSWORD
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
 
-class DoctorAPITests(APITestCase):
+class DoctorViewAPITests(APITestCase):
+
+    def setUp(self):
+        patient = PatientFactory.create()
+        url = reverse('login')
+        data = {
+            "email": patient.email,
+            "password": FACTORY_USER_PASSWORD,
+        }
+        response = self.client.post(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn('token', response.data)
+
+        self.token = response.data['token']
 
     def test_doctors_list(self):
         """
         Ensure we can get a list of all doctors
         """
+        self.client.credentials(HTTP_AUTHORIZATION='Bearer ' + self.token)
         DoctorFactory.create_batch(5)
         url = reverse('doctor-all')
         response = self.client.get(url, format='json')
@@ -23,6 +38,7 @@ class DoctorAPITests(APITestCase):
         """
         Ensure we can get a list of all Active doctors only
         """
+        self.client.credentials(HTTP_AUTHORIZATION='Bearer ' + self.token)
         DoctorFactory.create_batch(5, is_active=False)
         url = reverse('doctor-all')
         response = self.client.get(url, format='json')

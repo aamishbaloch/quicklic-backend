@@ -1,8 +1,9 @@
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from rest_framework import authentication
 from rest_framework import exceptions
-
 from libs.jwt_helper import JWTHelper
+
+User = get_user_model()
 
 
 class UserAuthentication(authentication.BaseAuthentication):
@@ -13,9 +14,9 @@ class UserAuthentication(authentication.BaseAuthentication):
                 raise exceptions.AuthenticationFailed('No token provided')
             is_valid, message = JWTHelper.is_token_valid(token)
             if is_valid:
-                username = JWTHelper.decode_token(token)
+                email = JWTHelper.decode_token(token)
                 try:
-                    user = User.objects.get(username=username)
+                    user = User.objects.get(email=email)
                 except User.DoesNotExist:
                     raise exceptions.AuthenticationFailed('No such user')
                 return user, None
