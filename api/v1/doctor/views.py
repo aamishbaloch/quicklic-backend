@@ -1,10 +1,12 @@
+from django.contrib.auth import get_user_model
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from django.contrib.auth import get_user_model
+
+from libs.authentication import UserAuthentication
+from libs.permission import UserAccessPermission, PatientAccessPermission
 from libs.utils import str2bool
 from .serializers import DoctorSerializer
-
 
 User = get_user_model()
 
@@ -17,6 +19,9 @@ class DoctorView(APIView):
 
         GET /doctor/all/
     """
+
+    authentication_classes = (UserAuthentication,)
+    permission_classes = (PatientAccessPermission,)
 
     def get(self, request):
         doctors = User.objects.filter(
