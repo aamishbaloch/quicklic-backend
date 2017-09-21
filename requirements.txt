@@ -1,4 +1,16 @@
 Django==1.11.4
+django-filter==1.0.4
+djangorestframework==3.6.4
+dnspython==1.15.0
+email-validator==1.0.2
+factory-boy==2.9.2
+Faker==0.8.3
+idna==2.6
+Markdown==2.6.9
 olefile==0.44
 Pillow==4.2.1
+psycopg2==2.7.3.1
+PyJWT==1.5.3
+python-dateutil==2.6.1
 pytz==2017.2
+six==1.11.0
