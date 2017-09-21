@@ -10,6 +10,8 @@ class RegistrationView(APIView):
     """
     View for registering a new user to your system.
 
+    IMPORTANT: View is used to register new PATIENTS only to the app.
+
     **Example requests**:
 
         POST /auth/register/
