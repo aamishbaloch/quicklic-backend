@@ -83,6 +83,10 @@ class User(AbstractBaseUser, PermissionsMixin):
                               blank=True, default=Gender.UNKNOWN)
     role = models.CharField(_('role'), max_length=3, choices=Role.Choices)
 
+    address = models.CharField(_('address'), max_length=255, blank=True, null=True)
+    phone = models.CharField(_('phone'), max_length=255)
+    dob = models.DateField(db_index=True)
+
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
