@@ -1,0 +1,15 @@
+{% extends "admin/base.html" %}
+{% load i18n %}
+
+{% block extrastyle %}
+<link rel="stylesheet" type="text/css" href="/media/css/my_admin.css" />
+{{ block.super }}
+{% endblock %}
+
+{% block title %}{{ title }} | {% trans 'Quicklic Dashboard' %}{% endblock %}
+
+{% block branding %}
+<h1 id="site-name">{% trans 'Quicklic Dashboard' %}</h1>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}
