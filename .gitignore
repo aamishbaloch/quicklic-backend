@@ -9,4 +9,4 @@ logfile
 .DS*
 *.xml
 .idea
-media
+media/uploads
