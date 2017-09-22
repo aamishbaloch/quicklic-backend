@@ -48,6 +48,8 @@ LOCAL_APPS = [
     'entities.contact',
     'entities.blog',
     'entities.person',
+    'entities.clinic',
+    'entities.appointment',
 ]
 
 INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
