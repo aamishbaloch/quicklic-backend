@@ -23,6 +23,8 @@ class PatientRegistrationAPITests(APITestCase):
             'last_name': patient.last_name,
             'email': patient.email,
             'password': FACTORY_USER_PASSWORD,
+            'phone': patient.phone,
+            'dob': patient.dob,
         }
 
         response = self.client.post(url, patient_dict, format='json')
