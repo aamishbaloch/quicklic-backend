@@ -85,7 +85,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     address = models.CharField(_('address'), max_length=255, blank=True, null=True)
     phone = models.CharField(_('phone'), max_length=255)
-    dob = models.DateField(db_index=True)
+    dob = models.DateField(blank=True, null=True)
 
     objects = UserManager()
 
