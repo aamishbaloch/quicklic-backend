@@ -12,11 +12,17 @@ class Specialization(models.Model):
     is_active = models.BooleanField(default=True, db_index=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.name
+
 
 class Service(models.Model):
     name = models.CharField(_('name'), max_length=50, db_index=True)
     is_active = models.BooleanField(default=True, db_index=True)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
 
 
 class DoctorProfile(models.Model):
@@ -40,6 +46,9 @@ class Occupation(models.Model):
     name = models.CharField(_('name'), max_length=50, db_index=True)
     is_active = models.BooleanField(default=True, db_index=True)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
 
 
 class PatientProfile(models.Model):

@@ -79,7 +79,7 @@ class User(AbstractBaseUser, PermissionsMixin):
                                    help_text=_('Designates whether the user can log into admin site.'))
 
     is_active = models.BooleanField(_('active'), default=True)
-    avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
+    avatar = models.ImageField(upload_to='uploads/avatars/', null=True, blank=True)
     gender = models.IntegerField(_('gender'), choices=Gender.Choices, blank=True, default=Gender.UNKNOWN)
     role = models.IntegerField(_('role'), choices=Role.Choices)
     address = models.CharField(_('address'), max_length=255, blank=True, null=True)
