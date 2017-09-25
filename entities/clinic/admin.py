@@ -1,3 +1,20 @@
 from django.contrib import admin
+from .models import Clinic, Country, City
 
-# Register your models here.
+
+class CountryAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'is_active', 'created_at')
+
+admin.site.register(Country, CountryAdmin)
+
+
+class CityAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'is_active', 'created_at')
+
+admin.site.register(City, CityAdmin)
+
+
+class ClinicAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'phone', 'city', 'country', 'is_active', 'created_at')
+
+admin.site.register(Clinic, ClinicAdmin)

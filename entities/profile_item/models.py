@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from entities.clinic.models import Country, Clinic
+from entities.clinic.models import Country, Clinic, City
 
 User = get_user_model()
 
@@ -22,7 +22,7 @@ class Service(models.Model):
 class DoctorProfile(models.Model):
     doctor = models.ForeignKey(User, related_name="doctor_profile")
     country = models.ForeignKey(Country, related_name="doctor_country")
-    city = models.ForeignKey(Country, related_name="doctor_city")
+    city = models.ForeignKey(City, related_name="doctor_city")
     clinic = models.ForeignKey(Clinic, related_name="doctor_clinic")
     services = models.ManyToManyField(Service, related_name="doctor_services")
     specialization = models.ForeignKey(Specialization, related_name="doctor_specialization")
@@ -30,6 +30,10 @@ class DoctorProfile(models.Model):
 
     def __str__(self):
         return "{} {}".format(self.doctor.first_name, self.doctor.last_name)
+
+    class Meta:
+        verbose_name = _('Doctor Profile')
+        verbose_name_plural = _('Doctor Profiles')
 
 
 class Occupation(models.Model):
