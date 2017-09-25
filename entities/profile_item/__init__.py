@@ -1,0 +1,1 @@
+default_app_config = 'entities.profile_item.apps.ProfileItemConfig'

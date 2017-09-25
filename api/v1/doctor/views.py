@@ -13,7 +13,7 @@ User = get_user_model()
 
 class DoctorView(APIView):
     """
-    View for getting doctor details.
+    View for getting all doctors.
 
     **Example requests**:
 
@@ -29,3 +29,22 @@ class DoctorView(APIView):
             is_active=str2bool(request.query_params.get('active', 'true')))
         serializer = DoctorSerializer(doctors, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class DoctorProfileView(APIView):
+    """
+    View for getting doctor details.
+
+    **Example requests**:
+
+        GET /doctor/profile/
+    """
+
+    authentication_classes = (UserAuthentication,)
+    permission_classes = (PatientAccessPermission,)
+
+    def get(self, request, doctor):
+
+
+        # serializer = DoctorSerializer(doctors, many=True)
+        return Response(None, status=status.HTTP_200_OK)
