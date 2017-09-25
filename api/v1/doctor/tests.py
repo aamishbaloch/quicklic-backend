@@ -1,6 +1,8 @@
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
+
+from entities.profile_item.models import DoctorProfile
 from libs.factories import DoctorFactory, PatientFactory
 from libs.factories import FACTORY_USER_PASSWORD
 from django.contrib.auth import get_user_model
