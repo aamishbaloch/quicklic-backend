@@ -3,6 +3,6 @@ from .models import DoctorProfile
 
 
 class DoctorProfileAdmin(admin.ModelAdmin):
-    list_display = ('id', 'doctor', 'specialization', 'clinic', 'country', 'city')
+    list_display = ('id', 'doctor', 'specialization', 'country', 'city')
 
 admin.site.register(DoctorProfile, DoctorProfileAdmin)

@@ -26,10 +26,10 @@ class Service(models.Model):
 
 
 class DoctorProfile(models.Model):
-    doctor = models.ForeignKey(User, related_name="doctor_profile")
+    doctor = models.OneToOneField(User, related_name="doctor_profile")
     country = models.ForeignKey(Country, related_name="doctor_country")
     city = models.ForeignKey(City, related_name="doctor_city")
-    clinic = models.ForeignKey(Clinic, related_name="doctor_clinic")
+    clinic = models.ManyToManyField(Clinic, related_name="doctor_clinics")
     services = models.ManyToManyField(Service, related_name="doctor_services")
     specialization = models.ForeignKey(Specialization, related_name="doctor_specialization")
     degree = models.CharField(_('degree'), max_length=50, db_index=True)
@@ -62,7 +62,7 @@ class PatientProfile(models.Model):
             (SINGLE, 'SINGLE'),
         )
 
-    patient = models.ForeignKey(User, related_name="patient_profile")
+    patient = models.OneToOneField(User, related_name="patient_profile")
     country = models.ForeignKey(Country, related_name="patient_country")
     city = models.ForeignKey(Country, related_name="patient_city")
     occupation = models.ForeignKey(Occupation, related_name="patient_occupation")
