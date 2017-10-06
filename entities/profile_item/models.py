@@ -64,9 +64,14 @@ class PatientProfile(models.Model):
 
     patient = models.OneToOneField(User, related_name="patient_profile")
     country = models.ForeignKey(Country, related_name="patient_country")
-    city = models.ForeignKey(Country, related_name="patient_city")
+    city = models.ForeignKey(City, related_name="patient_city")
+    clinic = models.ManyToManyField(Clinic, related_name="patient_clinics")
     occupation = models.ForeignKey(Occupation, related_name="patient_occupation")
-    martial_status = models.IntegerField(_('marital status'), choices=MaritalStatus.Choices)
+    marital_status = models.IntegerField(_('marital status'), choices=MaritalStatus.Choices)
 
     def __str__(self):
         return "{} {}".format(self.patient.first_name, self.patient.last_name)
+
+    class Meta:
+        verbose_name = _('Patient Profile')
+        verbose_name_plural = _('Patient Profiles')

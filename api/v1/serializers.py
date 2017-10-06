@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
 from entities.clinic.models import City, Country, Clinic
-from entities.profile_item.models import DoctorProfile, Specialization, Service
+from entities.profile_item.models import DoctorProfile, Specialization, Service, Occupation, PatientProfile
 from libs.jwt_helper import JWTHelper
 
 User = get_user_model()
@@ -62,6 +62,13 @@ class ServiceSerializer(serializers.ModelSerializer):
         fields = ('id', 'name')
 
 
+class OccupationSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Occupation
+        fields = ('id', 'name')
+
+
 class ClinicSerializer(serializers.ModelSerializer):
     city = CitySerializer()
     country = CountrySerializer()
@@ -89,5 +96,24 @@ class DoctorSerializer(serializers.ModelSerializer):
         model = User
         fields = ('id', 'email', 'first_name', 'last_name', 'role', 'gender', 'avatar', 'address', 'phone',
                   'dob', 'doctor_profile')
+
+
+class PatientProfileSerializer(serializers.ModelSerializer):
+    city = CitySerializer()
+    country = CountrySerializer()
+    occupation = OccupationSerializer()
+
+    class Meta:
+        model = PatientProfile
+        fields = ('country', 'city', 'occupation', 'marital_status')
+
+
+class PatientSerializer(serializers.ModelSerializer):
+    patient_profile = PatientProfileSerializer()
+
+    class Meta:
+        model = User
+        fields = ('id', 'email', 'first_name', 'last_name', 'role', 'gender', 'avatar', 'address', 'phone',
+                  'dob', 'patient_profile')
 
 

@@ -2,12 +2,12 @@ from django.contrib.auth import get_user_model
 from django.core.management import BaseCommand
 
 from entities.clinic.models import Country, City
-from entities.profile_item.models import Service, Specialization
+from entities.profile_item.models import Service, Specialization, Occupation
 
 from seeds.geographic_seeds import country_data
 from seeds.medical_services_seeds import services_data
 from seeds.medical_specialization_seeds import specializations_data
-
+from seeds.occupation_seeds import occupations_data
 
 User = get_user_model()
 
@@ -40,5 +40,10 @@ class Command(BaseCommand):
             specialization, created = Specialization.objects.get_or_create(name=specialization_data)
             if created:
                 self.stdout.write("New Specialization Created: {}".format(specialization.name))
+
+        for occupation_data in occupations_data:
+            occupation, created = Occupation.objects.get_or_create(name=occupation_data)
+            if created:
+                self.stdout.write("New Occupation Created: {}".format(occupation.name))
 
         self.stdout.write("Task Successful")

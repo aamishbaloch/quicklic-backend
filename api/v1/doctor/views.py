@@ -4,7 +4,6 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from libs.authentication import UserAuthentication
-from libs.permission import UserAccessPermission, PatientAccessPermission
 from libs.utils import str2bool
 from api.v1.serializers import DoctorSerializer
 
@@ -19,7 +18,7 @@ class DoctorView(APIView):
 
         GET /doctor/list/
 
-    **Params**:
+    **filters**:
         - active=true: Only active doctors
         - clinic_id=1
         - country_id=1
@@ -34,7 +33,7 @@ class DoctorView(APIView):
         doctors = User.objects.filter(role=User.Role.DOCTOR)
 
         if 'clinic_id' in request.query_params:
-            doctors = doctors.filter(doctor_profile__clinic=request.query_params.get('clinic_id'))
+            doctors = doctors.filter(doctor_profile__clinic=request.query_params.get('clinic_id', None))
 
         if 'country_id' in request.query_params:
             doctors = doctors.filter(doctor_profile__country_id=request.query_params.get('country_id'))
