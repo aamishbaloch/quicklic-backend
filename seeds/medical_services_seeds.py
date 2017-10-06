@@ -1,0 +1,22 @@
+
+services_data = [
+    "Anesthesiology & Perioperative Medicine",
+    "Cancer",
+    "Dental",
+    "Medical Emergency",
+    "Neurology",
+    "Neurosurgery",
+    "Surgery",
+    "Gynecology",
+    "Obstetrics",
+    "Ophthalmology",
+    "Orthopaedic Surgery",
+    "Pediatrics",
+    "Pathology",
+    "Radiation Oncology",
+    "Radiology",
+    "Psychiatry",
+    "Urology",
+    "Epilepsy",
+    "Cardiology",
+]

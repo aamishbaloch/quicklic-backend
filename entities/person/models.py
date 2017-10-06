@@ -45,9 +45,9 @@ class UserManager(BaseUserManager, QueryManager):
 class User(AbstractBaseUser, PermissionsMixin):
 
     class Gender:
-        UNKNOWN = 'U'
-        MALE = 'M'
-        FEMALE = 'F'
+        UNKNOWN = 3
+        MALE = 1
+        FEMALE = 2
 
         Choices = (
             (UNKNOWN, 'Unknown'),
@@ -56,10 +56,10 @@ class User(AbstractBaseUser, PermissionsMixin):
         )
 
     class Role:
-        DOCTOR = 'DR'
-        PATIENT = 'PAT'
-        ADMIN = 'AD'
-        QADMIN = 'QAD'
+        DOCTOR = 1
+        PATIENT = 2
+        ADMIN = 3
+        QADMIN = 4
 
         Choices = (
             (DOCTOR, 'DOCTOR'),
@@ -77,12 +77,11 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     is_staff = models.BooleanField(_('staff status'), default=False,
                                    help_text=_('Designates whether the user can log into admin site.'))
-    is_active = models.BooleanField(_('active'), default=True)
-    avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
-    gender = models.CharField(_('gender'), max_length=1, choices=Gender.Choices,
-                              blank=True, default=Gender.UNKNOWN)
-    role = models.CharField(_('role'), max_length=3, choices=Role.Choices)
 
+    is_active = models.BooleanField(_('active'), default=True)
+    avatar = models.ImageField(upload_to='uploads/avatars/', null=True, blank=True)
+    gender = models.IntegerField(_('gender'), choices=Gender.Choices, blank=True, default=Gender.UNKNOWN)
+    role = models.IntegerField(_('role'), choices=Role.Choices)
     address = models.CharField(_('address'), max_length=255, blank=True, null=True)
     phone = models.CharField(_('phone'), max_length=255)
     dob = models.DateField(blank=True, null=True)
