@@ -52,24 +52,85 @@ class ClinicSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'phone', 'location', 'city', 'country', 'image')
 
 
-class DoctorProfileSerializer(serializers.ModelSerializer):
-    city = CitySerializer()
-    country = CountrySerializer()
-    specialization = SpecializationSerializer()
-    services = ServiceSerializer(many=True)
+class DoctorSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
+    password = serializers.CharField(write_only=True, allow_blank=True, allow_null=True, required=False)
+    email = serializers.EmailField()
+    first_name = serializers.CharField(max_length=255)
+    last_name = serializers.CharField(max_length=255)
+    gender = serializers.IntegerField()
+    avatar = serializers.FileField(required=False, allow_null=True)
+    address = serializers.CharField(max_length=500, required=False, allow_null=True)
+    phone = serializers.CharField(max_length=15)
+    dob = serializers.DateField()
+    clinic = ClinicSerializer(many=True, source='doctor_profile.clinic', required=False, allow_null=True)
+    city = CitySerializer(source='doctor_profile.city', required=False, allow_null=True)
+    country = CountrySerializer(source='doctor_profile.country', required=False, allow_null=True)
+    services = ServiceSerializer(many=True, source='doctor_profile.services', required=False, allow_null=True)
+    specialization = SpecializationSerializer(source='doctor_profile.specialization', required=False, allow_null=True)
+    degree = serializers.CharField(source='doctor_profile.degree', required=False, allow_null=True)
 
-    class Meta:
-        model = DoctorProfile
-        fields = ('country', 'city', 'services', 'specialization', 'degree')
+    def create(self, validated_data):
+        validated_data['role'] = User.Role.DOCTOR
+        user = User.objects.create(**validated_data)
+        user.set_password(validated_data['password'])
+        user.save()
+        data = {'doctor': user}
+        DoctorProfile.objects.create(**data)
+        return user
 
 
-class DoctorSerializer(serializers.ModelSerializer):
-    doctor_profile = DoctorProfileSerializer()
+class DoctorUpdateSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
+    password = serializers.CharField(write_only=True, allow_blank=True, allow_null=True, required=False)
+    email = serializers.EmailField()
+    first_name = serializers.CharField(max_length=255)
+    last_name = serializers.CharField(max_length=255)
+    gender = serializers.IntegerField()
+    avatar = serializers.FileField(required=False, allow_null=True)
+    address = serializers.CharField(max_length=500, required=False, allow_null=True)
+    phone = serializers.CharField(max_length=15)
+    dob = serializers.DateField()
+    city = serializers.IntegerField(required=False, allow_null=True)
+    country = serializers.IntegerField(required=False, allow_null=True)
+    services = serializers.ListField(required=False, allow_null=True)
+    specialization = serializers.IntegerField(required=False, allow_null=True)
+    degree = serializers.CharField(source='doctor_profile.degree', required=False, allow_null=True)
 
-    class Meta:
-        model = User
-        fields = ('id', 'email', 'first_name', 'last_name', 'role', 'gender', 'avatar', 'address', 'phone',
-                  'dob', 'doctor_profile')
+    def update(self, instance, validated_data):
+        validated_data['role'] = User.Role.PATIENT
+
+        instance.first_name = validated_data['first_name'] if 'first_name' in validated_data else instance.first_name
+        instance.last_name = validated_data['last_name'] if 'last_name' in validated_data else instance.last_name
+        instance.gender = validated_data['gender'] if 'gender' in validated_data else instance.gender
+        instance.avatar = validated_data['avatar'] if 'avatar' in validated_data else instance.avatar
+        instance.address = validated_data['address'] if 'address' in validated_data else instance.address
+        instance.phone = validated_data['phone'] if 'phone' in validated_data else instance.phone
+        instance.dob = validated_data['dob'] if 'dob' in validated_data else instance.dob
+
+        if 'city' in validated_data and validated_data['city']:
+            city = City.objects.get(id=validated_data['city'])
+            instance.doctor_profile.city = city
+
+        if 'country' in validated_data and validated_data['country']:
+            country = Country.objects.get(id=validated_data['country'])
+            instance.doctor_profile.country = country
+
+        if 'specialization' in validated_data and validated_data['specialization']:
+            specialization = Specialization.objects.get(id=validated_data['specialization'])
+            instance.doctor_profile.specialization = specialization
+
+        if 'services' in validated_data and validated_data['services']:
+            instance.doctor_profile.services.clear()
+
+            for service_id in validated_data['services']:
+                service = Service.objects.get(id=service_id)
+                instance.doctor_profile.services.add(service)
+
+        instance.doctor_profile.degree = validated_data['degree'] if 'degree' in validated_data else instance.doctor_profile.degree
+        instance.save()
+
+        return instance
 
 
 class PatientSerializer(serializers.Serializer):
@@ -96,38 +157,6 @@ class PatientSerializer(serializers.Serializer):
         data = {'patient': user}
         PatientProfile.objects.create(**data)
         return user
-
-    def update(self, instance, validated_data):
-        validated_data['role'] = User.Role.PATIENT
-
-        instance.first_name = validated_data['first_name'] if 'first_name' in validated_data else instance.first_name
-        instance.last_name = validated_data['last_name'] if 'last_name' in validated_data else instance.last_name
-        instance.gender = validated_data['gender'] if 'gender' in validated_data else instance.gender
-        instance.avatar = validated_data['avatar'] if 'avatar' in validated_data else instance.avatar
-        instance.address = validated_data['address'] if 'address' in validated_data else instance.address
-        instance.phone = validated_data['phone'] if 'phone' in validated_data else instance.phone
-        instance.dob = validated_data['dob'] if 'dob' in validated_data else instance.dob
-
-        if 'city' in validated_data:
-            city = City.objects.get(id=validated_data['city'])
-            instance.patient_profile.city = city
-
-        if 'country' in validated_data:
-            country = Country.objects.get(id=validated_data['country'])
-            instance.patient_profile.country = country
-
-        if 'occupation' in validated_data:
-            occupation = Occupation.objects.get(id=validated_data['occupation'])
-            instance.patient_profile.occupation = occupation
-
-        if 'marital_status' in validated_data:
-            marital_status = City.objects.get(id=validated_data['marital_status'])
-            instance.patient_profile.marital_status = marital_status
-
-        instance.patient_profile.marital_status = validated_data['marital_status'] if 'marital_status' in validated_data else instance.patient_profile.marital_status
-        instance.save()
-
-        return instance
 
 
 class PatientUpdateSerializer(serializers.Serializer):
