@@ -2,15 +2,14 @@ from django.contrib.auth import get_user_model
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
 from libs.authentication import UserAuthentication
 from libs.utils import str2bool
-from api.v1.serializers import PatientSerializer
+from api.v1.serializers import PatientSerializer, PatientUpdateSerializer
 
 User = get_user_model()
 
 
-class PatientView(APIView):
+class PatientListView(APIView):
     """
     View for getting all patients.
 
@@ -51,3 +50,39 @@ class PatientView(APIView):
 
         serializer = PatientSerializer(patients, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class PatientView(APIView):
+    """
+    View for creating and getting patient.
+
+    **Example requests**:
+
+        GET /patient/
+        **params**
+            - id
+
+        PUT /patient/
+        **params**
+            - id
+    """
+    def get(self, request):
+        patient_id = request.query_params.get('id', None)
+        try:
+            patient = User.objects.get(id=patient_id)
+            serializer = PatientSerializer(patient)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except User.DoesNotExist as e:
+            return Response(str(e), status=status.HTTP_404_NOT_FOUND)
+
+    def put(self, request):
+        patient_id = request.query_params.get('id', None)
+        try:
+            patient = User.objects.get(id=patient_id)
+            serializer = PatientUpdateSerializer(instance=patient, data=request.data)
+            if serializer.is_valid():
+                patient = serializer.save()
+                serializer = PatientSerializer(patient)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+        except User.DoesNotExist as e:
+            return Response(str(e), status=status.HTTP_404_NOT_FOUND)

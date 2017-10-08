@@ -63,11 +63,11 @@ class PatientProfile(models.Model):
         )
 
     patient = models.OneToOneField(User, related_name="patient_profile")
-    country = models.ForeignKey(Country, related_name="patient_country")
-    city = models.ForeignKey(City, related_name="patient_city")
+    country = models.ForeignKey(Country, related_name="patient_country", blank=True, null=True)
+    city = models.ForeignKey(City, related_name="patient_city", blank=True, null=True)
     clinic = models.ManyToManyField(Clinic, related_name="patient_clinics")
-    occupation = models.ForeignKey(Occupation, related_name="patient_occupation")
-    marital_status = models.IntegerField(_('marital status'), choices=MaritalStatus.Choices)
+    occupation = models.ForeignKey(Occupation, related_name="patient_occupation", blank=True, null=True)
+    marital_status = models.IntegerField(_('marital status'), choices=MaritalStatus.Choices, blank=True, null=True)
 
     def __str__(self):
         return "{} {}".format(self.patient.first_name, self.patient.last_name)

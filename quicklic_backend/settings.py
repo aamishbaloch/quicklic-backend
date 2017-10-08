@@ -136,7 +136,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Custom User Model Configuration
 AUTH_USER_MODEL = 'person.user'
 AUTHENTICATION_BACKENDS = [
-    'libs.backends.CustomAuthBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
 
