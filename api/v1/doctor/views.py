@@ -5,12 +5,48 @@ from rest_framework.views import APIView
 
 from libs.authentication import UserAuthentication
 from libs.utils import str2bool
-from api.v1.serializers import DoctorSerializer
+from api.v1.serializers import DoctorSerializer, DoctorUpdateSerializer
 
 User = get_user_model()
 
 
 class DoctorView(APIView):
+    """
+    View for creating and getting doctor.
+
+    **Example requests**:
+
+        GET /doctor/
+        **params**
+            - id
+
+        PUT /doctor/
+        **params**
+            - id
+    """
+    def get(self, request):
+        doctor_id = request.query_params.get('id', None)
+        try:
+            doctor = User.objects.get(id=doctor_id)
+            serializer = DoctorSerializer(doctor)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except User.DoesNotExist as e:
+            return Response(str(e), status=status.HTTP_404_NOT_FOUND)
+
+    def put(self, request):
+        doctor_id = request.query_params.get('id', None)
+        try:
+            doctor = User.objects.get(id=doctor_id)
+            serializer = DoctorUpdateSerializer(instance=doctor, data=request.data)
+            if serializer.is_valid():
+                doctor = serializer.save()
+                serializer = DoctorSerializer(doctor)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+        except User.DoesNotExist as e:
+            return Response(str(e), status=status.HTTP_404_NOT_FOUND)
+
+
+class DoctorListView(APIView):
     """
     View for getting all doctors.
 
