@@ -3,6 +3,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from libs.authentication import UserAuthentication
+from libs.permission import PatientPermission
 from libs.utils import str2bool
 from api.v1.serializers import PatientSerializer, PatientUpdateSerializer
 
@@ -59,30 +60,19 @@ class PatientView(APIView):
     **Example requests**:
 
         GET /patient/
-        **params**
-            - id
-
         PUT /patient/
-        **params**
-            - id
     """
+
+    authentication_classes = (UserAuthentication,)
+    permission_classes = (PatientPermission,)
+
     def get(self, request):
-        patient_id = request.query_params.get('id', None)
-        try:
-            patient = User.objects.select_related('patient_profile').get(id=patient_id)
-            serializer = PatientSerializer(patient)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        except User.DoesNotExist as e:
-            return Response(str(e), status=status.HTTP_404_NOT_FOUND)
+        serializer = PatientSerializer(request.user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def put(self, request):
-        patient_id = request.query_params.get('id', None)
-        try:
-            patient = User.objects.get(id=patient_id)
-            serializer = PatientUpdateSerializer(instance=patient, data=request.data)
-            if serializer.is_valid():
-                patient = serializer.save()
-                serializer = PatientSerializer(patient)
-                return Response(serializer.data, status=status.HTTP_200_OK)
-        except User.DoesNotExist as e:
-            return Response(str(e), status=status.HTTP_404_NOT_FOUND)
+        serializer = PatientUpdateSerializer(instance=request.user, data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            patient = serializer.save()
+            serializer = PatientSerializer(patient)
+            return Response(serializer.data, status=status.HTTP_200_OK)

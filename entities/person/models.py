@@ -6,6 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 
 from libs.managers import QueryManager
+from libs.utils import get_verification_code
 
 
 class UserManager(BaseUserManager, QueryManager):
@@ -31,6 +32,7 @@ class UserManager(BaseUserManager, QueryManager):
         extra_fields.setdefault('is_superuser', True)
         extra_fields.setdefault('is_active', True)
         extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('verified', True)
         extra_fields.setdefault('role', User.Role.QADMIN)
 
         if extra_fields.get('is_staff') is not True:
@@ -85,6 +87,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     address = models.CharField(_('address'), max_length=255, blank=True, null=True)
     phone = models.CharField(_('phone'), max_length=255, unique=True)
     dob = models.DateField(blank=True, null=True)
+    verified = models.BooleanField(default=False)
 
     objects = UserManager()
 
@@ -113,3 +116,16 @@ class User(AbstractBaseUser, PermissionsMixin):
         Sends an email to this User.
         '''
         send_mail(subject, message, from_email, [self.email], **kwargs)
+
+
+class VerificationCode(models.Model):
+    user = models.OneToOneField(User, related_name="verification_code")
+    code = models.CharField(max_length=6, db_index=True)
+
+    def __str__(self):
+        return self.user.get_full_name()
+
+    @staticmethod
+    def generate_code_for_user(user):
+        verification_code = VerificationCode.objects.create(user=user, code=get_verification_code())
+        return verification_code.code

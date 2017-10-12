@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from libs.authentication import UserAuthentication
+from libs.permission import DoctorPermission
 from libs.utils import str2bool
 from api.v1.serializers import DoctorSerializer, DoctorUpdateSerializer
 
@@ -17,33 +18,22 @@ class DoctorView(APIView):
     **Example requests**:
 
         GET /doctor/
-        **params**
-            - id
-
         PUT /doctor/
-        **params**
-            - id
     """
+
+    authentication_classes = (UserAuthentication,)
+    permission_classes = (DoctorPermission,)
+
     def get(self, request):
-        doctor_id = request.query_params.get('id', None)
-        try:
-            doctor = User.objects.get(id=doctor_id)
-            serializer = DoctorSerializer(doctor)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        except User.DoesNotExist as e:
-            return Response(str(e), status=status.HTTP_404_NOT_FOUND)
+        serializer = DoctorSerializer(request.user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def put(self, request):
-        doctor_id = request.query_params.get('id', None)
-        try:
-            doctor = User.objects.get(id=doctor_id)
-            serializer = DoctorUpdateSerializer(instance=doctor, data=request.data)
-            if serializer.is_valid():
-                doctor = serializer.save()
-                serializer = DoctorSerializer(doctor)
-                return Response(serializer.data, status=status.HTTP_200_OK)
-        except User.DoesNotExist as e:
-            return Response(str(e), status=status.HTTP_404_NOT_FOUND)
+        serializer = DoctorUpdateSerializer(instance=request.user, data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            doctor = serializer.save()
+            serializer = DoctorSerializer(doctor)
+            return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class DoctorListView(APIView):
@@ -65,7 +55,7 @@ class DoctorListView(APIView):
 
     authentication_classes = (UserAuthentication,)
 
-    def get(self, request):
+    def get(self, request, user):
         doctors = User.objects.filter(role=User.Role.DOCTOR)
 
         if 'clinic_id' in request.query_params:
