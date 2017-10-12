@@ -69,7 +69,7 @@ class PatientView(APIView):
     def get(self, request):
         patient_id = request.query_params.get('id', None)
         try:
-            patient = User.objects.get(id=patient_id)
+            patient = User.objects.select_related('patient_profile').get(id=patient_id)
             serializer = PatientSerializer(patient)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except User.DoesNotExist as e:

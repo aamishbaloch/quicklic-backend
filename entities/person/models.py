@@ -9,25 +9,25 @@ from libs.managers import QueryManager
 
 
 class UserManager(BaseUserManager, QueryManager):
-    def _create_user(self, email, password, **extra_fields):
+    def _create_user(self, phone, password, **extra_fields):
         """
-        Creates and saves a User with the given email and password.
+        Creates and saves a User with the given phone and password.
         """
-        if not email:
-            raise ValueError('Email is required')
-        email = self.normalize_email(email)
-        user = self.model(email=email, **extra_fields)
+        if not phone:
+            raise ValueError('Phone is required')
+        phone = phone
+        user = self.model(phone=phone, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_user(self, email=None, password=None, **extra_fields):
+    def create_user(self, phone=None, password=None, **extra_fields):
         extra_fields.setdefault('is_superuser', False)
         extra_fields.setdefault('is_staff', False)
         extra_fields.setdefault('is_active', True)
-        return self._create_user(email, password, **extra_fields)
+        return self._create_user(phone, password, **extra_fields)
 
-    def create_superuser(self, email, password, **extra_fields):
+    def create_superuser(self, phone, password, **extra_fields):
         extra_fields.setdefault('is_superuser', True)
         extra_fields.setdefault('is_active', True)
         extra_fields.setdefault('is_staff', True)
@@ -39,7 +39,7 @@ class UserManager(BaseUserManager, QueryManager):
         if extra_fields.get('is_superuser') is not True:
             raise ValueError('Superuser must have is_superuser=True.')
 
-        return self._create_user(email, password, **extra_fields)
+        return self._create_user(phone, password, **extra_fields)
 
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -68,7 +68,7 @@ class User(AbstractBaseUser, PermissionsMixin):
             (QADMIN, 'QADMIN'),
         )
 
-    email = models.EmailField(_('email address'), unique=True)
+    email = models.EmailField(_('email address'), blank=True, null=True)
     first_name = models.CharField(_('first name'), max_length=30, blank=True)
     last_name = models.CharField(_('last name'), max_length=30, blank=True)
 
@@ -83,12 +83,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     gender = models.IntegerField(_('gender'), choices=Gender.Choices, blank=True, default=Gender.UNKNOWN)
     role = models.IntegerField(_('role'), choices=Role.Choices)
     address = models.CharField(_('address'), max_length=255, blank=True, null=True)
-    phone = models.CharField(_('phone'), max_length=255)
+    phone = models.CharField(_('phone'), max_length=255, unique=True)
     dob = models.DateField(blank=True, null=True)
 
     objects = UserManager()
 
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = 'phone'
     REQUIRED_FIELDS = []
 
     class Meta:

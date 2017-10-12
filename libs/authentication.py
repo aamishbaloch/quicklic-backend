@@ -14,9 +14,9 @@ class UserAuthentication(authentication.BaseAuthentication):
                 raise exceptions.AuthenticationFailed('No token provided')
             is_valid, message = JWTHelper.is_token_valid(token)
             if is_valid:
-                email = JWTHelper.decode_token(token)
+                phone = JWTHelper.decode_token(token)
                 try:
-                    user = User.objects.get(email=email)
+                    user = User.objects.get(phone=phone)
                 except User.DoesNotExist:
                     raise exceptions.AuthenticationFailed('No such user')
                 return user, None
