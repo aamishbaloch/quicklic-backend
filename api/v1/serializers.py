@@ -56,20 +56,21 @@ class DoctorSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     role = serializers.IntegerField(read_only=True)
     password = serializers.CharField(write_only=True, allow_blank=True, allow_null=True, required=False)
-    email = serializers.EmailField()
+    email = serializers.EmailField(required=False, allow_null=True)
     first_name = serializers.CharField(max_length=255)
     last_name = serializers.CharField(max_length=255)
-    gender = serializers.IntegerField()
+    gender = serializers.IntegerField(required=False, allow_null=True)
     avatar = serializers.FileField(required=False, allow_null=True)
     address = serializers.CharField(max_length=500, required=False, allow_null=True)
     phone = serializers.CharField(max_length=15)
-    dob = serializers.DateField()
+    dob = serializers.DateField(required=False, allow_null=True)
     clinic = ClinicSerializer(many=True, source='doctor_profile.clinic', required=False, allow_null=True)
     city = CitySerializer(source='doctor_profile.city', required=False, allow_null=True)
     country = CountrySerializer(source='doctor_profile.country', required=False, allow_null=True)
     services = ServiceSerializer(many=True, source='doctor_profile.services', required=False, allow_null=True)
     specialization = SpecializationSerializer(source='doctor_profile.specialization', required=False, allow_null=True)
     degree = serializers.CharField(source='doctor_profile.degree', required=False, allow_null=True)
+    verified = serializers.BooleanField(read_only=True)
 
     def create(self, validated_data):
         validated_data['role'] = User.Role.DOCTOR
@@ -84,19 +85,20 @@ class DoctorSerializer(serializers.Serializer):
 class DoctorUpdateSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     password = serializers.CharField(write_only=True, allow_blank=True, allow_null=True, required=False)
-    email = serializers.EmailField()
+    email = serializers.EmailField(required=False, allow_null=True)
     first_name = serializers.CharField(max_length=255)
     last_name = serializers.CharField(max_length=255)
-    gender = serializers.IntegerField()
+    gender = serializers.IntegerField(required=False, allow_null=True)
     avatar = serializers.FileField(required=False, allow_null=True)
     address = serializers.CharField(max_length=500, required=False, allow_null=True)
     phone = serializers.CharField(max_length=15)
-    dob = serializers.DateField()
+    dob = serializers.DateField(required=False, allow_null=True)
     city = serializers.IntegerField(required=False, allow_null=True)
     country = serializers.IntegerField(required=False, allow_null=True)
     services = serializers.ListField(required=False, allow_null=True)
     specialization = serializers.IntegerField(required=False, allow_null=True)
     degree = serializers.CharField(source='doctor_profile.degree', required=False, allow_null=True)
+    verified = serializers.BooleanField(read_only=True)
 
     def update(self, instance, validated_data):
         validated_data['role'] = User.Role.PATIENT
@@ -142,7 +144,6 @@ class DoctorLoginSerializer(DoctorSerializer):
         return user
 
 
-
 class PatientSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     role = serializers.IntegerField(read_only=True)
@@ -161,6 +162,7 @@ class PatientSerializer(serializers.Serializer):
     country = CountrySerializer(source='patient_profile.country', required=False, allow_null=True)
     occupation = OccupationSerializer(source='patient_profile.occupation', required=False, allow_null=True)
     marital_status = serializers.IntegerField(source='patient_profile.marital_status', required=False, allow_null=True)
+    verified = serializers.BooleanField(read_only=True)
 
     def create(self, validated_data):
         validated_data['role'] = User.Role.PATIENT
@@ -188,6 +190,7 @@ class PatientUpdateSerializer(serializers.Serializer):
     country = serializers.IntegerField(required=False, allow_null=True)
     occupation = serializers.IntegerField(required=False, allow_null=True)
     marital_status = serializers.IntegerField(required=False, allow_null=True)
+    verified = serializers.BooleanField(read_only=True)
 
     def update(self, instance, validated_data):
         validated_data['role'] = User.Role.PATIENT
