@@ -54,6 +54,7 @@ class ClinicSerializer(serializers.ModelSerializer):
 
 class DoctorSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
+    role = serializers.IntegerField(read_only=True)
     password = serializers.CharField(write_only=True, allow_blank=True, allow_null=True, required=False)
     email = serializers.EmailField()
     first_name = serializers.CharField(max_length=255)
@@ -135,6 +136,7 @@ class DoctorUpdateSerializer(serializers.Serializer):
 
 class PatientSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
+    role = serializers.IntegerField(read_only=True)
     password = serializers.CharField(write_only=True, allow_blank=True, allow_null=True, required=False)
     email = serializers.EmailField()
     first_name = serializers.CharField(max_length=255)
@@ -144,6 +146,8 @@ class PatientSerializer(serializers.Serializer):
     address = serializers.CharField(max_length=500, required=False, allow_null=True)
     phone = serializers.CharField(max_length=15)
     dob = serializers.DateField()
+    height = serializers.FloatField(required=False, allow_null=True)
+    weight = serializers.FloatField(required=False, allow_null=True)
     city = CitySerializer(source='patient_profile.city', required=False, allow_null=True)
     country = CountrySerializer(source='patient_profile.country', required=False, allow_null=True)
     occupation = OccupationSerializer(source='patient_profile.occupation', required=False, allow_null=True)
@@ -162,7 +166,6 @@ class PatientSerializer(serializers.Serializer):
 class PatientUpdateSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     password = serializers.CharField(write_only=True, allow_blank=True, allow_null=True, required=False)
-    email = serializers.EmailField()
     first_name = serializers.CharField(max_length=255)
     last_name = serializers.CharField(max_length=255)
     gender = serializers.IntegerField()
@@ -170,6 +173,8 @@ class PatientUpdateSerializer(serializers.Serializer):
     address = serializers.CharField(max_length=500, required=False, allow_null=True)
     phone = serializers.CharField(max_length=15)
     dob = serializers.DateField()
+    height = serializers.FloatField(required=False, allow_null=True)
+    weight = serializers.FloatField(required=False, allow_null=True)
     city = serializers.IntegerField(required=False, allow_null=True)
     country = serializers.IntegerField(required=False, allow_null=True)
     occupation = serializers.IntegerField(required=False, allow_null=True)
