@@ -14,8 +14,8 @@ class UserCreationForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('email', 'first_name', 'last_name', 'gender', 'is_staff', 'role', 'is_superuser', 'dob',
-                  'phone', 'avatar')
+        fields = ('phone', 'email', 'first_name', 'last_name', 'gender', 'is_staff', 'role', 'is_superuser', 'dob',
+                  'avatar')
 
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1")
@@ -46,15 +46,15 @@ class UserChangeForm(forms.ModelForm):
 class UserAdmin(OrigUserAdmin):
     add_form = UserCreationForm
     form = UserChangeForm
-    list_filter = ('first_name', 'last_name', 'email', 'dob', 'phone')
+    list_filter = ('first_name', 'last_name','phone', 'email', 'dob')
     list_display = (
-        'id', 'first_name', 'last_name', 'email', 'gender', 'phone', 'role', 'is_active',
+        'id', 'first_name', 'last_name', 'phone', 'email', 'gender', 'role', 'is_active',
         'is_staff', 'is_superuser', 'last_login', 'joined_on')
     ordering = ('first_name',)
     fieldsets = (
         (_('Personal Info'), {
             'fields': (
-                'email', 'first_name', 'last_name', 'gender', 'role'
+                'phone', 'email', 'first_name', 'last_name', 'gender', 'role'
             )
         }),
         (_('Permissions Info'), {'fields': ('is_active', 'is_superuser',)}),
@@ -65,7 +65,7 @@ class UserAdmin(OrigUserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email', 'password1', 'password2', 'dob', 'phone', 'role', 'gender', 'avatar')}
+            'fields': ('phone', 'first_name', 'last_name', 'email', 'password1', 'password2', 'dob', 'role', 'gender', 'avatar')}
          ),
     )
 

@@ -134,20 +134,29 @@ class DoctorUpdateSerializer(serializers.Serializer):
         return instance
 
 
+class DoctorLoginSerializer(DoctorSerializer):
+    token = serializers.SerializerMethodField()
+
+    def get_token(self, user):
+        user = JWTHelper.encode_token(user)
+        return user
+
+
+
 class PatientSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     role = serializers.IntegerField(read_only=True)
     password = serializers.CharField(write_only=True, allow_blank=True, allow_null=True, required=False)
-    email = serializers.EmailField()
+    email = serializers.EmailField(required=False, allow_null=True)
     first_name = serializers.CharField(max_length=255)
     last_name = serializers.CharField(max_length=255)
-    gender = serializers.IntegerField()
+    gender = serializers.IntegerField(required=False, allow_null=True)
     avatar = serializers.FileField(required=False, allow_null=True)
     address = serializers.CharField(max_length=500, required=False, allow_null=True)
     phone = serializers.CharField(max_length=15)
-    dob = serializers.DateField()
-    height = serializers.FloatField(required=False, allow_null=True)
-    weight = serializers.FloatField(required=False, allow_null=True)
+    dob = serializers.DateField(required=False, allow_null=True)
+    height = serializers.FloatField(source='patient_profile.height', required=False, allow_null=True)
+    weight = serializers.FloatField(source='patient_profile.weight', required=False, allow_null=True)
     city = CitySerializer(source='patient_profile.city', required=False, allow_null=True)
     country = CountrySerializer(source='patient_profile.country', required=False, allow_null=True)
     occupation = OccupationSerializer(source='patient_profile.occupation', required=False, allow_null=True)
@@ -167,11 +176,11 @@ class PatientUpdateSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     password = serializers.CharField(write_only=True, allow_blank=True, allow_null=True, required=False)
     first_name = serializers.CharField(max_length=255)
+    email = serializers.EmailField(required=False, allow_null=True)
     last_name = serializers.CharField(max_length=255)
     gender = serializers.IntegerField()
     avatar = serializers.FileField(required=False, allow_null=True)
     address = serializers.CharField(max_length=500, required=False, allow_null=True)
-    phone = serializers.CharField(max_length=15)
     dob = serializers.DateField()
     height = serializers.FloatField(required=False, allow_null=True)
     weight = serializers.FloatField(required=False, allow_null=True)
@@ -188,7 +197,7 @@ class PatientUpdateSerializer(serializers.Serializer):
         instance.gender = validated_data['gender'] if 'gender' in validated_data else instance.gender
         instance.avatar = validated_data['avatar'] if 'avatar' in validated_data else instance.avatar
         instance.address = validated_data['address'] if 'address' in validated_data else instance.address
-        instance.phone = validated_data['phone'] if 'phone' in validated_data else instance.phone
+        instance.email = validated_data['email'] if 'email' in validated_data else instance.email
         instance.dob = validated_data['dob'] if 'dob' in validated_data else instance.dob
 
         if 'city' in validated_data and validated_data['city']:
@@ -204,6 +213,8 @@ class PatientUpdateSerializer(serializers.Serializer):
             instance.patient_profile.occupation = occupation
 
         instance.patient_profile.marital_status = validated_data['marital_status'] if 'marital_status' in validated_data else instance.patient_profile.marital_status
+        instance.patient_profile.height = validated_data['height'] if 'height' in validated_data else instance.patient_profile.height
+        instance.patient_profile.weight = validated_data['weight'] if 'weight' in validated_data else instance.patient_profile.weight
         instance.save()
 
         return instance
