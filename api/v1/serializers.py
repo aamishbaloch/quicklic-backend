@@ -101,7 +101,7 @@ class DoctorUpdateSerializer(serializers.Serializer):
     verified = serializers.BooleanField(read_only=True)
 
     def update(self, instance, validated_data):
-        validated_data['role'] = User.Role.PATIENT
+        validated_data['role'] = User.Role.DOCTOR
 
         instance.first_name = validated_data['first_name'] if 'first_name' in validated_data else instance.first_name
         instance.last_name = validated_data['last_name'] if 'last_name' in validated_data else instance.last_name
