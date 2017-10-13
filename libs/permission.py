@@ -5,13 +5,19 @@ User = get_user_model()
 
 
 class UserAccessPermission(permissions.BasePermission):
-    message = 'No permission for accessing this view.'
+    message = 'Permission Denied'
 
     def has_permission(self, request, view):
         return request.user.is_active
 
 
-class PatientAccessPermission(UserAccessPermission):
+class PatientPermission(UserAccessPermission):
 
     def has_permission(self, request, view):
-        return super(PatientAccessPermission, self).has_permission(request, view) and request.user.role == User.Role.PATIENT
+        return super(PatientPermission, self).has_permission(request, view) and request.user.role == User.Role.PATIENT
+
+
+class DoctorPermission(UserAccessPermission):
+
+    def has_permission(self, request, view):
+        return super(DoctorPermission, self).has_permission(request, view) and request.user.role == User.Role.DOCTOR

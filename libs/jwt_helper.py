@@ -21,12 +21,12 @@ class JWTHelper:
     @staticmethod
     def encode_token(user):
         """
-        Token created against email of the user.
+        Token created against phone of the user.
         """
         if user:
             data = {
                 "exp": datetime.utcnow() + timedelta(days=JWTHelper.JWT_TOKEN_EXPIRY),
-                "email": user.email,
+                "phone": user.phone,
             }
             token = jwt.encode(data, 'secret', algorithm=JWTHelper.JWT_ALGORITHM)
             return str(token, JWTHelper.JWT_UTF)
@@ -50,5 +50,5 @@ class JWTHelper:
         """
         return user for the token given.
         """
-        email_dict = jwt.decode(token, 'secret', algorithms=JWTHelper.JWT_ALGORITHM)
-        return User.objects.filter(email=email_dict["email"]).first()
+        phone_dict = jwt.decode(token, 'secret', algorithms=JWTHelper.JWT_ALGORITHM)
+        return User.objects.filter(phone=phone_dict["phone"]).first()

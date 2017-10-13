@@ -54,21 +54,23 @@ class ClinicSerializer(serializers.ModelSerializer):
 
 class DoctorSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
+    role = serializers.IntegerField(read_only=True)
     password = serializers.CharField(write_only=True, allow_blank=True, allow_null=True, required=False)
-    email = serializers.EmailField()
+    email = serializers.EmailField(required=False, allow_null=True)
     first_name = serializers.CharField(max_length=255)
     last_name = serializers.CharField(max_length=255)
-    gender = serializers.IntegerField()
+    gender = serializers.IntegerField(required=False, allow_null=True)
     avatar = serializers.FileField(required=False, allow_null=True)
     address = serializers.CharField(max_length=500, required=False, allow_null=True)
     phone = serializers.CharField(max_length=15)
-    dob = serializers.DateField()
+    dob = serializers.DateField(required=False, allow_null=True)
     clinic = ClinicSerializer(many=True, source='doctor_profile.clinic', required=False, allow_null=True)
     city = CitySerializer(source='doctor_profile.city', required=False, allow_null=True)
     country = CountrySerializer(source='doctor_profile.country', required=False, allow_null=True)
     services = ServiceSerializer(many=True, source='doctor_profile.services', required=False, allow_null=True)
     specialization = SpecializationSerializer(source='doctor_profile.specialization', required=False, allow_null=True)
     degree = serializers.CharField(source='doctor_profile.degree', required=False, allow_null=True)
+    verified = serializers.BooleanField(read_only=True)
 
     def create(self, validated_data):
         validated_data['role'] = User.Role.DOCTOR
@@ -83,22 +85,23 @@ class DoctorSerializer(serializers.Serializer):
 class DoctorUpdateSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     password = serializers.CharField(write_only=True, allow_blank=True, allow_null=True, required=False)
-    email = serializers.EmailField()
+    email = serializers.EmailField(required=False, allow_null=True)
     first_name = serializers.CharField(max_length=255)
     last_name = serializers.CharField(max_length=255)
-    gender = serializers.IntegerField()
+    gender = serializers.IntegerField(required=False, allow_null=True)
     avatar = serializers.FileField(required=False, allow_null=True)
     address = serializers.CharField(max_length=500, required=False, allow_null=True)
     phone = serializers.CharField(max_length=15)
-    dob = serializers.DateField()
+    dob = serializers.DateField(required=False, allow_null=True)
     city = serializers.IntegerField(required=False, allow_null=True)
     country = serializers.IntegerField(required=False, allow_null=True)
     services = serializers.ListField(required=False, allow_null=True)
     specialization = serializers.IntegerField(required=False, allow_null=True)
     degree = serializers.CharField(source='doctor_profile.degree', required=False, allow_null=True)
+    verified = serializers.BooleanField(read_only=True)
 
     def update(self, instance, validated_data):
-        validated_data['role'] = User.Role.PATIENT
+        validated_data['role'] = User.Role.DOCTOR
 
         instance.first_name = validated_data['first_name'] if 'first_name' in validated_data else instance.first_name
         instance.last_name = validated_data['last_name'] if 'last_name' in validated_data else instance.last_name
@@ -133,21 +136,33 @@ class DoctorUpdateSerializer(serializers.Serializer):
         return instance
 
 
+class DoctorLoginSerializer(DoctorSerializer):
+    token = serializers.SerializerMethodField()
+
+    def get_token(self, user):
+        user = JWTHelper.encode_token(user)
+        return user
+
+
 class PatientSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
+    role = serializers.IntegerField(read_only=True)
     password = serializers.CharField(write_only=True, allow_blank=True, allow_null=True, required=False)
-    email = serializers.EmailField()
+    email = serializers.EmailField(required=False, allow_null=True)
     first_name = serializers.CharField(max_length=255)
     last_name = serializers.CharField(max_length=255)
-    gender = serializers.IntegerField()
+    gender = serializers.IntegerField(required=False, allow_null=True)
     avatar = serializers.FileField(required=False, allow_null=True)
     address = serializers.CharField(max_length=500, required=False, allow_null=True)
     phone = serializers.CharField(max_length=15)
-    dob = serializers.DateField()
+    dob = serializers.DateField(required=False, allow_null=True)
+    height = serializers.FloatField(source='patient_profile.height', required=False, allow_null=True)
+    weight = serializers.FloatField(source='patient_profile.weight', required=False, allow_null=True)
     city = CitySerializer(source='patient_profile.city', required=False, allow_null=True)
     country = CountrySerializer(source='patient_profile.country', required=False, allow_null=True)
     occupation = OccupationSerializer(source='patient_profile.occupation', required=False, allow_null=True)
     marital_status = serializers.IntegerField(source='patient_profile.marital_status', required=False, allow_null=True)
+    verified = serializers.BooleanField(read_only=True)
 
     def create(self, validated_data):
         validated_data['role'] = User.Role.PATIENT
@@ -162,18 +177,20 @@ class PatientSerializer(serializers.Serializer):
 class PatientUpdateSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     password = serializers.CharField(write_only=True, allow_blank=True, allow_null=True, required=False)
-    email = serializers.EmailField()
     first_name = serializers.CharField(max_length=255)
+    email = serializers.EmailField(required=False, allow_null=True)
     last_name = serializers.CharField(max_length=255)
     gender = serializers.IntegerField()
     avatar = serializers.FileField(required=False, allow_null=True)
     address = serializers.CharField(max_length=500, required=False, allow_null=True)
-    phone = serializers.CharField(max_length=15)
     dob = serializers.DateField()
+    height = serializers.FloatField(required=False, allow_null=True)
+    weight = serializers.FloatField(required=False, allow_null=True)
     city = serializers.IntegerField(required=False, allow_null=True)
     country = serializers.IntegerField(required=False, allow_null=True)
     occupation = serializers.IntegerField(required=False, allow_null=True)
     marital_status = serializers.IntegerField(required=False, allow_null=True)
+    verified = serializers.BooleanField(read_only=True)
 
     def update(self, instance, validated_data):
         validated_data['role'] = User.Role.PATIENT
@@ -183,7 +200,7 @@ class PatientUpdateSerializer(serializers.Serializer):
         instance.gender = validated_data['gender'] if 'gender' in validated_data else instance.gender
         instance.avatar = validated_data['avatar'] if 'avatar' in validated_data else instance.avatar
         instance.address = validated_data['address'] if 'address' in validated_data else instance.address
-        instance.phone = validated_data['phone'] if 'phone' in validated_data else instance.phone
+        instance.email = validated_data['email'] if 'email' in validated_data else instance.email
         instance.dob = validated_data['dob'] if 'dob' in validated_data else instance.dob
 
         if 'city' in validated_data and validated_data['city']:
@@ -199,6 +216,8 @@ class PatientUpdateSerializer(serializers.Serializer):
             instance.patient_profile.occupation = occupation
 
         instance.patient_profile.marital_status = validated_data['marital_status'] if 'marital_status' in validated_data else instance.patient_profile.marital_status
+        instance.patient_profile.height = validated_data['height'] if 'height' in validated_data else instance.patient_profile.height
+        instance.patient_profile.weight = validated_data['weight'] if 'weight' in validated_data else instance.patient_profile.weight
         instance.save()
 
         return instance

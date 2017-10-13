@@ -5,6 +5,8 @@ from django.contrib.auth.admin import UserAdmin as OrigUserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField, AuthenticationForm
 from django.utils.translation import ugettext_lazy as _
 
+from entities.person.models import VerificationCode
+
 User = get_user_model()
 
 
@@ -14,8 +16,8 @@ class UserCreationForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('email', 'first_name', 'last_name', 'gender', 'is_staff', 'role', 'is_superuser', 'dob',
-                  'phone', 'avatar')
+        fields = ('phone', 'email', 'first_name', 'last_name', 'gender', 'is_staff', 'role', 'is_superuser', 'dob',
+                  'avatar', 'verified')
 
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1")
@@ -46,15 +48,15 @@ class UserChangeForm(forms.ModelForm):
 class UserAdmin(OrigUserAdmin):
     add_form = UserCreationForm
     form = UserChangeForm
-    list_filter = ('first_name', 'last_name', 'email', 'dob', 'phone')
+    list_filter = ('first_name', 'last_name','phone', 'email', 'dob', 'verified')
     list_display = (
-        'id', 'first_name', 'last_name', 'email', 'gender', 'phone', 'role', 'is_active',
+        'id', 'first_name', 'last_name', 'verified', 'phone', 'email', 'gender', 'role', 'is_active',
         'is_staff', 'is_superuser', 'last_login', 'joined_on')
     ordering = ('first_name',)
     fieldsets = (
         (_('Personal Info'), {
             'fields': (
-                'email', 'first_name', 'last_name', 'gender', 'role'
+                'phone', 'verified', 'email', 'first_name', 'last_name', 'gender', 'role'
             )
         }),
         (_('Permissions Info'), {'fields': ('is_active', 'is_superuser',)}),
@@ -65,9 +67,15 @@ class UserAdmin(OrigUserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email', 'password1', 'password2', 'dob', 'phone', 'role', 'gender', 'avatar')}
+            'fields': ('phone', 'first_name', 'last_name', 'verified', 'email', 'password1', 'password2', 'dob', 'role', 'gender', 'avatar')}
          ),
     )
 
 
 admin.site.register(User, UserAdmin)
+
+
+class VerificationCodeAdmin(admin.ModelAdmin):
+    list_display = ('id', 'code', 'user')
+
+admin.site.register(VerificationCode, VerificationCodeAdmin)

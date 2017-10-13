@@ -66,6 +66,8 @@ class PatientProfile(models.Model):
     country = models.ForeignKey(Country, related_name="patient_country", blank=True, null=True)
     city = models.ForeignKey(City, related_name="patient_city", blank=True, null=True)
     clinic = models.ManyToManyField(Clinic, related_name="patient_clinics")
+    height = models.FloatField(_('height'), blank=True, null=True)
+    weight = models.FloatField(_('weight'), blank=True, null=True)
     occupation = models.ForeignKey(Occupation, related_name="patient_occupation", blank=True, null=True)
     marital_status = models.IntegerField(_('marital status'), choices=MaritalStatus.Choices, blank=True, null=True)
 
