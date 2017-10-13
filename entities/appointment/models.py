@@ -35,7 +35,6 @@ class Appointment(models.Model):
     doctor = models.ForeignKey(User, related_name='doctor')
     clinic = models.ForeignKey(Clinic, related_name='clinic')
 
-    recorded_datetime = models.DateTimeField(db_index=True)
     start_datetime = models.DateTimeField(db_index=True)
     end_datetime = models.DateTimeField(db_index=True)
     duration = models.CharField(max_length=255)

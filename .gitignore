@@ -10,3 +10,4 @@ logfile
 *.xml
 .idea
 media/uploads
+quicklic-venv

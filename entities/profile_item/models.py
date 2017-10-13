@@ -42,6 +42,14 @@ class DoctorProfile(models.Model):
         verbose_name_plural = _('Doctor Profiles')
 
 
+class DoctorSetting(models.Model):
+    doctor = models.OneToOneField(DoctorProfile,
+                                  on_delete=models.CASCADE,
+                                  related_name='doctor_setting')
+    start_datetime = models.DateTimeField(db_index=True)
+    end_datetime = models.DateTimeField(db_index=True)
+
+
 class Occupation(models.Model):
     name = models.CharField(_('name'), max_length=50, db_index=True)
     is_active = models.BooleanField(default=True, db_index=True)
