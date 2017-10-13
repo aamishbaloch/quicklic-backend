@@ -8,6 +8,7 @@ from api.v1.serializers import PatientLoginSerializer, DoctorLoginSerializer
 from entities.person.models import VerificationCode
 from libs.authentication import UserAuthentication
 from libs.permission import PatientPermission
+from libs.twilio_helper import TwilioHelper
 
 User = get_user_model()
 
@@ -30,6 +31,7 @@ class RegistrationView(APIView):
             try:
                 patient = serializer.save()
                 code = VerificationCode.generate_code_for_user(patient)
+                TwilioHelper().message("hahaha", code)
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             except IntegrityError as e:
                 return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
