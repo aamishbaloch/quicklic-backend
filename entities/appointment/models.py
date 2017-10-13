@@ -45,5 +45,5 @@ class Appointment(models.Model):
     is_active = models.BooleanField(default=True, db_index=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return self.name
+    # def __str__(self):
+    #     return self.patient.na

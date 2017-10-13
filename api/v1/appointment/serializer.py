@@ -7,6 +7,7 @@ from entities.profile_item.models import DoctorSetting
 class AppointmentSerializer(serializers.ModelSerializer):
     qid = serializers.UUIDField(default=uuid.uuid4())
     patient = serializers.PrimaryKeyRelatedField(read_only=True)
+    status = serializers.CharField(required=False)
 
     class Meta:
         model = Appointment
@@ -16,11 +17,14 @@ class AppointmentSerializer(serializers.ModelSerializer):
         ]
 
     def create(self, validated_data):
+
         appointment_start_datetime = validated_data['start_datetime']
         appointment_end_datetime = validated_data['end_datetime']
         doctor = validated_data.pop('doctor')
+        reason = validated_data.pop('reason')
+        clinic = validated_data.pop('clinic')
 
-        doc_setting = DoctorSetting.objects.filter(doctor=doctor).first()
+        doc_setting = DoctorSetting.objects.filter(doctor__doctor_id=doctor).first()
         doctor_start_datetime = doc_setting.start_datetime
         doctor_end_datetime = doc_setting.end_datetime
 
@@ -31,15 +35,23 @@ class AppointmentSerializer(serializers.ModelSerializer):
             status='CONF'
         )
 
-        if appointment_start_datetime <= doctor_end_datetime and appointment_end_datetime >= doctor_start_datetime:
+        if appointment_start_datetime >= doctor_start_datetime and appointment_end_datetime <= doctor_end_datetime:
             for obj in appointments:
                 start = obj.start_datetime
                 end = obj.end_datetime
                 # (StartDate1 <= EndDate2) and (StartDate2 <= EndDate1)
                 datetime_range_overlap = max(appointment_start_datetime, start) < min(appointment_end_datetime, end)
                 if datetime_range_overlap:
-                    return "Overlapping."
-            Appointment.objects.create(doctor_id=doctor, status='PEND', **validated_data)
+                    return "Error: Overlap timing."
 
+            return Appointment.objects.create(
+                reason=reason,
+                clinic=clinic,
+                doctor=doctor,
+                status='PEND',
+                is_active=True,
+                **validated_data
+            )
+        return Appointment()
 
 
