@@ -72,7 +72,8 @@ class PatientView(APIView):
 
     def put(self, request):
         serializer = PatientUpdateSerializer(instance=request.user, data=request.data)
-        if serializer.is_valid(raise_exception=True):
+        if serializer.is_valid():
             patient = serializer.save()
             serializer = PatientSerializer(patient)
             return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response({"message": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)

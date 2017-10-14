@@ -32,8 +32,8 @@ class RegistrationView(APIView):
                 code = VerificationCode.generate_code_for_user(patient)
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             except IntegrityError as e:
-                return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                return Response({"message": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"message": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class LoginView(APIView):
@@ -57,7 +57,7 @@ class LoginView(APIView):
             elif user.role == User.Role.DOCTOR:
                 serializer = DoctorLoginSerializer(user)
                 return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response("Invalid Credentials", status=status.HTTP_401_UNAUTHORIZED)
+        return Response({"message": "Invalid Credentials"}, status=status.HTTP_401_UNAUTHORIZED)
 
 
 class VerificationView(APIView):
@@ -80,5 +80,5 @@ class VerificationView(APIView):
                 request.user.verified = True
                 request.user.save(updated_fields=['verified'])
                 return Response(None, status=status.HTTP_200_OK)
-            return Response("No Match Found", status=status.HTTP_400_BAD_REQUEST)
-        return Response("No Verification Code Generated", status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": "No Match Found"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"message": "No Verification Code Generated"}, status=status.HTTP_400_BAD_REQUEST)
