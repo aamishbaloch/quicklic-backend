@@ -22,7 +22,8 @@ class CityView(APIView):
     """
 
     def get(self, request):
-        cities = City.objects.filter(is_active=True)
+        query = request.query_params.get("query", "")
+        cities = City.objects.filter(is_active=True, name__istartswith=query)
         serializer = CitySerializer(cities, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -37,7 +38,8 @@ class CountryView(APIView):
     """
 
     def get(self, request):
-        countries = Country.objects.filter(is_active=True)
+        query = request.query_params.get("query", "")
+        countries = Country.objects.filter(is_active=True, name__istartswith=query)
         serializer = CountrySerializer(countries, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -52,7 +54,8 @@ class OccupationView(APIView):
     """
 
     def get(self, request):
-        occupations = Occupation.objects.filter(is_active=True)
+        query = request.query_params.get("query", "")
+        occupations = Occupation.objects.filter(is_active=True, name__istartswith=query)
         serializer = OccupationSerializer(occupations, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -67,7 +70,8 @@ class ServiceView(APIView):
     """
 
     def get(self, request):
-        services = Service.objects.filter(is_active=True)
+        query = request.query_params.get("query", "")
+        services = Service.objects.filter(is_active=True, name__istartswith=query)
         serializer = ServiceSerializer(services, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -82,6 +86,7 @@ class SpecializationView(APIView):
     """
 
     def get(self, request):
-        specializations = Specialization.objects.filter(is_active=True)
+        query = request.query_params.get("query", "")
+        specializations = Specialization.objects.filter(is_active=True, name__istartswith=query)
         serializer = SpecializationSerializer(specializations, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
