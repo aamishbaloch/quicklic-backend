@@ -35,7 +35,6 @@ class Appointment(models.Model):
     doctor = models.ForeignKey(User, related_name='doctor')
     clinic = models.ForeignKey(Clinic, related_name='clinic')
 
-    recorded_datetime = models.DateTimeField(db_index=True)
     start_datetime = models.DateTimeField(db_index=True)
     end_datetime = models.DateTimeField(db_index=True)
     duration = models.CharField(max_length=255)
@@ -46,5 +45,5 @@ class Appointment(models.Model):
     is_active = models.BooleanField(default=True, db_index=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return self.name
+    # def __str__(self):
+    #     return self.patient.na
