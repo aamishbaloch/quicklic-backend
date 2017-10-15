@@ -21,3 +21,11 @@ class DoctorPermission(UserAccessPermission):
 
     def has_permission(self, request, view):
         return super(DoctorPermission, self).has_permission(request, view) and request.user.role == User.Role.DOCTOR
+
+
+class PatientDoctorPermission(UserAccessPermission):
+
+    def has_permission(self, request, view):
+        return super(PatientDoctorPermission, self).has_permission(request, view) and \
+               (request.user.role == User.Role.PATIENT or request.user.role == User.Role.DOCTOR)
+
