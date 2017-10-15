@@ -17,10 +17,10 @@ class AppointmentReason(models.Model):
 class Appointment(models.Model):
 
     class Status:
-        CONFIRM = 'CONF'
-        PENDING = 'PEND'
-        NOSHOW = 'NOSW'
-        CANCEL = 'CANC'
+        CONFIRM = 1
+        PENDING = 2
+        NOSHOW = 3
+        CANCEL = 4
 
         Choices = (
             (CONFIRM, 'CONFIRM'),
@@ -35,13 +35,11 @@ class Appointment(models.Model):
     doctor = models.ForeignKey(User, related_name='doctor')
     clinic = models.ForeignKey(Clinic, related_name='clinic')
 
-    recorded_datetime = models.DateTimeField(db_index=True)
     start_datetime = models.DateTimeField(db_index=True)
     end_datetime = models.DateTimeField(db_index=True)
-    duration = models.CharField(max_length=255)
 
     reason = models.ForeignKey(AppointmentReason, related_name="reason")
-    status = models.CharField(_('status'), max_length=4, db_index=True, choices=Status.Choices, blank=True, default=Status.PENDING)
+    status = models.IntegerField(_('status'), db_index=True, choices=Status.Choices, default=Status.PENDING)
 
     is_active = models.BooleanField(default=True, db_index=True)
     created_at = models.DateTimeField(auto_now_add=True)

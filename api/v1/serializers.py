@@ -1,9 +1,12 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-
 from entities.clinic.models import City, Country, Clinic
 from entities.profile_item.models import DoctorProfile, Specialization, Service, Occupation, PatientProfile
 from libs.jwt_helper import JWTHelper
+import uuid
+from entities.appointment.models import Appointment
+from entities.profile_item.models import DoctorSetting
+from django.db.models import Q
 
 User = get_user_model()
 
@@ -229,5 +232,26 @@ class PatientLoginSerializer(PatientSerializer):
     def get_token(self, user):
         user = JWTHelper.encode_token(user)
         return user
+
+
+class AppointmentSerializer(serializers.ModelSerializer):
+    qid = serializers.UUIDField(default=uuid.uuid4())
+    status = serializers.CharField(required=False)
+
+    class Meta:
+        model = Appointment
+        fields = [
+            'id', 'qid', 'patient', 'doctor', 'clinic', 'start_datetime',
+            'end_datetime', 'reason', 'status', 'is_active', 'created_at'
+        ]
+
+    def create(self, validated_data):
+        validated_data['status'] = Appointment.Status.PENDING
+
+        appointment = Appointment.objects.create(**validated_data)
+
+        return appointment
+
+
 
 

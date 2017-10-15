@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from entities.profile_item.models import PatientProfile, Occupation, Service, Specialization
+from entities.profile_item.models import PatientProfile, Occupation, Service, Specialization, DoctorSetting
 from .models import DoctorProfile
 
 
@@ -32,3 +32,9 @@ class PatientProfileAdmin(admin.ModelAdmin):
     list_display = ('id', 'patient', 'occupation', 'country', 'city')
 
 admin.site.register(PatientProfile, PatientProfileAdmin)
+
+
+class DoctorSettingAdmin(admin.ModelAdmin):
+    list_display = ('id', 'doctor', 'start_time', 'end_time')
+
+admin.site.register(DoctorSetting, DoctorSettingAdmin)
