@@ -1,5 +1,6 @@
 from random import randint
 
+
 def str2bool(value):
     """
     convert string to bool
