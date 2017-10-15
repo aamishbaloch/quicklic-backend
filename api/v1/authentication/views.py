@@ -7,6 +7,7 @@ from rest_framework.views import APIView
 from api.v1.serializers import PatientLoginSerializer, DoctorLoginSerializer
 from entities.person.models import VerificationCode
 from libs.authentication import UserAuthentication
+from libs.custom_exceptions import AlreadyExistsException, InvalidInputDataException, InvalidCredentialsException
 from libs.permission import PatientPermission
 
 User = get_user_model()
@@ -31,9 +32,9 @@ class RegistrationView(APIView):
                 patient = serializer.save()
                 code = VerificationCode.generate_code_for_user(patient)
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
-            except IntegrityError as e:
-                return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            except IntegrityError:
+                raise AlreadyExistsException()
+        raise InvalidInputDataException()
 
 
 class LoginView(APIView):
@@ -57,7 +58,7 @@ class LoginView(APIView):
             elif user.role == User.Role.DOCTOR:
                 serializer = DoctorLoginSerializer(user)
                 return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response("Invalid Credentials", status=status.HTTP_401_UNAUTHORIZED)
+        raise InvalidCredentialsException()
 
 
 class VerificationView(APIView):
@@ -66,19 +67,18 @@ class VerificationView(APIView):
 
     **Example requests**:
 
-        GET /api/auth/verify/
+        POST /api/auth/verify/
     """
 
     authentication_classes = (UserAuthentication,)
     permission_classes = (PatientPermission,)
 
-    def get(self, request):
-        code = request.query_params.get('code', None)
+    def post(self, request):
+        code = request.data.get('code', None)
 
         if request.user.verification_code:
             if request.user.verification_code.code == code:
                 request.user.verified = True
-                request.user.save(updated_fields=['verified'])
-                return Response(None, status=status.HTTP_200_OK)
-            return Response("No Match Found", status=status.HTTP_400_BAD_REQUEST)
-        return Response("No Verification Code Generated", status=status.HTTP_400_BAD_REQUEST)
+                request.user.save(update_fields=['verified'])
+                return Response({}, status=status.HTTP_200_OK)
+        raise InvalidInputDataException()

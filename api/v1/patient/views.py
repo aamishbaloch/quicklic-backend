@@ -3,6 +3,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from libs.authentication import UserAuthentication
+from libs.custom_exceptions import InvalidInputDataException
 from libs.permission import PatientPermission
 from libs.utils import str2bool
 from api.v1.serializers import PatientSerializer, PatientUpdateSerializer
@@ -72,7 +73,8 @@ class PatientView(APIView):
 
     def put(self, request):
         serializer = PatientUpdateSerializer(instance=request.user, data=request.data)
-        if serializer.is_valid(raise_exception=True):
+        if serializer.is_valid():
             patient = serializer.save()
             serializer = PatientSerializer(patient)
             return Response(serializer.data, status=status.HTTP_200_OK)
+        raise InvalidInputDataException()
