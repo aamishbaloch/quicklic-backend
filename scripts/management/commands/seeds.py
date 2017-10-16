@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.core.management import BaseCommand
 
+from entities.appointment.models import AppointmentReason
 from entities.clinic.models import Country, City
 from entities.profile_item.models import Service, Specialization, Occupation
 
@@ -8,6 +9,7 @@ from seeds.geographic_seeds import country_data
 from seeds.medical_services_seeds import services_data
 from seeds.medical_specialization_seeds import specializations_data
 from seeds.occupation_seeds import occupations_data
+from seeds.appointment_reason_seeds import appointment_reason_data
 
 User = get_user_model()
 
@@ -45,5 +47,10 @@ class Command(BaseCommand):
             occupation, created = Occupation.objects.get_or_create(name=occupation_data)
             if created:
                 self.stdout.write("New Occupation Created: {}".format(occupation.name))
+
+        for appointment_reason in appointment_reason_data:
+            reason, created = AppointmentReason.objects.get_or_create(name=appointment_reason)
+            if created:
+                self.stdout.write("New Appointment Reason Created: {}".format(reason.name))
 
         self.stdout.write("Task Successful")

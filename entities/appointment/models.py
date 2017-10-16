@@ -8,10 +8,10 @@ User = get_user_model()
 
 
 class AppointmentReason(models.Model):
-    title = models.CharField(_('name'), max_length=255, db_index=True)
+    name = models.CharField(_('name'), max_length=255, db_index=True)
 
     def __str__(self):
-        return self.title
+        return self.name
 
 
 class Appointment(models.Model):
@@ -31,18 +31,18 @@ class Appointment(models.Model):
 
     qid = models.CharField(_('qid'), max_length=255, db_index=True, unique=True)
 
-    patient = models.ForeignKey(User, related_name='patient')
-    doctor = models.ForeignKey(User, related_name='doctor')
-    clinic = models.ForeignKey(Clinic, related_name='clinic')
+    patient = models.ForeignKey(User, related_name='patient_appointments')
+    doctor = models.ForeignKey(User, related_name='doctor_appointments')
+    clinic = models.ForeignKey(Clinic, related_name='appointments')
 
     start_datetime = models.DateTimeField(db_index=True)
     end_datetime = models.DateTimeField(db_index=True)
 
-    reason = models.ForeignKey(AppointmentReason, related_name="reason")
+    reason = models.ForeignKey(AppointmentReason, related_name="appointments")
     status = models.IntegerField(_('status'), db_index=True, choices=Status.Choices, default=Status.PENDING)
 
     is_active = models.BooleanField(default=True, db_index=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.name
+        return self.qid

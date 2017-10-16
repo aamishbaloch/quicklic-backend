@@ -13,15 +13,14 @@ from libs.utils import get_datetime_from_date_string
 User = get_user_model()
 
 
-class AppointmentView(APIView):
+class ClinicView(APIView):
     """
-    View for creating and getting appointment.
+    View for getting appointment.
 
     **Example requests**:
 
         GET /appointment/
             - id=1
-        POST /appointment/
     """
 
     authentication_classes = (UserAuthentication,)
