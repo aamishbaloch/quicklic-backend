@@ -4,7 +4,7 @@ from entities.clinic.models import City, Country, Clinic
 from entities.profile_item.models import DoctorProfile, Specialization, Service, Occupation, PatientProfile
 from libs.jwt_helper import JWTHelper
 import uuid
-from entities.appointment.models import Appointment
+from entities.appointment.models import Appointment, AppointmentReason
 from entities.profile_item.models import DoctorSetting
 from django.db.models import Q
 
@@ -96,10 +96,10 @@ class DoctorUpdateSerializer(serializers.Serializer):
     address = serializers.CharField(max_length=500, required=False, allow_null=True)
     phone = serializers.CharField(max_length=15)
     dob = serializers.DateField(required=False, allow_null=True)
-    city = serializers.IntegerField(required=False, allow_null=True)
-    country = serializers.IntegerField(required=False, allow_null=True)
+    city = serializers.CharField(required=False, allow_null=True)
+    country = serializers.CharField(required=False, allow_null=True)
     services = serializers.ListField(required=False, allow_null=True)
-    specialization = serializers.IntegerField(required=False, allow_null=True)
+    specialization = serializers.CharField(required=False, allow_null=True)
     degree = serializers.CharField(source='doctor_profile.degree', required=False, allow_null=True)
     verified = serializers.BooleanField(read_only=True)
 
@@ -115,22 +115,22 @@ class DoctorUpdateSerializer(serializers.Serializer):
         instance.dob = validated_data['dob'] if 'dob' in validated_data else instance.dob
 
         if 'city' in validated_data and validated_data['city']:
-            city = City.objects.get(id=validated_data['city'])
+            city, created = City.objects.get_or_create(name=validated_data['city'])
             instance.doctor_profile.city = city
 
         if 'country' in validated_data and validated_data['country']:
-            country = Country.objects.get(id=validated_data['country'])
+            country, created = Country.objects.get_or_create(name=validated_data['country'])
             instance.doctor_profile.country = country
 
         if 'specialization' in validated_data and validated_data['specialization']:
-            specialization = Specialization.objects.get(id=validated_data['specialization'])
+            specialization, created = Specialization.objects.get_or_create(name=validated_data['specialization'])
             instance.doctor_profile.specialization = specialization
 
         if 'services' in validated_data and validated_data['services']:
             instance.doctor_profile.services.clear()
 
             for service_id in validated_data['services']:
-                service = Service.objects.get(id=service_id)
+                service, created = Service.objects.get_or_create(name=service_id)
                 instance.doctor_profile.services.add(service)
 
         instance.doctor_profile.degree = validated_data['degree'] if 'degree' in validated_data else instance.doctor_profile.degree
@@ -189,9 +189,9 @@ class PatientUpdateSerializer(serializers.Serializer):
     dob = serializers.DateField()
     height = serializers.FloatField(required=False, allow_null=True)
     weight = serializers.FloatField(required=False, allow_null=True)
-    city = serializers.IntegerField(required=False, allow_null=True)
-    country = serializers.IntegerField(required=False, allow_null=True)
-    occupation = serializers.IntegerField(required=False, allow_null=True)
+    city = serializers.CharField(required=False, allow_null=True)
+    country = serializers.CharField(required=False, allow_null=True)
+    occupation = serializers.CharField(required=False, allow_null=True)
     marital_status = serializers.IntegerField(required=False, allow_null=True)
     verified = serializers.BooleanField(read_only=True)
 
@@ -207,15 +207,15 @@ class PatientUpdateSerializer(serializers.Serializer):
         instance.dob = validated_data['dob'] if 'dob' in validated_data else instance.dob
 
         if 'city' in validated_data and validated_data['city']:
-            city = City.objects.get(id=validated_data['city'])
+            city, created = City.objects.get_or_create(name=validated_data['city'])
             instance.patient_profile.city = city
 
         if 'country' in validated_data and validated_data['country']:
-            country = Country.objects.get(id=validated_data['country'])
+            country, created = Country.objects.get_or_create(name=validated_data['country'])
             instance.patient_profile.country = country
 
         if 'occupation' in validated_data and validated_data['occupation']:
-            occupation = Occupation.objects.get(id=validated_data['occupation'])
+            occupation, created = Occupation.objects.get_or_create(name=validated_data['occupation'])
             instance.patient_profile.occupation = occupation
 
         instance.patient_profile.marital_status = validated_data['marital_status'] if 'marital_status' in validated_data else instance.patient_profile.marital_status
@@ -237,6 +237,7 @@ class PatientLoginSerializer(PatientSerializer):
 class AppointmentSerializer(serializers.ModelSerializer):
     qid = serializers.UUIDField(default=uuid.uuid4())
     status = serializers.CharField(required=False)
+    reason = serializers.CharField()
 
     class Meta:
         model = Appointment
@@ -247,6 +248,9 @@ class AppointmentSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         validated_data['status'] = Appointment.Status.PENDING
+
+        reason, created = AppointmentReason.objects.get_or_create(name=validated_data['reason'])
+        validated_data['reason'] = reason
 
         appointment = Appointment.objects.create(**validated_data)
 

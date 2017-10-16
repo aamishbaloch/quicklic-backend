@@ -17,7 +17,6 @@ class Country(models.Model):
 
 class City(models.Model):
     name = models.CharField(_('name'), max_length=255, db_index=True)
-    country = models.ForeignKey(Country, related_name="city_country")
     is_active = models.BooleanField(default=True, db_index=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
