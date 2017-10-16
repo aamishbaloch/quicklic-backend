@@ -8,10 +8,10 @@ User = get_user_model()
 
 
 class AppointmentReason(models.Model):
-    title = models.CharField(_('name'), max_length=255, db_index=True)
+    name = models.CharField(_('name'), max_length=255, db_index=True)
 
     def __str__(self):
-        return self.title
+        return self.name
 
 
 class Appointment(models.Model):

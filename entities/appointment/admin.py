@@ -10,7 +10,7 @@ admin.site.register(Appointment, AppointmentAdmin)
 
 
 class AppointmentReasonAdmin(admin.ModelAdmin):
-    list_display = ['id', 'title']
+    list_display = ['id', 'name']
 
 
 admin.site.register(AppointmentReason, AppointmentReasonAdmin)

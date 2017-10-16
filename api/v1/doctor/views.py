@@ -29,7 +29,7 @@ class DoctorView(APIView):
         serializer = DoctorSerializer(request.user)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def put(self, request):
+    def post(self, request):
         serializer = DoctorUpdateSerializer(instance=request.user, data=request.data)
         if serializer.is_valid():
             doctor = serializer.save()
