@@ -61,7 +61,7 @@ class PatientView(APIView):
     **Example requests**:
 
         GET /patient/
-        PUT /patient/
+        POST /patient/
     """
 
     authentication_classes = (UserAuthentication,)

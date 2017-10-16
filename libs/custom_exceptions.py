@@ -19,3 +19,12 @@ class InvalidCredentialsException(APIException):
 class AppointmentDoesNotExistsException(APIException):
     status_code = 404
     default_detail = "Appointment Does Not Exists"
+
+
+class ClinicDoesNotExistsException(APIException):
+    status_code = 404
+    default_detail = "Clinic Does Not Exists"
+
+
+class PatientExistsException(AlreadyExistsException):
+    default_detail = "Patient Already Exists"
