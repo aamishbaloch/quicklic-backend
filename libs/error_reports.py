@@ -6,7 +6,7 @@ from django.views.debug import ExceptionReporter
 def send_manually_exception_email(request, e):
     exc_info = sys.exc_info()
     reporter = ExceptionReporter(request, is_email=True, *exc_info)
-    subject = "Error Message"
+    subject = "Django Error Report"
     message = "{}".format(reporter.get_traceback_text)
     mail.mail_admins(
         subject, message, fail_silently=True,

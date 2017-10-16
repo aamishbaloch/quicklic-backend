@@ -27,7 +27,7 @@ class RegistrationView(APIView):
 
     @transaction.atomic()
     def post(self, request):
-        serializer = PatientLoginSerializer(data=request.data)
+        serializer = PatientLoginSerializer(data=request.data, context={"request": request})
         if serializer.is_valid():
             try:
                 patient = serializer.save()
@@ -54,10 +54,10 @@ class LoginView(APIView):
         user = authenticate(phone=phone, password=password)
         if user:
             if user.role == User.Role.PATIENT:
-                serializer = PatientLoginSerializer(user)
+                serializer = PatientLoginSerializer(user, context={"request": request})
                 return Response(serializer.data, status=status.HTTP_200_OK)
             elif user.role == User.Role.DOCTOR:
-                serializer = DoctorLoginSerializer(user)
+                serializer = DoctorLoginSerializer(user, context={"request": request})
                 return Response(serializer.data, status=status.HTTP_200_OK)
         raise InvalidCredentialsException()
 

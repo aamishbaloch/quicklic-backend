@@ -26,14 +26,14 @@ class DoctorView(APIView):
     permission_classes = (DoctorPermission,)
 
     def get(self, request):
-        serializer = DoctorSerializer(request.user)
+        serializer = DoctorSerializer(request.user, context={"request": request})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
         serializer = DoctorUpdateSerializer(instance=request.user, data=request.data)
         if serializer.is_valid():
             doctor = serializer.save()
-            serializer = DoctorSerializer(doctor)
+            serializer = DoctorSerializer(doctor, context={"request": request})
             return Response(serializer.data, status=status.HTTP_200_OK)
         raise InvalidInputDataException(str(serializer.errors))
 
@@ -78,5 +78,5 @@ class DoctorListView(APIView):
 
         doctors = doctors.filter(is_active=str2bool(request.query_params.get('active', 'true'))).select_related('doctor_profile')
 
-        serializer = DoctorSerializer(doctors, many=True)
+        serializer = DoctorSerializer(doctors, many=True, context={"request": request})
         return Response(serializer.data, status=status.HTTP_200_OK)
