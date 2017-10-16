@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 from entities.appointment.models import Appointment
 from libs.authentication import UserAuthentication
 from libs.custom_exceptions import InvalidInputDataException, AppointmentDoesNotExistsException
-from libs.permission import DoctorPermission, PatientDoctorPermission
+from libs.permission import PatientDoctorPermission
 from api.v1.serializers import AppointmentSerializer
 
 User = get_user_model()
