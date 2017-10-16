@@ -32,7 +32,7 @@ class AppointmentView(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
-        raise InvalidInputDataException()
+        raise InvalidInputDataException(str(serializer.errors))
 
     def get(self, request):
         id = request.query_params.get("id", None)
