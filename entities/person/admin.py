@@ -50,13 +50,13 @@ class UserAdmin(OrigUserAdmin):
     form = UserChangeForm
     list_filter = ('first_name', 'last_name','phone', 'email', 'dob', 'verified')
     list_display = (
-        'id', 'first_name', 'last_name', 'verified', 'phone', 'email', 'gender', 'role', 'is_active',
+        'id', 'first_name', 'last_name', 'verified', 'phone', 'email', 'gender', 'role', 'avatar', 'is_active',
         'is_staff', 'is_superuser', 'last_login', 'joined_on')
     ordering = ('first_name',)
     fieldsets = (
         (_('Personal Info'), {
             'fields': (
-                'phone', 'verified', 'email', 'first_name', 'last_name', 'gender', 'role'
+                'phone', 'verified', 'email', 'first_name', 'last_name', 'gender', 'role', 'avatar'
             )
         }),
         (_('Permissions Info'), {'fields': ('is_active', 'is_superuser',)}),

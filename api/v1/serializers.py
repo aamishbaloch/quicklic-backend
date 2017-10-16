@@ -49,10 +49,16 @@ class OccupationSerializer(serializers.ModelSerializer):
 class ClinicSerializer(serializers.ModelSerializer):
     city = CitySerializer()
     country = CountrySerializer()
+    image = serializers.SerializerMethodField()
 
     class Meta:
         model = Clinic
         fields = ('id', 'name', 'phone', 'location', 'city', 'country', 'image')
+
+    def get_image(self, clinic):
+        request = self.context.get('request')
+        url = clinic.image.url
+        return request.build_absolute_uri(url)
 
 
 class DoctorSerializer(serializers.Serializer):
@@ -63,7 +69,7 @@ class DoctorSerializer(serializers.Serializer):
     first_name = serializers.CharField(max_length=255)
     last_name = serializers.CharField(max_length=255)
     gender = serializers.IntegerField(required=False, allow_null=True)
-    avatar = serializers.FileField(required=False, allow_null=True)
+    avatar = serializers.SerializerMethodField(required=False, allow_null=True)
     address = serializers.CharField(max_length=500, required=False, allow_null=True)
     phone = serializers.CharField(max_length=15)
     dob = serializers.DateField(required=False, allow_null=True)
@@ -83,6 +89,11 @@ class DoctorSerializer(serializers.Serializer):
         data = {'doctor': user}
         DoctorProfile.objects.create(**data)
         return user
+
+    def get_avatar(self, doctor):
+        request = self.context.get('request')
+        url = doctor.avatar.url
+        return request.build_absolute_uri(url)
 
 
 class DoctorUpdateSerializer(serializers.Serializer):
@@ -155,7 +166,7 @@ class PatientSerializer(serializers.Serializer):
     first_name = serializers.CharField(max_length=255)
     last_name = serializers.CharField(max_length=255)
     gender = serializers.IntegerField(required=False, allow_null=True)
-    avatar = serializers.FileField(required=False, allow_null=True)
+    avatar = serializers.SerializerMethodField(required=False, allow_null=True)
     address = serializers.CharField(max_length=500, required=False, allow_null=True)
     phone = serializers.CharField(max_length=15)
     dob = serializers.DateField(required=False, allow_null=True)
@@ -175,6 +186,11 @@ class PatientSerializer(serializers.Serializer):
         data = {'patient': user}
         PatientProfile.objects.create(**data)
         return user
+
+    def get_avatar(self, patient):
+        request = self.context.get('request')
+        url = patient.avatar.url
+        return request.build_absolute_uri(url)
 
 
 class PatientUpdateSerializer(serializers.Serializer):

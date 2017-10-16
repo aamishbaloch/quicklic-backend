@@ -26,7 +26,7 @@ class ClinicView(APIView):
         id = request.query_params.get("id", None)
         try:
             clinic = Clinic.objects.get(id=id)
-            serializer = ClinicSerializer(clinic)
+            serializer = ClinicSerializer(clinic, context={"request": request})
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Clinic.DoesNotExist:
             raise AppointmentDoesNotExistsException()

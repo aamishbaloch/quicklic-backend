@@ -50,7 +50,7 @@ class PatientListView(APIView):
 
         patients = patients.filter(is_active=str2bool(request.query_params.get('active', 'true'))).select_related('patient_profile')
 
-        serializer = PatientSerializer(patients, many=True)
+        serializer = PatientSerializer(patients, many=True, context={"request": request})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -68,13 +68,13 @@ class PatientView(APIView):
     permission_classes = (PatientPermission,)
 
     def get(self, request):
-        serializer = PatientSerializer(request.user)
+        serializer = PatientSerializer(request.user, context={"request": request})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
         serializer = PatientUpdateSerializer(instance=request.user, data=request.data)
         if serializer.is_valid():
             patient = serializer.save()
-            serializer = PatientSerializer(patient)
+            serializer = PatientSerializer(patient, context={"request": request})
             return Response(serializer.data, status=status.HTTP_200_OK)
         raise InvalidInputDataException(str(serializer.errors))
