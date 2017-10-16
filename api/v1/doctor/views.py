@@ -35,7 +35,7 @@ class DoctorView(APIView):
             doctor = serializer.save()
             serializer = DoctorSerializer(doctor)
             return Response(serializer.data, status=status.HTTP_200_OK)
-        raise InvalidInputDataException()
+        raise InvalidInputDataException(str(serializer.errors))
 
 
 class DoctorListView(APIView):

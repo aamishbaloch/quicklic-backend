@@ -139,6 +139,10 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
+ADMINS = (
+  ('Aamish', 'aamish.baloch@gmail.com'),
+)
+
 try:
     from quicklic_backend.local_settings import *
 except ImportError:

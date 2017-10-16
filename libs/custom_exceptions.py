@@ -1,5 +1,7 @@
 from rest_framework.exceptions import APIException
 
+from libs.error_reports import send_manually_error_email
+
 
 class AlreadyExistsException(APIException):
     status_code = 409
@@ -9,6 +11,15 @@ class AlreadyExistsException(APIException):
 class InvalidInputDataException(APIException):
     status_code = 400
     default_detail = "Invalid Input Data"
+
+    def __init__(self, message=None, *args, **kwargs):
+        send_manually_error_email(message)
+        super(InvalidInputDataException, self).__init__(*args, **kwargs)
+
+
+class InvalidVerificationCodeException(APIException):
+    status_code = 400
+    default_detail = "Invalid Verification Data"
 
 
 class InvalidCredentialsException(APIException):

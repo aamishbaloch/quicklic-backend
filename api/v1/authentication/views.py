@@ -7,8 +7,8 @@ from rest_framework.views import APIView
 from api.v1.serializers import PatientLoginSerializer, DoctorLoginSerializer
 from entities.person.models import VerificationCode
 from libs.authentication import UserAuthentication
-from libs.custom_exceptions import AlreadyExistsException, InvalidInputDataException, InvalidCredentialsException, \
-    PatientExistsException
+from libs.custom_exceptions import InvalidInputDataException, InvalidCredentialsException, \
+    PatientExistsException, InvalidVerificationCodeException
 from libs.permission import PatientPermission
 
 User = get_user_model()
@@ -35,7 +35,7 @@ class RegistrationView(APIView):
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             except IntegrityError:
                 raise PatientExistsException()
-        raise InvalidInputDataException()
+        raise InvalidInputDataException(str(serializer.errors))
 
 
 class LoginView(APIView):
@@ -82,4 +82,4 @@ class VerificationView(APIView):
                 request.user.verified = True
                 request.user.save(update_fields=['verified'])
                 return Response({}, status=status.HTTP_200_OK)
-        raise InvalidInputDataException()
+        raise InvalidVerificationCodeException()
