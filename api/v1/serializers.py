@@ -244,6 +244,7 @@ class PatientLoginSerializer(PatientSerializer):
         return user
 
 
+
 class AppointmentSerializer(serializers.ModelSerializer):
     qid = serializers.CharField(required=False, read_only=True)
     status = serializers.CharField(required=False)
@@ -257,6 +258,10 @@ class AppointmentSerializer(serializers.ModelSerializer):
         ]
 
     def create(self, validated_data):
+        # appointment = Appointment.objects.create(**validated_data)
+
+        # return appointment
+
         validated_data['status'] = Appointment.Status.PENDING
 
         validated_data['qid'] = "{}-{}-{}".format(validated_data['patient'].id, validated_data['doctor'].id, get_qid_code())
@@ -264,9 +269,41 @@ class AppointmentSerializer(serializers.ModelSerializer):
         reason, created = AppointmentReason.objects.get_or_create(name=validated_data['reason'])
         validated_data['reason'] = reason
 
-        appointment = Appointment.objects.create(**validated_data)
+        appointment_start_datetime = validated_data['start_datetime']
+        appointment_end_datetime = validated_data['end_datetime']
+        doctor = validated_data.pop('doctor')
+        reason = validated_data.pop('reason')
+        clinic = validated_data.pop('clinic')
 
-        return appointment
+        doc_setting = DoctorSetting.objects.filter(doctor__doctor_id=doctor).first()
+        doctor_start_datetime = doc_setting.start_datetime
+        doctor_end_datetime = doc_setting.end_datetime
+
+        appointments = Appointment.objects.filter(
+            doctor=doctor,
+            start_datetime__gte=doctor_start_datetime,
+            end_datetime__lte=doctor_end_datetime,
+            status='CONF'
+        )
+
+        if appointment_start_datetime >= doctor_start_datetime and appointment_end_datetime <= doctor_end_datetime:
+            for obj in appointments:
+                start = obj.start_datetime
+                end = obj.end_datetime
+                # (StartDate1 <= EndDate2) and (StartDate2 <= EndDate1)
+                datetime_range_overlap = max(appointment_start_datetime, start) < min(appointment_end_datetime, end)
+                if datetime_range_overlap:
+                    return "Error: Overlap timing."
+
+            return Appointment.objects.create(
+                reason=reason,
+                clinic=clinic,
+                doctor=doctor,
+                status='PEND',
+                is_active=True,
+                **validated_data
+            )
+        return Appointment()
 
 
 

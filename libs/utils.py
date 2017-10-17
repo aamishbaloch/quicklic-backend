@@ -25,7 +25,10 @@ def get_datetime_from_date_string(datetime_str):
     return datetime.strptime(datetime_str, "%Y-%m-%d %H:%M:%S")
 
 
+
 def get_time_from_string(time_str):
     return datetime.strptime(time_str, '%H:%M').time()
 
-
+def get_split_datetime(datetime_str):
+    date_str, time_str = datetime_str.split(' ')
+    return datetime.strptime(datetime_str, "%Y-%m-%d %H:%M:%S")
