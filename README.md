@@ -48,6 +48,13 @@ $ sudo vim local_settings.py
 $ cd .. 
 $ python manage.py migrate 
 ```
+
+Create a Super Admin to get things started. 
+```sh
+$ python manage.py createsuperuser
+```
+Access the Django Admin and login with the credentials. 
+
 Seeds
 -----
 In order to populate mandatory data you need to run the management 
@@ -58,6 +65,29 @@ $ python manage.py seeds
 This seeds will create a Super User and you can login to Django Admin 
 Dashboard to perform needed actions. General details on the landing page
 are also added with this script.
+
+Setting up Error Reporting
+--------------------------
+To unable error reporting do the following, first add the following 
+settings in your local_settings.py.
+```sh
+ EMAIL_USE_TLS = True
+ EMAIL_HOST = 'smtp.gmail.com'
+ EMAIL_HOST_USER = '{email}'
+ EMAIL_HOST_PASSWORD = '{password}'
+ EMAIL_PORT = 587
+```
+To add the recipients of these reports, you can add this in you settings.
+```sh
+ADMINS = (
+  ('{name}', '{email}'),
+)
+```
+You have to set **DEBUG=FALSE** in your settings to get these reports.
+
+**Custom Error Reporting** can be configured. You can get the example of it 
+in libs.error_reports.send_manually_error_email and 
+libs.custom_exceptions.InvalidInputDataException. 
 
 About the Landing Page
 ----------------------
