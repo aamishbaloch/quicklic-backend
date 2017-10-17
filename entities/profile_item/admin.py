@@ -35,6 +35,6 @@ admin.site.register(PatientProfile, PatientProfileAdmin)
 
 
 class DoctorSettingAdmin(admin.ModelAdmin):
-    list_display = ('id', 'doctor', 'start_time', 'end_time')
+    list_display = ('id', 'doctor', 'start_time', 'end_time', 'weekdays')
 
 admin.site.register(DoctorSetting, DoctorSettingAdmin)
