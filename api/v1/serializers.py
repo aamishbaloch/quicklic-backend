@@ -92,8 +92,9 @@ class DoctorSerializer(serializers.Serializer):
 
     def get_avatar(self, doctor):
         request = self.context.get('request')
-        url = doctor.avatar.url
-        return request.build_absolute_uri(url)
+        if doctor.avatar:
+            url = doctor.avatar.url
+            return request.build_absolute_uri(url)
 
 
 class DoctorUpdateSerializer(serializers.Serializer):
@@ -183,14 +184,13 @@ class PatientSerializer(serializers.Serializer):
         user = User.objects.create(**validated_data)
         user.set_password(validated_data['password'])
         user.save()
-        data = {'patient': user}
-        PatientProfile.objects.create(**data)
         return user
 
     def get_avatar(self, patient):
         request = self.context.get('request')
-        url = patient.avatar.url
-        return request.build_absolute_uri(url)
+        if patient.avatar:
+            url = patient.avatar.url
+            return request.build_absolute_uri(url)
 
 
 class PatientUpdateSerializer(serializers.Serializer):

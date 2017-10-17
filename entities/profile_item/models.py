@@ -1,5 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
 
 from entities.clinic.models import Country, Clinic, City
@@ -27,12 +29,12 @@ class Service(models.Model):
 
 class DoctorProfile(models.Model):
     doctor = models.OneToOneField(User, related_name="doctor_profile")
-    country = models.ForeignKey(Country, related_name="doctor_country")
-    city = models.ForeignKey(City, related_name="doctor_city")
+    country = models.ForeignKey(Country, related_name="doctor_country", blank=True, null=True)
+    city = models.ForeignKey(City, related_name="doctor_city", blank=True, null=True)
     clinic = models.ManyToManyField(Clinic, related_name="doctor_clinics")
     services = models.ManyToManyField(Service, related_name="doctor_services")
-    specialization = models.ForeignKey(Specialization, related_name="doctor_specialization")
-    degree = models.CharField(_('degree'), max_length=50, db_index=True)
+    specialization = models.ForeignKey(Specialization, related_name="doctor_specialization", blank=True, null=True)
+    degree = models.CharField(_('degree'), max_length=50, blank=True, null=True)
 
     def __str__(self):
         return "{} {}".format(self.doctor.first_name, self.doctor.last_name)
@@ -83,3 +85,19 @@ class PatientProfile(models.Model):
     class Meta:
         verbose_name = _('Patient Profile')
         verbose_name_plural = _('Patient Profiles')
+
+
+@receiver(post_save, sender=User)
+def user_post_save_callback(sender, instance, **kwargs):
+    """
+    Save mobile app history after saving the mobile app data.
+    """
+    user = instance
+    if user.role == User.Role.DOCTOR:
+        if not hasattr(user, "doctor_profile"):
+            doctor_profile = DoctorProfile(doctor=user)
+            doctor_profile.save()
+    elif user.role == User.Role.PATIENT:
+        if not hasattr(user, "patient_profile"):
+            patient_profile = PatientProfile(patient=user)
+            patient_profile.save()

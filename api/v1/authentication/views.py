@@ -33,7 +33,7 @@ class RegistrationView(APIView):
                 patient = serializer.save()
                 code = VerificationCode.generate_code_for_user(patient)
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
-            except IntegrityError:
+            except IntegrityError as e:
                 raise PatientExistsException()
         raise InvalidInputDataException(str(serializer.errors))
 
