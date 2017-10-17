@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from psycopg2.errorcodes import CLASS_OBJECT_NOT_IN_PREREQUISITE_STATE
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -6,7 +7,7 @@ from libs.authentication import UserAuthentication
 from libs.custom_exceptions import InvalidInputDataException
 from libs.permission import PatientPermission
 from libs.utils import str2bool
-from api.v1.serializers import PatientSerializer, PatientUpdateSerializer
+from api.v1.serializers import PatientSerializer, PatientUpdateSerializer, ClinicSerializer
 
 User = get_user_model()
 
@@ -78,3 +79,21 @@ class PatientView(APIView):
             serializer = PatientSerializer(patient, context={"request": request})
             return Response(serializer.data, status=status.HTTP_200_OK)
         raise InvalidInputDataException(str(serializer.errors))
+
+
+class PatientClinicView(APIView):
+    """
+    View for getting patient's clinics.
+
+    **Example requests**:
+
+        GET /patient/clinic/
+    """
+
+    authentication_classes = (UserAuthentication,)
+    permission_classes = (PatientPermission,)
+
+    def get(self, request):
+        clinics = request.user.patient_profile.clinic.filter(is_active=True)
+        serializer = ClinicSerializer(clinics, context={"request": request}, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
