@@ -24,17 +24,20 @@ admin.site.register(Specialization, SpecializationAdmin)
 
 class DoctorProfileAdmin(admin.ModelAdmin):
     list_display = ('id', 'doctor', 'specialization', 'country', 'city', 'degree')
+    search_fields = ('doctor__phone',)
 
 admin.site.register(DoctorProfile, DoctorProfileAdmin)
 
 
 class PatientProfileAdmin(admin.ModelAdmin):
     list_display = ('id', 'patient', 'occupation', 'country', 'city')
+    search_fields = ('patient__phone',)
 
 admin.site.register(PatientProfile, PatientProfileAdmin)
 
 
 class DoctorSettingAdmin(admin.ModelAdmin):
     list_display = ('id', 'doctor', 'start_time', 'end_time', 'weekdays')
+    search_fields = ('doctor__phone',)
 
 admin.site.register(DoctorSetting, DoctorSettingAdmin)

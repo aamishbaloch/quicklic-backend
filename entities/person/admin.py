@@ -48,7 +48,8 @@ class UserChangeForm(forms.ModelForm):
 class UserAdmin(OrigUserAdmin):
     add_form = UserCreationForm
     form = UserChangeForm
-    list_filter = ('first_name', 'last_name','phone', 'email', 'dob', 'verified')
+    search_fields = ('phone',)
+    list_filter = ('role', 'verified')
     list_display = (
         'id', 'first_name', 'last_name', 'verified', 'phone', 'email', 'gender', 'role', 'avatar', 'is_active',
         'is_staff', 'is_superuser', 'last_login', 'joined_on')
@@ -77,5 +78,6 @@ admin.site.register(User, UserAdmin)
 
 class VerificationCodeAdmin(admin.ModelAdmin):
     list_display = ('id', 'code', 'user')
+    search_fields = ('user__phone',)
 
 admin.site.register(VerificationCode, VerificationCodeAdmin)

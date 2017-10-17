@@ -37,5 +37,9 @@ class ClinicDoesNotExistsException(APIException):
     default_detail = "Clinic Does Not Exists"
 
 
+class ClinicAlreadyAddedException(AlreadyExistsException):
+    default_detail = "Clinic Already Added"
+
+
 class PatientExistsException(AlreadyExistsException):
     default_detail = "Patient Already Exists"

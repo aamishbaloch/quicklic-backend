@@ -7,7 +7,7 @@ from libs.authentication import UserAuthentication
 from libs.custom_exceptions import InvalidInputDataException
 from libs.permission import DoctorPermission
 from libs.utils import str2bool
-from api.v1.serializers import DoctorSerializer, DoctorUpdateSerializer
+from api.v1.serializers import DoctorSerializer, DoctorUpdateSerializer, ClinicSerializer
 
 User = get_user_model()
 
@@ -79,4 +79,22 @@ class DoctorListView(APIView):
         doctors = doctors.filter(is_active=str2bool(request.query_params.get('active', 'true'))).select_related('doctor_profile')
 
         serializer = DoctorSerializer(doctors, many=True, context={"request": request})
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class DoctorClinicView(APIView):
+    """
+    View for getting doctor's clinics.
+
+    **Example requests**:
+
+        GET /doctor/clinic/
+    """
+
+    authentication_classes = (UserAuthentication,)
+    permission_classes = (DoctorPermission,)
+
+    def get(self, request):
+        clinics = request.user.doctor_profile.clinic.filter(is_active=True)
+        serializer = ClinicSerializer(clinics, context={"request": request}, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
