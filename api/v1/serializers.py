@@ -125,6 +125,7 @@ class DoctorUpdateSerializer(serializers.Serializer):
         instance.address = validated_data['address'] if 'address' in validated_data else instance.address
         instance.phone = validated_data['phone'] if 'phone' in validated_data else instance.phone
         instance.dob = validated_data['dob'] if 'dob' in validated_data else instance.dob
+        instance.save()
 
         if 'city' in validated_data and validated_data['city']:
             city, created = City.objects.get_or_create(name=validated_data['city'])
@@ -146,7 +147,7 @@ class DoctorUpdateSerializer(serializers.Serializer):
                 instance.doctor_profile.services.add(service)
 
         instance.doctor_profile.degree = validated_data['degree'] if 'degree' in validated_data else instance.doctor_profile.degree
-        instance.save()
+        instance.doctor_profile.save()
 
         return instance
 
@@ -221,6 +222,7 @@ class PatientUpdateSerializer(serializers.Serializer):
         instance.address = validated_data['address'] if 'address' in validated_data else instance.address
         instance.email = validated_data['email'] if 'email' in validated_data else instance.email
         instance.dob = validated_data['dob'] if 'dob' in validated_data else instance.dob
+        instance.save()
 
         if 'city' in validated_data and validated_data['city']:
             city, created = City.objects.get_or_create(name=validated_data['city'])
@@ -237,7 +239,7 @@ class PatientUpdateSerializer(serializers.Serializer):
         instance.patient_profile.marital_status = validated_data['marital_status'] if 'marital_status' in validated_data else instance.patient_profile.marital_status
         instance.patient_profile.height = validated_data['height'] if 'height' in validated_data else instance.patient_profile.height
         instance.patient_profile.weight = validated_data['weight'] if 'weight' in validated_data else instance.patient_profile.weight
-        instance.save()
+        instance.patient_profile.save()
 
         return instance
 
