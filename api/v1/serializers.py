@@ -103,10 +103,8 @@ class DoctorUpdateSerializer(serializers.Serializer):
     email = serializers.EmailField(required=False, allow_null=True)
     first_name = serializers.CharField(max_length=255)
     last_name = serializers.CharField(max_length=255)
-    gender = serializers.IntegerField(required=False, allow_null=True)
     avatar = serializers.FileField(required=False, allow_null=True)
     address = serializers.CharField(max_length=500, required=False, allow_null=True)
-    phone = serializers.CharField(max_length=15)
     dob = serializers.DateField(required=False, allow_null=True)
     city = serializers.CharField(required=False, allow_null=True)
     country = serializers.CharField(required=False, allow_null=True)
@@ -120,10 +118,8 @@ class DoctorUpdateSerializer(serializers.Serializer):
 
         instance.first_name = validated_data['first_name'] if 'first_name' in validated_data else instance.first_name
         instance.last_name = validated_data['last_name'] if 'last_name' in validated_data else instance.last_name
-        instance.gender = validated_data['gender'] if 'gender' in validated_data else instance.gender
         instance.avatar = validated_data['avatar'] if 'avatar' in validated_data else instance.avatar
         instance.address = validated_data['address'] if 'address' in validated_data else instance.address
-        instance.phone = validated_data['phone'] if 'phone' in validated_data else instance.phone
         instance.dob = validated_data['dob'] if 'dob' in validated_data else instance.dob
         instance.save()
 
@@ -200,7 +196,6 @@ class PatientUpdateSerializer(serializers.Serializer):
     first_name = serializers.CharField(max_length=255)
     email = serializers.EmailField(required=False, allow_null=True)
     last_name = serializers.CharField(max_length=255)
-    gender = serializers.IntegerField(required=False, allow_null=True)
     avatar = serializers.FileField(required=False, allow_null=True)
     address = serializers.CharField(max_length=500, required=False, allow_null=True)
     dob = serializers.DateField(required=False, allow_null=True)
@@ -217,7 +212,6 @@ class PatientUpdateSerializer(serializers.Serializer):
 
         instance.first_name = validated_data['first_name'] if 'first_name' in validated_data else instance.first_name
         instance.last_name = validated_data['last_name'] if 'last_name' in validated_data else instance.last_name
-        instance.gender = validated_data['gender'] if 'gender' in validated_data else instance.gender
         instance.avatar = validated_data['avatar'] if 'avatar' in validated_data else instance.avatar
         instance.address = validated_data['address'] if 'address' in validated_data else instance.address
         instance.email = validated_data['email'] if 'email' in validated_data else instance.email
