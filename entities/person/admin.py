@@ -18,6 +18,7 @@ class UserCreationForm(forms.ModelForm):
         model = User
         fields = ('phone', 'email', 'first_name', 'last_name', 'gender', 'is_staff', 'role', 'is_superuser', 'dob',
                   'avatar', 'verified')
+        readonly_fields = ('dob',)
 
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1")

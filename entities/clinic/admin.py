@@ -15,7 +15,7 @@ admin.site.register(City, CityAdmin)
 
 
 class ClinicAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'code', 'phone', 'city', 'country', 'is_active', 'created_at')
+    list_display = ('id', 'name', 'phone', 'code', 'city', 'country', 'is_active', 'created_at')
     search_fields = ('name', 'code')
     list_filter = ('is_active',)
 

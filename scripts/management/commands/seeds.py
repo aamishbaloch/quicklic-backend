@@ -28,7 +28,7 @@ class Command(BaseCommand):
             if created:
                 self.stdout.write("New Country Created: {}".format(country.name))
             for city_detail in country_detail["city_data"]:
-                city, created = City.objects.get_or_create(name=city_detail["name"], country_id=country.id)
+                city, created = City.objects.get_or_create(name=city_detail["name"])
                 if created:
                     self.stdout.write("New City Created in Country {}: {}".format(country.name, city.name))
 

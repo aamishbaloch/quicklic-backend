@@ -1,8 +1,8 @@
 from django.contrib.auth import get_user_model
-from psycopg2.errorcodes import CLASS_OBJECT_NOT_IN_PREREQUISITE_STATE
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from django.db.models import Q
 from libs.authentication import UserAuthentication
 from libs.custom_exceptions import InvalidInputDataException
 from libs.permission import PatientPermission
@@ -27,6 +27,7 @@ class PatientListView(APIView):
         - city_id=1
         - occupation_id=1
         - marital_status=2
+        - query=aamish
     """
 
     authentication_classes = (UserAuthentication,)
@@ -48,6 +49,9 @@ class PatientListView(APIView):
 
         if 'marital_status' in request.query_params:
             patients = patients.filter(patient_profile__marital_status=request.query_params.get('marital_status'))
+
+        if 'query' in request.query_params:
+            patients = patients.filter(Q(first_name__icontains=request.query_params.get('query')) | Q(last_name__icontains=request.query_params.get('query')))
 
         patients = patients.filter(is_active=str2bool(request.query_params.get('active', 'true'))).select_related('patient_profile')
 

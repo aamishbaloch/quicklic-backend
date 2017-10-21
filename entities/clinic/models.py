@@ -1,3 +1,4 @@
+from django.core.validators import RegexValidator, MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -29,7 +30,10 @@ class City(models.Model):
 
 
 class Clinic(models.Model):
-    code = models.CharField(_('code'), max_length=255, db_index=True)
+    code = models.IntegerField(_('code'), validators=[
+            MaxValueValidator(999999),
+            MinValueValidator(100000)
+        ], db_index=True)
     name = models.CharField(_('name'), max_length=255, db_index=True)
     phone = models.CharField(_('phone'), max_length=255)
     location = models.CharField(_('location'), max_length=255)
