@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
+from django.db.models import Q
 from libs.authentication import UserAuthentication
 from libs.custom_exceptions import InvalidInputDataException
 from libs.permission import DoctorPermission
@@ -53,11 +53,12 @@ class DoctorListView(APIView):
         - city_id=1
         - specialization_id=1
         - services_ids=1,2,3
+        - query=aamish
     """
 
     authentication_classes = (UserAuthentication,)
 
-    def get(self, request, user):
+    def get(self, request):
         doctors = User.objects.filter(role=User.Role.DOCTOR)
 
         if 'clinic_id' in request.query_params:
@@ -75,6 +76,9 @@ class DoctorListView(APIView):
         if 'services_ids' in request.query_params:
             service_ids = [int(id) for id in request.query_params.get('services_ids').split(',')]
             doctors = doctors.filter(doctor_profile__services__in=service_ids)
+
+        if 'query' in request.query_params:
+            doctors = doctors.filter(Q(first_name__icontains=request.query_params.get('query')) | Q(last_name__icontains=request.query_params.get('query')))
 
         doctors = doctors.filter(is_active=str2bool(request.query_params.get('active', 'true'))).select_related('doctor_profile')
 

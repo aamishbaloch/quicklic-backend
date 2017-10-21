@@ -5,8 +5,7 @@ from entities.profile_item.models import DoctorProfile, Specialization, Service,
 from libs.jwt_helper import JWTHelper
 import uuid
 from entities.appointment.models import Appointment, AppointmentReason
-from entities.profile_item.models import DoctorSetting
-from django.db.models import Q
+from libs.utils import get_qid_code
 
 User = get_user_model()
 
@@ -73,7 +72,6 @@ class DoctorSerializer(serializers.Serializer):
     address = serializers.CharField(max_length=500, required=False, allow_null=True)
     phone = serializers.CharField(max_length=15)
     dob = serializers.DateField(required=False, allow_null=True)
-    clinic = ClinicSerializer(many=True, source='doctor_profile.clinic', required=False, allow_null=True)
     city = CitySerializer(source='doctor_profile.city', required=False, allow_null=True)
     country = CountrySerializer(source='doctor_profile.country', required=False, allow_null=True)
     services = ServiceSerializer(many=True, source='doctor_profile.services', required=False, allow_null=True)
@@ -247,7 +245,7 @@ class PatientLoginSerializer(PatientSerializer):
 
 
 class AppointmentSerializer(serializers.ModelSerializer):
-    qid = serializers.UUIDField(default=uuid.uuid4())
+    qid = serializers.CharField(required=False, read_only=True)
     status = serializers.CharField(required=False)
     reason = serializers.CharField()
 
@@ -260,6 +258,8 @@ class AppointmentSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         validated_data['status'] = Appointment.Status.PENDING
+
+        validated_data['qid'] = "{}-{}-{}".format(validated_data['patient'].id, validated_data['doctor'].id, get_qid_code())
 
         reason, created = AppointmentReason.objects.get_or_create(name=validated_data['reason'])
         validated_data['reason'] = reason

@@ -4,6 +4,7 @@ from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
+from datetime import datetime
 
 from libs.managers import QueryManager
 from libs.utils import get_verification_code
@@ -82,11 +83,11 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     is_active = models.BooleanField(_('active'), default=True)
     avatar = models.ImageField(upload_to='uploads/avatars/', null=True, blank=True)
-    gender = models.IntegerField(_('gender'), choices=Gender.Choices, blank=True, default=Gender.UNKNOWN)
+    gender = models.IntegerField(_('gender'), choices=Gender.Choices, default=Gender.UNKNOWN)
     role = models.IntegerField(_('role'), choices=Role.Choices)
     address = models.CharField(_('address'), max_length=255, blank=True, null=True)
     phone = models.CharField(_('phone'), max_length=255, unique=True)
-    dob = models.DateField(blank=True, null=True)
+    dob = models.DateField(_('date of birth'), default=timezone.now().date())
     verified = models.BooleanField(default=False)
 
     objects = UserManager()
