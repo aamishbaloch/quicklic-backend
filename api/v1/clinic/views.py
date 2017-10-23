@@ -31,29 +31,3 @@ class ClinicView(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Clinic.DoesNotExist:
             raise ClinicDoesNotExistsException()
-
-
-class AddPatientToClinicView(APIView):
-    """
-    View for adding patient into clinic through code.
-
-    **Example requests**:
-
-        POST /clinic/add/patient/
-            - code=CODE123
-    """
-
-    authentication_classes = (UserAuthentication,)
-    permission_classes = (PatientPermission,)
-
-    def post(self, request):
-        code = request.data.get("code", None)
-        try:
-            clinic = Clinic.objects.get(code=code)
-            if request.user.patient_profile.clinic.filter(code=code).count() <= 0:
-                request.user.patient_profile.clinic.add(clinic)
-                return Response({}, status=status.HTTP_200_OK)
-            else:
-                raise ClinicAlreadyAddedException()
-        except Clinic.DoesNotExist:
-            raise ClinicDoesNotExistsException()
