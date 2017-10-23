@@ -3,8 +3,10 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.db.models import Q
+
+from entities.clinic.models import Clinic
 from libs.authentication import UserAuthentication
-from libs.custom_exceptions import InvalidInputDataException
+from libs.custom_exceptions import InvalidInputDataException, ClinicDoesNotExistsException, ClinicAlreadyAddedException
 from libs.permission import PatientPermission
 from libs.utils import str2bool
 from api.v1.serializers import PatientSerializer, PatientUpdateSerializer, ClinicSerializer
@@ -87,11 +89,14 @@ class PatientView(APIView):
 
 class PatientClinicView(APIView):
     """
-    View for getting patient's clinics.
+    View for getting & creating patient's clinics.
 
     **Example requests**:
 
         GET /patient/clinic/
+        POST /patient/clinic/
+            - code=CODE123
+        DELETE /patient/clinic/{id}
     """
 
     authentication_classes = (UserAuthentication,)
@@ -101,3 +106,28 @@ class PatientClinicView(APIView):
         clinics = request.user.patient_profile.clinic.filter(is_active=True)
         serializer = ClinicSerializer(clinics, context={"request": request}, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request):
+        code = request.data.get("code", None)
+        try:
+            clinic = Clinic.objects.get(code=code)
+            if request.user.patient_profile.clinic.filter(code=code).count() <= 0:
+                request.user.patient_profile.clinic.add(clinic)
+                return Response({}, status=status.HTTP_200_OK)
+            else:
+                raise ClinicAlreadyAddedException()
+        except Clinic.DoesNotExist:
+            raise ClinicDoesNotExistsException()
+
+    def delete(self, request, clinic_id):
+        try:
+            clinic = Clinic.objects.get(id=clinic_id)
+            if request.user.patient_profile.clinic.filter(id=clinic_id).count() <= 0:
+                raise ClinicDoesNotExistsException()
+            else:
+                request.user.patient_profile.clinic.remove(clinic)
+                request.user.patient_profile.save()
+                return Response({}, status=status.HTTP_200_OK)
+        except Clinic.DoesNotExist:
+            raise ClinicDoesNotExistsException()
+
