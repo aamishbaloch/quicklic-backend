@@ -10,6 +10,7 @@ from libs.authentication import UserAuthentication
 from libs.custom_exceptions import InvalidInputDataException, InvalidCredentialsException, \
     PatientExistsException, InvalidVerificationCodeException
 from libs.permission import PatientPermission
+from libs.twilio_helper import TwilioHelper
 
 User = get_user_model()
 
@@ -32,6 +33,7 @@ class RegistrationView(APIView):
             try:
                 patient = serializer.save()
                 code = VerificationCode.generate_code_for_user(patient)
+                TwilioHelper().message("hahaha", code)
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             except IntegrityError as e:
                 raise PatientExistsException()
