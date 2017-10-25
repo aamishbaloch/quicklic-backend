@@ -46,3 +46,4 @@ def convert_to_datetime(date_str, time):
 
 def convert_to_datetime_from_datetime_string(datetime_str):
     return datetime.strptime(datetime_str, "%Y-%m-%d %H:%M")
+
