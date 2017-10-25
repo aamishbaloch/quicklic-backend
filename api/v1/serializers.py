@@ -1,11 +1,17 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from entities.clinic.models import City, Country, Clinic
-from entities.profile_item.models import DoctorProfile, Specialization, Service, Occupation, PatientProfile
+from entities.profile_item.models import DoctorProfile, Specialization, Service, Occupation, PatientProfile, DoctorSetting
 from libs.jwt_helper import JWTHelper
 import uuid
 from entities.appointment.models import Appointment, AppointmentReason
-from libs.utils import get_qid_code
+from libs.utils import (
+    get_qid_code,
+    get_weekday_from_datetime,
+    get_split_datetime,
+    convert_to_datetime,
+    convert_to_datetime_from_datetime_string
+)
 
 User = get_user_model()
 
@@ -258,9 +264,6 @@ class AppointmentSerializer(serializers.ModelSerializer):
         ]
 
     def create(self, validated_data):
-        # appointment = Appointment.objects.create(**validated_data)
-
-        # return appointment
 
         validated_data['status'] = Appointment.Status.PENDING
 
@@ -269,40 +272,54 @@ class AppointmentSerializer(serializers.ModelSerializer):
         reason, created = AppointmentReason.objects.get_or_create(name=validated_data['reason'])
         validated_data['reason'] = reason
 
-        appointment_start_datetime = validated_data['start_datetime']
-        appointment_end_datetime = validated_data['end_datetime']
-        doctor = validated_data.pop('doctor')
+        appointment_start_datetime_str = validated_data['start_datetime']
+        appointment_end_datetime_str = validated_data['end_datetime']
+
+        doctor_id = validated_data.pop('doctor')
         reason = validated_data.pop('reason')
-        clinic = validated_data.pop('clinic')
+        clinic_id = validated_data.pop('clinic')
+        patient_id = validated_data.pop('patient')
 
-        doc_setting = DoctorSetting.objects.filter(doctor__doctor_id=doctor).first()
-        doctor_start_datetime = doc_setting.start_datetime
-        doctor_end_datetime = doc_setting.end_datetime
+        clinic_object = Clinic.objects.filter(id=clinic_id).first()
+        doctor_object = DoctorProfile.objects.filter(id=doctor_id, clinic=clinic_object).first()
+        doc_setting_obj = DoctorSetting.objects.filter(doctor__doctor_profile=doctor_object).first()
 
-        appointments = Appointment.objects.filter(
-            doctor=doctor,
-            start_datetime__gte=doctor_start_datetime,
-            end_datetime__lte=doctor_end_datetime,
-            status='CONF'
-        )
+        if doc_setting_obj and doc_setting_obj.weekdays[get_weekday_from_datetime(appointment_start_datetime_str)]:
 
-        if appointment_start_datetime >= doctor_start_datetime and appointment_end_datetime <= doctor_end_datetime:
-            for obj in appointments:
-                start = obj.start_datetime
-                end = obj.end_datetime
-                # (StartDate1 <= EndDate2) and (StartDate2 <= EndDate1)
-                datetime_range_overlap = max(appointment_start_datetime, start) < min(appointment_end_datetime, end)
-                if datetime_range_overlap:
-                    return "Error: Overlap timing."
+            start_date, start_time = get_split_datetime(appointment_start_datetime_str)
+            end_date, end_time = get_split_datetime(appointment_end_datetime_str)
 
-            return Appointment.objects.create(
-                reason=reason,
-                clinic=clinic,
-                doctor=doctor,
-                status='PEND',
-                is_active=True,
-                **validated_data
+            doctor_start_datetime = convert_to_datetime(start_date, doc_setting_obj.start_time)
+            doctor_end_datetime = convert_to_datetime(end_date, doc_setting_obj.end_time)
+
+            appointment_start_datetime = convert_to_datetime_from_datetime_string(appointment_start_datetime_str)
+            appointment_end_datetime = convert_to_datetime_from_datetime_string(appointment_end_datetime_str)
+
+            appointments = Appointment.objects.filter(
+                doctor=doctor_object,
+                start_datetime__gte=doctor_start_datetime,
+                end_datetime__lte=doctor_end_datetime,
+                status=Appointment.Status.CONFIRM
             )
+
+            if appointment_start_datetime >= doctor_start_datetime and appointment_end_datetime <= doctor_end_datetime:
+                for obj in appointments:
+                    start = obj.start_datetime
+                    end = obj.end_datetime
+                    # (StartDate1 <= EndDate2) and (StartDate2 <= EndDate1)
+                    datetime_range_overlap = max(appointment_start_datetime, start) < min(appointment_end_datetime, end)
+                    if datetime_range_overlap:
+                        return "Error: Overlap timing."
+
+                return Appointment.objects.create(
+                    patient=patient_id,
+                    reason=reason,
+                    clinic=clinic_object,
+                    doctor=doctor_object,
+                    is_active=True,
+                    **validated_data
+                )
+
         return Appointment()
 
 
