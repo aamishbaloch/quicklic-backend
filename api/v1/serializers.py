@@ -8,9 +8,8 @@ from entities.appointment.models import Appointment, AppointmentReason
 from libs.utils import (
     get_qid_code,
     get_weekday_from_datetime,
-    get_split_datetime,
-    convert_to_datetime,
-    convert_to_datetime_from_datetime_string
+    get_time_from_datetime,
+    merge_date_and_time,
 )
 
 
@@ -276,44 +275,43 @@ class AppointmentSerializer(serializers.ModelSerializer):
         appointment_start_datetime_str = validated_data['start_datetime']
         appointment_end_datetime_str = validated_data['end_datetime']
 
-        doctor_id = validated_data.pop('doctor')
+        doctor = validated_data.pop('doctor')
         reason = validated_data.pop('reason')
-        clinic_id = validated_data.pop('clinic')
-        patient_id = validated_data.pop('patient')
+        clinic = validated_data.pop('clinic')
+        patient = validated_data.pop('patient')
 
-        clinic_object = Clinic.objects.filter(id=clinic_id).first()
-        doctor_object = DoctorProfile.objects.filter(id=doctor_id, clinic=clinic_object).first()
-        doc_setting_obj = DoctorSetting.objects.filter(doctor__doctor_profile=doctor_object).first()
+        clinic_object = Clinic.objects.filter(id=clinic.id).first()
+        doctor_object = DoctorProfile.objects.filter(doctor=doctor, clinic=clinic_object).first()
+        doc_setting_obj = DoctorSetting.objects.filter(doctor=doctor).first()
 
         if doc_setting_obj and doc_setting_obj.weekdays[get_weekday_from_datetime(appointment_start_datetime_str)]:
+            appointment_start_time = get_time_from_datetime(appointment_start_datetime_str)
+            appointment_end_time = get_time_from_datetime(appointment_end_datetime_str)
 
-            start_date, start_time = get_split_datetime(appointment_start_datetime_str)
-            end_date, end_time = get_split_datetime(appointment_end_datetime_str)
+            doctor_start_time = doc_setting_obj.start_time
+            doctor_end_time = doc_setting_obj.end_time
 
-            doctor_start_datetime = convert_to_datetime(start_date, doc_setting_obj.start_time)
-            doctor_end_datetime = convert_to_datetime(end_date, doc_setting_obj.end_time)
-
-            appointment_start_datetime = convert_to_datetime_from_datetime_string(appointment_start_datetime_str)
-            appointment_end_datetime = convert_to_datetime_from_datetime_string(appointment_end_datetime_str)
+            doctor_start_datetime = merge_date_and_time(appointment_start_datetime_str, doctor_start_time)
+            doctor_end_datetime = merge_date_and_time(appointment_start_datetime_str, doctor_end_time)
 
             appointments = Appointment.objects.filter(
-                doctor=doctor_object,
+                doctor=doctor,
                 start_datetime__gte=doctor_start_datetime,
                 end_datetime__lte=doctor_end_datetime,
-                status=Appointment.Status.CONFIRM
+                status=1
             )
 
-            if appointment_start_datetime >= doctor_start_datetime and appointment_end_datetime <= doctor_end_datetime:
-                for obj in appointments:
-                    start = obj.start_datetime
-                    end = obj.end_datetime
+            if appointment_start_time >= doctor_start_time and appointment_end_time <= doctor_end_time:
+                for appointment in appointments:
+                    start = appointment.start_datetime
+                    end = appointment.end_datetime
                     # (StartDate1 <= EndDate2) and (StartDate2 <= EndDate1)
-                    datetime_range_overlap = max(appointment_start_datetime, start) < min(appointment_end_datetime, end)
-                    if datetime_range_overlap:
+                    time_range_overlap = max(appointment_start_time, start) < min(appointment_end_time, end)
+                    if time_range_overlap:
                         return "Error: Overlap timing."
 
                 return Appointment.objects.create(
-                    patient=patient_id,
+                    patient=patient,
                     reason=reason,
                     clinic=clinic_object,
                     doctor=doctor_object,
