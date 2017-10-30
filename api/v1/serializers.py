@@ -272,8 +272,8 @@ class AppointmentSerializer(serializers.ModelSerializer):
         reason, created = AppointmentReason.objects.get_or_create(name=validated_data['reason'])
         validated_data['reason'] = reason
 
-        appointment_start_datetime_str = validated_data['start_datetime']
-        appointment_end_datetime_str = validated_data['end_datetime']
+        appointment_start_datetime = validated_data.pop('start_datetime')
+        appointment_end_datetime = validated_data.pop('end_datetime')
 
         doctor = validated_data.pop('doctor')
         reason = validated_data.pop('reason')
@@ -284,15 +284,15 @@ class AppointmentSerializer(serializers.ModelSerializer):
         doctor_object = DoctorProfile.objects.filter(doctor=doctor, clinic=clinic_object).first()
         doc_setting_obj = DoctorSetting.objects.filter(doctor=doctor).first()
 
-        if doc_setting_obj and doc_setting_obj.weekdays[get_weekday_from_datetime(appointment_start_datetime_str)]:
-            appointment_start_time = get_time_from_datetime(appointment_start_datetime_str)
-            appointment_end_time = get_time_from_datetime(appointment_end_datetime_str)
+        if doc_setting_obj and doc_setting_obj.weekdays[get_weekday_from_datetime(appointment_start_datetime)]:
+            appointment_start_time = get_time_from_datetime(appointment_start_datetime)
+            appointment_end_time = get_time_from_datetime(appointment_end_datetime)
 
             doctor_start_time = doc_setting_obj.start_time
             doctor_end_time = doc_setting_obj.end_time
 
-            doctor_start_datetime = merge_date_and_time(appointment_start_datetime_str, doctor_start_time)
-            doctor_end_datetime = merge_date_and_time(appointment_start_datetime_str, doctor_end_time)
+            doctor_start_datetime = merge_date_and_time(appointment_start_datetime, doctor_start_time)
+            doctor_end_datetime = merge_date_and_time(appointment_start_datetime, doctor_end_time)
 
             appointments = Appointment.objects.filter(
                 doctor=doctor,
@@ -315,12 +315,18 @@ class AppointmentSerializer(serializers.ModelSerializer):
                     reason=reason,
                     clinic=clinic_object,
                     doctor=doctor_object,
-                    is_active=True,
+                    is_active= True,
+                    start_datetime=appointment_start_datetime,
+                    end_datetime=appointment_end_datetime,
                     **validated_data
                 )
 
         return Appointment()
 
+    def update(self, instance, validated_data):
+        instance.status = validated_data['status']
+        instance.save()
+        return instance
 
 
 

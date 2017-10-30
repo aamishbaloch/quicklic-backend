@@ -4,4 +4,5 @@ from . import views
 urlpatterns = [
     url(r'^$', views.AppointmentView.as_view()),
     url(r'^list$', views.AppointmentListView.as_view()),
+    url(r'^status$', views.AppointmentStatusAPIView.as_view()),
 ]
