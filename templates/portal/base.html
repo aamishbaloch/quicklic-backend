@@ -1,0 +1,30 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    {% include 'portal/includes/header.html' %}
+</head>
+
+<body>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="my-alert alert alert-dismissable alert-{{ message.tags }}">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    <div id="app">
+        {% include 'portal/includes/navbar.html' %}
+			<div class="app-content">
+				{% include 'portal/includes/top_navbar.html' %}
+				<div class="main-content" >
+                    {% block body_block %}{% endblock %}
+				</div>
+			</div>
+            {% include 'portal/includes/footer.html' %}
+    </div>
+    {% include 'portal/includes/footer_includes.html' %}
+</body>
+</html>
