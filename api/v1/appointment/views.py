@@ -28,7 +28,7 @@ class AppointmentView(APIView):
     permission_classes = (PatientDoctorPermission,)
 
     def post(self, request):
-        serializer = AppointmentSerializer(data=request.data)
+        serializer = AppointmentSerializer(data=request.data, context={"request": request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
@@ -38,7 +38,7 @@ class AppointmentView(APIView):
         id = request.query_params.get("id", None)
         try:
             appointment = Appointment.objects.get(id=id)
-            serializer = AppointmentSerializer(appointment)
+            serializer = AppointmentSerializer(appointment, context={"request": request})
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Appointment.DoesNotExist:
             raise AppointmentDoesNotExistsException()
@@ -93,5 +93,5 @@ class AppointmentListView(APIView):
         if 'reason_id' in request.query_params:
             appointments = appointments.filter(reason_id=request.query_params.get('reason_id'))
 
-        serializer = AppointmentSerializer(appointments, many=True)
+        serializer = AppointmentSerializer(appointments, context={"request": request}, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
