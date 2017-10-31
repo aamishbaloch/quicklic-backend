@@ -118,6 +118,16 @@ class User(AbstractBaseUser, PermissionsMixin):
         '''
         send_mail(subject, message, from_email, [self.email], **kwargs)
 
+    def is_admin(self):
+        return User.Role.ADMIN == self.role
+
+    def is_doctor(self):
+        return User.Role.DOCTOR == self.role
+
+    def is_qadmin(self):
+        return User.Role.QADMIN == self.role
+
+
 
 class VerificationCode(models.Model):
     user = models.OneToOneField(User, related_name="verification_code")
