@@ -5,6 +5,14 @@
 <head>
     {% include 'portal/includes/header.html' %}
     <body class="login">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-dismissable alert-{{ message.tags }}">
+                    <a href="#" class="closebtn" data-dismiss="alert" aria-label="close">&times;</a>
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
         <!-- start: LOGIN -->
         <div class="row">
             <div class="main-login col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4">
@@ -13,7 +21,8 @@
                 </div>
                 <!-- start: LOGIN BOX -->
                 <div class="box-login">
-                    <form class="form-login" action="index.html">
+                    <form class="form-login" action="{% url 'portal:login' %}" method="post" >
+                        {% csrf_token %}
                         <fieldset>
                             <legend>
                                 Sign in to your account
@@ -23,7 +32,7 @@
                             </p>
                             <div class="form-group">
                                 <span class="input-icon">
-                                    <input type="text" class="form-control" name="username" placeholder="Username">
+                                    <input type="tel" class="form-control" name="phone" placeholder="phone">
                                     <i class="fa fa-user"></i> </span>
                             </div>
                             <div class="form-group form-actions">
@@ -35,12 +44,6 @@
                                     </a> </span>
                             </div>
                             <div class="form-actions">
-                                <div class="checkbox clip-check check-primary">
-                                    <input type="checkbox" id="remember" value="1">
-                                    <label for="remember">
-                                        Keep me signed in
-                                    </label>
-                                </div>
                                 <button type="submit" class="btn btn-primary pull-right">
                                     Login <i class="fa fa-arrow-circle-right"></i>
                                 </button>
