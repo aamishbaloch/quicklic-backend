@@ -58,10 +58,25 @@ class DoctorSetting(models.Model):
     @staticmethod
     def create_settings(user):
         start_time = end_time = get_time_from_string("00:00")
-        doctor_setting = DoctorSetting(doctor=user, start_time=start_time, end_time=end_time, weekdays=[True, True, True, True, True, False, False])
+        doctor_setting = DoctorSetting(
+            doctor=user, start_time=start_time,
+            end_time=end_time,
+            weekdays=[True, True, True, True, True, False, False]
+        )
         doctor_setting.save()
-
         return doctor_setting
+
+    def get_weekdays_dict(self):
+        weekdays = {
+            "Monday": self.weekdays[0],
+            "Tuesday": self.weekdays[1],
+            "Wednesday": self.weekdays[2],
+            "Thursday": self.weekdays[3],
+            "Friday": self.weekdays[4],
+            "Saturday": self.weekdays[5],
+            "Sunday": self.weekdays[6],
+        }
+        return weekdays
 
 
 class Occupation(models.Model):

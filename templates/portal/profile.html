@@ -1,0 +1,450 @@
+{% extends "portal/base.html" %}
+{% load static %}
+
+{% block body_block %}
+    <div class="wrap-content container" id="container">
+        <!-- start: USER PROFILE -->
+        <div class="container-fluid container-fullw bg-white">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="tabbable">
+                        <ul class="nav nav-tabs tab-padding tab-space-3 tab-blue" id="myTab4">
+                            <li class="active">
+                                <a data-toggle="tab" href="pages_user_profile.html#panel_overview">
+                                    Overview
+                                </a>
+                            </li>
+                            <li>
+                                <a data-toggle="tab" href="pages_user_profile.html#panel_edit_account">
+                                    Edit Account
+                                </a>
+                            </li>
+                            <li>
+                                <a data-toggle="tab" href="pages_user_profile.html#panel_projects">
+                                    Clinics
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div id="panel_overview" class="tab-pane fade in active">
+                                <div class="row">
+                                    <div class="col-sm-5 col-md-4">
+                                        <div class="user-left">
+                                            <div class="center">
+                                                <h4>{{ user.get_full_name }}</h4>
+                                                <div class="fileinput fileinput-new" data-provides="fileinput">
+                                                    <div class="user-image">
+                                                        <div class="fileinput-new thumbnail">
+                                                            <img src="{{ user.avatar.url }}" alt="">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <table class="table table-condensed">
+                                                <thead>
+                                                    <tr>
+                                                        <th colspan="3">Contact Information</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>phone:</td>
+                                                        <td>{{ user.phone }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>email:</td>
+                                                        <td>
+                                                            {{ user.email }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>address:</td>
+                                                        <td>
+                                                            {{ user.address }}
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th colspan="3">General information</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>City</td>
+                                                        <td>{{ user.doctor_profile.city }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Country</td>
+                                                        <td>{{ user.doctor_profile.country }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Degree</td>
+                                                        <td>{{ user.doctor_profile.degree }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Status</td>
+                                                        <td>
+                                                            <span class="label label-sm label-info">
+                                                                {{ user.status }}
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th colspan="3">Additional information</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Birth</td>
+                                                        <td>{{ user.dob }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Gender</td>
+                                                        <td>{{ user.get_gender }}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-7 col-md-8">
+                                        <table class="table table-condensed">
+                                                <thead>
+                                                    <tr>
+                                                        <th colspan="3">Settings</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Timings:</td>
+                                                        <td>{{ settings.start_time }} - {{ settings.end_time }}</td>
+                                                    </tr>
+                                                </tbody>
+                                                <thead>
+                                                    <tr>
+                                                        <th colspan="3">Weekdays Schedule</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Monday:</td>
+                                                        <td>
+                                                            {% if settings.weekdays.0 == True %}
+                                                                <span class="label label-sm label-info">
+                                                                    Open
+                                                                </span>
+                                                            {% else %}
+                                                                <span class="label label-sm label-danger">
+                                                                    Closed
+                                                                </span>
+                                                            {% endif %}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Tuesday:</td>
+                                                        <td>
+                                                            {% if settings.weekdays.1 == True %}
+                                                                <span class="label label-sm label-info">
+                                                                    Open
+                                                                </span>
+                                                            {% else %}
+                                                                <span class="label label-sm label-danger">
+                                                                    Closed
+                                                                </span>
+                                                            {% endif %}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Wednesday:</td>
+                                                        <td>
+                                                            {% if settings.weekdays.2 == True %}
+                                                                <span class="label label-sm label-info">
+                                                                    Open
+                                                                </span>
+                                                            {% else %}
+                                                                <span class="label label-sm label-danger">
+                                                                    Closed
+                                                                </span>
+                                                            {% endif %}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Thursday:</td>
+                                                        <td>
+                                                            {% if settings.weekdays.3 == True %}
+                                                                <span class="label label-sm label-info">
+                                                                    Open
+                                                                </span>
+                                                            {% else %}
+                                                                <span class="label label-sm label-danger">
+                                                                    Closed
+                                                                </span>
+                                                            {% endif %}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Friday:</td>
+                                                        <td>
+                                                            {% if settings.weekdays.4 == True %}
+                                                                <span class="label label-sm label-info">
+                                                                    Open
+                                                                </span>
+                                                            {% else %}
+                                                                <span class="label label-sm label-danger">
+                                                                    Closed
+                                                                </span>
+                                                            {% endif %}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Saturday:</td>
+                                                        <td>
+                                                            {% if settings.weekdays.5 == True %}
+                                                                <span class="label label-sm label-info">
+                                                                    Open
+                                                                </span>
+                                                            {% else %}
+                                                                <span class="label label-sm label-danger">
+                                                                    Closed
+                                                                </span>
+                                                            {% endif %}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Sunday:</td>
+                                                        <td>
+                                                            {% if settings.weekdays.6 == True %}
+                                                                <span class="label label-sm label-info">
+                                                                    Open
+                                                                </span>
+                                                            {% else %}
+                                                                <span class="label label-sm label-danger">
+                                                                    Closed
+                                                                </span>
+                                                            {% endif %}
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="panel_edit_account" class="tab-pane fade">
+                                <form action="#" role="form" id="form">
+                                    <fieldset>
+                                        <legend>
+                                            Account Info
+                                        </legend>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label">
+                                                        First Name
+                                                    </label>
+                                                    <input type="text" placeholder="Peter" class="form-control" id="firstname" name="firstname">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label">
+                                                        Last Name
+                                                    </label>
+                                                    <input type="text" placeholder="Clark" class="form-control" id="lastname" name="lastname">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label">
+                                                        Email Address
+                                                    </label>
+                                                    <input type="email" placeholder="peter@example.com" class="form-control" id="email" name="email">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label">
+                                                        Phone
+                                                    </label>
+                                                    <input type="email" placeholder="(641)-734-4763" class="form-control" id="phone" name="email">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label">
+                                                        Password
+                                                    </label>
+                                                    <input type="password" placeholder="password" class="form-control" name="password" id="password">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label">
+                                                        Confirm Password
+                                                    </label>
+                                                    <input type="password"  placeholder="password" class="form-control" id="password_again" name="password_again">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label">
+                                                        Gender
+                                                    </label>
+                                                    <div class="clip-radio radio-primary">
+                                                        <input type="radio" value="female" name="gender" id="us-female">
+                                                        <label for="us-female">
+                                                            Female
+                                                        </label>
+                                                        <input type="radio" value="male" name="gender" id="us-male" checked>
+                                                        <label for="us-male">
+                                                            Male
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label class="control-label">
+                                                                Zip Code
+                                                            </label>
+                                                            <input class="form-control" placeholder="12345" type="text" name="zipcode" id="zipcode">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <div class="form-group">
+                                                            <label class="control-label">
+                                                                City
+                                                            </label>
+                                                            <input class="form-control tooltips" placeholder="London (UK)" type="text" data-original-title="We'll display it when you write reviews" data-rel="tooltip"  title="" data-placement="top" name="city" id="city">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>
+                                                        Image Upload
+                                                    </label>
+                                                    <div class="fileinput fileinput-new" data-provides="fileinput">
+                                                        <div class="fileinput-new thumbnail"><img src="assets/images/avatar-1-xl.jpg" alt="">
+                                                        </div>
+                                                        <div class="fileinput-preview fileinput-exists thumbnail"></div>
+                                                        <div class="user-edit-image-buttons">
+                                                            <span class="btn btn-azure btn-file"><span class="fileinput-new"><i class="fa fa-picture"></i> Select image</span><span class="fileinput-exists"><i class="fa fa-picture"></i> Change</span>
+                                                                <input type="file">
+                                                            </span>
+                                                            <a href="pages_user_profile.html#" class="btn fileinput-exists btn-red" data-dismiss="fileinput">
+                                                                <i class="fa fa-times"></i> Remove
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                    <fieldset>
+                                        <legend>
+                                            Additional Info
+                                        </legend>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label">
+                                                        Twitter
+                                                    </label>
+                                                    <span class="input-icon">
+                                                        <input class="form-control" type="text" placeholder="Text Field">
+                                                        <i class="fa fa-twitter"></i> </span>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label">
+                                                        Facebook
+                                                    </label>
+                                                    <span class="input-icon">
+                                                        <input class="form-control" type="text" placeholder="Text Field">
+                                                        <i class="fa fa-facebook"></i> </span>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label">
+                                                        Google Plus
+                                                    </label>
+                                                    <span class="input-icon">
+                                                        <input class="form-control" type="text" placeholder="Text Field">
+                                                        <i class="fa fa-google-plus"></i> </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label">
+                                                        Github
+                                                    </label>
+                                                    <span class="input-icon">
+                                                        <input class="form-control" type="text" placeholder="Text Field">
+                                                        <i class="fa fa-github"></i> </span>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label">
+                                                        Linkedin
+                                                    </label>
+                                                    <span class="input-icon">
+                                                        <input class="form-control" type="text" placeholder="Text Field">
+                                                        <i class="fa fa-linkedin"></i> </span>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label">
+                                                        Skype
+                                                    </label>
+                                                    <span class="input-icon">
+                                                        <input class="form-control" type="text" placeholder="Text Field">
+                                                        <i class="fa fa-skype"></i> </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div>
+                                                Required Fields
+                                                <hr>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <p>
+                                                By clicking UPDATE, you are agreeing to the Policy and Terms &amp; Conditions.
+                                            </p>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <button class="btn btn-primary pull-right" type="submit">
+                                                Update <i class="fa fa-arrow-circle-right"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div id="panel_projects" class="tab-pane fade">
+                                <table class="table" id="projects">
+                                    <thead>
+                                        <tr>
+                                            <th>Clinic Name</th>
+                                            <th>Code</th>
+                                            <th>Phone</th>
+                                            <th>Location</th>
+                                            <th>City</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for clinic in clinics %}
+                                            <tr>
+                                                <td>{{ clinic.name }}</td>
+                                                <td>{{ clinic.code }}</td>
+                                                <td>{{ clinic.phone }}</td>
+                                                <td>{{ clinic.location }}</td>
+                                                <td>{{ clinic.city }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end: USER PROFILE -->
+    </div>
+{% endblock %}

@@ -127,6 +127,17 @@ class User(AbstractBaseUser, PermissionsMixin):
     def is_qadmin(self):
         return User.Role.QADMIN == self.role
 
+    def status(self):
+        if self.is_active:
+            return "ACTIVE"
+        else:
+            return "BLOCKED"
+
+    def get_gender(self):
+        for choice in User.Gender.Choices:
+            if choice[0] == self.gender:
+                return choice[1]
+
 
 class VerificationCode(models.Model):
     user = models.OneToOneField(User, related_name="verification_code")
