@@ -95,6 +95,26 @@ class DoctorSerializer(serializers.Serializer):
             return request.build_absolute_uri(url)
 
 
+class BasicDoctorSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
+    email = serializers.EmailField(required=False, allow_null=True)
+    first_name = serializers.CharField(max_length=255)
+    last_name = serializers.CharField(max_length=255)
+    gender = serializers.IntegerField(required=False, allow_null=True)
+    avatar = serializers.SerializerMethodField(required=False, allow_null=True)
+    address = serializers.CharField(max_length=500, required=False, allow_null=True)
+    phone = serializers.CharField(max_length=15)
+    services = ServiceSerializer(many=True, source='doctor_profile.services', required=False, allow_null=True)
+    specialization = SpecializationSerializer(source='doctor_profile.specialization', required=False, allow_null=True)
+    degree = serializers.CharField(source='doctor_profile.degree', required=False, allow_null=True)
+
+    def get_avatar(self, doctor):
+        request = self.context.get('request')
+        if doctor.avatar:
+            url = doctor.avatar.url
+            return request.build_absolute_uri(url)
+
+
 class DoctorUpdateSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     password = serializers.CharField(write_only=True, allow_blank=True, allow_null=True, required=False)
@@ -188,6 +208,23 @@ class PatientSerializer(serializers.Serializer):
             return request.build_absolute_uri(url)
 
 
+class BasicPatientSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
+    email = serializers.EmailField(required=False, allow_null=True)
+    first_name = serializers.CharField(max_length=255)
+    last_name = serializers.CharField(max_length=255)
+    gender = serializers.IntegerField(required=False, allow_null=True)
+    avatar = serializers.SerializerMethodField(required=False, allow_null=True)
+    phone = serializers.CharField(max_length=15)
+    occupation = OccupationSerializer(source='patient_profile.occupation', required=False, allow_null=True)
+
+    def get_avatar(self, patient):
+        request = self.context.get('request')
+        if patient.avatar:
+            url = patient.avatar.url
+            return request.build_absolute_uri(url)
+
+
 class PatientUpdateSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     password = serializers.CharField(write_only=True, allow_blank=True, allow_null=True, required=False)
@@ -248,6 +285,9 @@ class AppointmentSerializer(serializers.ModelSerializer):
     qid = serializers.CharField(required=False, read_only=True)
     status = serializers.CharField(required=False)
     reason = serializers.CharField()
+    patient = BasicPatientSerializer()
+    doctor = BasicDoctorSerializer()
+    clinic = ClinicSerializer()
 
     class Meta:
         model = Appointment
