@@ -128,7 +128,6 @@ class User(AbstractBaseUser, PermissionsMixin):
         return User.Role.QADMIN == self.role
 
 
-
 class VerificationCode(models.Model):
     user = models.OneToOneField(User, related_name="verification_code")
     code = models.CharField(max_length=6, db_index=True)
