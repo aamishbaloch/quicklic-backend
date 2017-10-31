@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http.response import HttpResponseRedirect
 from django.views.generic import TemplateView
 from django.core.urlresolvers import reverse
@@ -55,6 +56,30 @@ class LogoutView(View):
 class PortalHomeView(TemplateView):
     template_name = "portal/home.html"
 
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated():
+            return HttpResponseRedirect(reverse('portal:login'))
+
+        return super(PortalHomeView, self).dispatch(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super(PortalHomeView, self).get_context_data(**kwargs)
+        return context
+
+
+class ProfileView(TemplateView):
+    template_name = "portal/profile.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated():
+            return HttpResponseRedirect(reverse('portal:login'))
+
+        return super(ProfileView, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(ProfileView, self).get_context_data(**kwargs)
+
+        if self.request.user.role == User.Role.DOCTOR:
+            context['settings'] = self.request.user.doctor_setting
+            context['clinics'] = self.request.user.doctor_profile.clinic.all()
         return context

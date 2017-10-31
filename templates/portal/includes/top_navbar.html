@@ -15,11 +15,11 @@
             <!-- start: USER OPTIONS DROPDOWN -->
             <li class="dropdown current-user">
                 <a href class="dropdown-toggle" data-toggle="dropdown">
-                    <img src="{% static 'portal/assets/images/avatar-1.jpg'%}" alt="Peter"> <span class="username">Peter <i class="ti-angle-down"></i></span>
+                    <img src="{{ user.avatar.url }}" alt="Peter"> <span class="username">{{ user.first_name }}<i class="ti-angle-down"></i></span>
                 </a>
                 <ul class="dropdown-menu dropdown-dark">
                     <li>
-                        <a href="pages_user_profile.html">
+                        <a href="{% url 'portal:profile' %}">
                             My Profile
                         </a>
                     </li>
