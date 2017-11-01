@@ -89,6 +89,14 @@ You have to set **DEBUG=FALSE** in your settings to get these reports.
 in libs.error_reports.send_manually_error_email and 
 libs.custom_exceptions.InvalidInputDataException. 
 
+API Documentation
+-----------------
+We are using atlassian confluence for managing our documents. Here is 
+the link for our API Documentation:
+```sh
+https://quicklic.atlassian.net/wiki/spaces/AD/pages
+```
+
 About the Landing Page
 ----------------------
 We have an awesome landing page setup for this app.
@@ -111,3 +119,8 @@ blog posts. Login to the dashboard to update the relative data.
 **Note**: These details also be added to the dashboard when you run 
 the seeds.
 
+
+Quicklic Portal
+---------------
+Quicklic Portal is designed for doctors to access our features using our
+web application. You can get the views in the portal app of this project.
