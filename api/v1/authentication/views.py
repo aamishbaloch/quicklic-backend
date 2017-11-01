@@ -4,7 +4,7 @@ from django.db import transaction, IntegrityError
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from api.v1.serializers import PatientLoginSerializer, DoctorLoginSerializer
+from api.v1.serializers import PatientLoginSerializer, DoctorLoginSerializer, PatientSerializer
 from entities.person.models import VerificationCode
 from libs.authentication import UserAuthentication
 from libs.custom_exceptions import InvalidInputDataException, InvalidCredentialsException, \
@@ -27,7 +27,7 @@ class RegistrationView(APIView):
 
     @transaction.atomic()
     def post(self, request):
-        serializer = PatientLoginSerializer(data=request.data, context={"request": request})
+        serializer = PatientSerializer(data=request.data, context={"request": request})
         if serializer.is_valid():
             try:
                 patient = serializer.save()

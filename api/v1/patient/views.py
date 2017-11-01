@@ -95,7 +95,7 @@ class PatientClinicView(APIView):
 
         GET /patient/clinic/
         POST /patient/clinic/
-            - code=CODE123
+            - code=123123
         DELETE /patient/clinic/{id}
     """
 
@@ -131,3 +131,27 @@ class PatientClinicView(APIView):
         except Clinic.DoesNotExist:
             raise ClinicDoesNotExistsException()
 
+
+class PatientDoctorClinicView(APIView):
+    """
+    View for getting patient's and doctor's common clinics.
+
+    **Example requests**:
+
+        GET /patient/doctor/{doctor_id}/clinic/
+    """
+
+    authentication_classes = (UserAuthentication,)
+    permission_classes = (PatientPermission,)
+
+    def get(self, request, doctor_id):
+        patient_clinics = request.user.patient_profile.clinic.filter(is_active=True)
+        doctor_clinics = Clinic.objects.filter(doctor_clinics__doctor_id=doctor_id)
+
+        common_clinics = []
+        for clinic in patient_clinics:
+            if clinic in doctor_clinics:
+                common_clinics.append(clinic)
+
+        serializer = ClinicSerializer(common_clinics, context={"request": request}, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
