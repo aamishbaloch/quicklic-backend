@@ -95,7 +95,7 @@ class PatientClinicView(APIView):
 
         GET /patient/clinic/
         POST /patient/clinic/
-            - code=CODE123
+            - code=123123
         DELETE /patient/clinic/{id}
     """
 

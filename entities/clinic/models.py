@@ -30,10 +30,7 @@ class City(models.Model):
 
 
 class Clinic(models.Model):
-    code = models.IntegerField(_('code'), validators=[
-            MaxValueValidator(999999),
-            MinValueValidator(100000)
-        ], db_index=True)
+    code = models.CharField(_('code'), max_length=6, db_index=True, unique=True)
     name = models.CharField(_('name'), max_length=255, db_index=True)
     phone = models.CharField(_('phone'), max_length=255)
     location = models.CharField(_('location'), max_length=255)
