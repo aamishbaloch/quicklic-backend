@@ -3,9 +3,9 @@ from rest_framework import serializers
 from entities.clinic.models import City, Country, Clinic
 from entities.person.models import Doctor
 from entities.resources.models import Specialization, Service, Occupation
-from libs.jwt_helper import JWTHelper
 from entities.appointment.models import Appointment, AppointmentReason
 from libs.utils import get_qid_code
+from libs.jwt_helper import JWTHelper
 
 User = get_user_model()
 
@@ -46,13 +46,14 @@ class OccupationSerializer(serializers.ModelSerializer):
 
 
 class ClinicSerializer(serializers.ModelSerializer):
+    code = serializers.CharField(write_only=True)
     city = CitySerializer()
     country = CountrySerializer()
     image = serializers.SerializerMethodField()
 
     class Meta:
         model = Clinic
-        fields = ('id', 'name', 'phone', 'location', 'city', 'country', 'image')
+        fields = '__all__'
 
     def get_image(self, clinic):
         request = self.context.get('request')
@@ -60,11 +61,17 @@ class ClinicSerializer(serializers.ModelSerializer):
         return request.build_absolute_uri(url)
 
 
+class BasicClinicSerializer(ClinicSerializer):
+    class Meta:
+        model = Clinic
+        fields = ('id', 'name', 'image')
+
+
 class DoctorSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
     city = CitySerializer()
     country = CountrySerializer()
-    clinic = ClinicSerializer(many=True)
+    clinic = BasicClinicSerializer(many=True)
     services = ServiceSerializer(many=True)
     specialization = SpecializationSerializer()
     avatar = serializers.SerializerMethodField()
