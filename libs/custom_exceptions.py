@@ -43,3 +43,9 @@ class ClinicAlreadyAddedException(AlreadyExistsException):
 
 class PatientExistsException(AlreadyExistsException):
     default_detail = "Patient Already Exists"
+
+
+class AppointmentOverlapException(APIException):
+    status_code = 404
+    default_detail = "This time is already appointed. Please select other timings."
+

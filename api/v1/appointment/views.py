@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 from entities.appointment.models import Appointment
 from libs.authentication import UserAuthentication
 from libs.custom_exceptions import InvalidInputDataException, AppointmentDoesNotExistsException
-from libs.permission import PatientDoctorPermission
+from libs.permission import PatientDoctorPermission, DoctorPermission
 from api.v1.serializers import AppointmentSerializer
 from libs.utils import get_datetime_from_date_string
 
@@ -29,7 +29,7 @@ class AppointmentView(APIView):
 
     def post(self, request):
         serializer = AppointmentSerializer(data=request.data, context={"request": request})
-        if serializer.is_valid():
+        if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         raise InvalidInputDataException(str(serializer.errors))
@@ -95,3 +95,38 @@ class AppointmentListView(APIView):
 
         serializer = AppointmentSerializer(appointments, context={"request": request}, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class AppointmentStatusAPIView(APIView):
+
+    """
+    View for updating appointments.
+
+    **Example requests**:
+
+        PUT /appointment/status
+            - id=1
+
+    """
+
+    authentication_classes = (UserAuthentication,)
+    permission_classes = (DoctorPermission,)
+
+    def get_object(self):
+        try:
+            return Appointment.objects.get(id=self.request.query_params.get('id'))
+        except Appointment.DoesNotExist:
+            raise AppointmentDoesNotExistsException
+
+    def put(self, request):
+        appointment_obj = self.get_object()
+
+        serializer = AppointmentSerializer(
+            appointment_obj,
+            data=request.data,
+            partial=True
+        )
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
