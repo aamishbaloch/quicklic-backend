@@ -4,8 +4,8 @@ from django.db import transaction, IntegrityError
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from api.v1.serializers import PatientLoginSerializer, DoctorLoginSerializer, PatientSerializer
-from entities.person.models import VerificationCode
+from api.v1.serializers import PatientLoginSerializer, DoctorLoginSerializer, PatientSerializer, DoctorSerializer
+from entities.person.models import VerificationCode, Doctor
 from libs.authentication import UserAuthentication
 from libs.custom_exceptions import InvalidInputDataException, InvalidCredentialsException, \
     PatientExistsException, InvalidVerificationCodeException
@@ -53,11 +53,8 @@ class LoginView(APIView):
 
         user = authenticate(phone=phone, password=password)
         if user:
-            if user.role == User.Role.PATIENT:
-                serializer = PatientLoginSerializer(user, context={"request": request})
-                return Response(serializer.data, status=status.HTTP_200_OK)
-            elif user.role == User.Role.DOCTOR:
-                serializer = DoctorLoginSerializer(user, context={"request": request})
+            if user.doctor:
+                serializer = DoctorSerializer(user.doctor, context={"request": request})
                 return Response(serializer.data, status=status.HTTP_200_OK)
         raise InvalidCredentialsException()
 

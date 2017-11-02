@@ -4,8 +4,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from entities.clinic.models import City, Country
-from entities.profile_item.models import Occupation, Service, Specialization
-from libs.utils import str2bool
+from entities.resources.models import Occupation, Service, Specialization
 from api.v1.serializers import OccupationSerializer, ServiceSerializer, SpecializationSerializer, CitySerializer, \
     CountrySerializer
 

@@ -50,7 +50,7 @@ LOCAL_APPS = [
     'entities.person',
     'entities.clinic',
     'entities.appointment',
-    'entities.profile_item',
+    'entities.resources',
 ]
 
 INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS

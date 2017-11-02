@@ -4,8 +4,9 @@ from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
-from datetime import datetime
 
+from entities.clinic.models import Country, City, Clinic
+from entities.resources.models import Service, Specialization
 from libs.managers import QueryManager
 from libs.utils import get_verification_code
 
@@ -58,19 +59,6 @@ class User(AbstractBaseUser, PermissionsMixin):
             (MALE, 'Male')
         )
 
-    class Role:
-        DOCTOR = 1
-        PATIENT = 2
-        ADMIN = 3
-        QADMIN = 4
-
-        Choices = (
-            (DOCTOR, 'DOCTOR'),
-            (PATIENT, 'PATIENT'),
-            (ADMIN, 'ADMIN'),
-            (QADMIN, 'QADMIN'),
-        )
-
     email = models.EmailField(_('email address'), blank=True, null=True)
     first_name = models.CharField(_('first name'), max_length=30, blank=True)
     last_name = models.CharField(_('last name'), max_length=30, blank=True)
@@ -84,10 +72,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(_('active'), default=True)
     avatar = models.ImageField(upload_to='uploads/avatars/', null=True, blank=True)
     gender = models.IntegerField(_('gender'), choices=Gender.Choices, default=Gender.UNKNOWN)
-    role = models.IntegerField(_('role'), choices=Role.Choices)
     address = models.CharField(_('address'), max_length=255, blank=True, null=True)
     phone = models.CharField(_('phone'), max_length=255, unique=True)
     dob = models.DateField(_('date of birth'), default=timezone.now().date())
+    country = models.ForeignKey(Country, related_name="user", blank=True, null=True)
+    city = models.ForeignKey(City, related_name="user", blank=True, null=True)
+    clinic = models.ManyToManyField(Clinic, related_name="user")
     verified = models.BooleanField(default=False)
 
     objects = UserManager()
@@ -118,9 +108,6 @@ class User(AbstractBaseUser, PermissionsMixin):
         '''
         send_mail(subject, message, from_email, [self.email], **kwargs)
 
-    def is_admin(self):
-        return User.Role.ADMIN == self.role
-
     def is_doctor(self):
         return User.Role.DOCTOR == self.role
 
@@ -137,6 +124,12 @@ class User(AbstractBaseUser, PermissionsMixin):
         for choice in User.Gender.Choices:
             if choice[0] == self.gender:
                 return choice[1]
+
+
+class Doctor(User):
+    services = models.ManyToManyField(Service, related_name="doctor")
+    specialization = models.ForeignKey(Specialization, related_name="doctor", blank=True, null=True)
+    degree = models.CharField(_('degree'), max_length=50, blank=True, null=True)
 
 
 class VerificationCode(models.Model):
