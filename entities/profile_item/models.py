@@ -50,7 +50,8 @@ class DoctorSetting(models.Model):
     doctor = models.OneToOneField(User, on_delete=models.CASCADE, related_name='doctor_setting')
     start_time = models.TimeField(db_index=True)
     end_time = models.TimeField(db_index=True)
-    weekdays = ArrayField(models.BooleanField(default=True), size=7)
+    slot_duration = models.IntegerField(default=10, db_index=True)
+    weekdays = ArrayField(models.BooleanField(default=True), size=7, db_index=True)
 
     def __str__(self):
         return "{} {}".format(self.doctor.first_name, self.doctor.last_name)
