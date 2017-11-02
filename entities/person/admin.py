@@ -2,10 +2,9 @@ from django import forms
 from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin as OrigUserAdmin
-from django.contrib.auth.forms import ReadOnlyPasswordHashField, AuthenticationForm
 from django.utils.translation import ugettext_lazy as _
 
-from entities.person.models import VerificationCode
+from entities.person.models import VerificationCode, Doctor
 
 User = get_user_model()
 
@@ -16,7 +15,7 @@ class UserCreationForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('phone', 'email', 'first_name', 'last_name', 'gender', 'is_staff', 'role', 'is_superuser', 'dob',
+        fields = ('phone', 'email', 'first_name', 'last_name', 'gender', 'is_staff', 'is_superuser', 'dob',
                   'avatar', 'verified')
         readonly_fields = ('dob',)
 
@@ -35,30 +34,18 @@ class UserCreationForm(forms.ModelForm):
         return user
 
 
-class UserChangeForm(forms.ModelForm):
-    password = ReadOnlyPasswordHashField()
-
-    class Meta:
-        model = User
-        fields = '__all__'
-
-    def clean_password(self):
-        return self.initial["password"]
-
-
 class UserAdmin(OrigUserAdmin):
     add_form = UserCreationForm
-    form = UserChangeForm
     search_fields = ('phone',)
-    list_filter = ('role', 'verified')
+    list_filter = ('verified',)
     list_display = (
-        'id', 'first_name', 'last_name', 'verified', 'phone', 'email', 'gender', 'role', 'avatar', 'is_active',
+        'id', 'first_name', 'last_name', 'verified', 'phone', 'email', 'gender', 'avatar', 'is_active',
         'is_staff', 'is_superuser', 'last_login', 'joined_on')
     ordering = ('first_name',)
     fieldsets = (
         (_('Personal Info'), {
             'fields': (
-                'phone', 'verified', 'email', 'first_name', 'last_name', 'gender', 'role', 'avatar'
+                'phone', 'verified', 'email', 'first_name', 'last_name', 'gender', 'avatar', 'city', 'country', 'clinic'
             )
         }),
         (_('Permissions Info'), {'fields': ('is_active', 'is_superuser',)}),
@@ -69,12 +56,36 @@ class UserAdmin(OrigUserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('phone', 'first_name', 'last_name', 'verified', 'email', 'password1', 'password2', 'dob', 'role', 'gender', 'avatar')}
+            'fields': ('phone', 'first_name', 'last_name', 'verified', 'email', 'password1', 'password2',
+                       'city', 'country', 'clinic', 'dob', 'gender', 'avatar')}
          ),
     )
 
 
 admin.site.register(User, UserAdmin)
+
+
+class DoctorAdmin(UserAdmin):
+    fieldsets = (
+        (_('Personal Info'), {
+            'fields': (
+                'phone', 'first_name', 'last_name', 'verified', 'email', 'dob',
+                'gender', 'avatar', 'clinic', 'city', 'country', 'services', 'specialization', 'degree'
+            )
+        }),
+        (_('Permissions Info'), {'fields': ('is_active', 'is_superuser',)}),
+        (_('Important dates'), {'fields': ('last_login', 'joined_on')}),
+        ('Password Info', {'fields': ('password',)}),
+    )
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('phone', 'first_name', 'last_name', 'verified', 'email', 'password1', 'password2', 'dob',
+                       'gender', 'avatar', 'clinic', 'city', 'country', 'services', 'specialization', 'degree')}
+         ),
+    )
+
+admin.site.register(Doctor, DoctorAdmin)
 
 
 class VerificationCodeAdmin(admin.ModelAdmin):

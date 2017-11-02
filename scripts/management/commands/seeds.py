@@ -3,7 +3,7 @@ from django.core.management import BaseCommand
 
 from entities.appointment.models import AppointmentReason
 from entities.clinic.models import Country, City
-from entities.profile_item.models import Service, Specialization, Occupation
+from entities.resources.models import Service, Specialization, Occupation
 
 from seeds.geographic_seeds import country_data
 from seeds.medical_services_seeds import services_data

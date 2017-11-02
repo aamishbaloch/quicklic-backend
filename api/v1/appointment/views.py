@@ -95,3 +95,34 @@ class AppointmentListView(APIView):
 
         serializer = AppointmentSerializer(appointments, context={"request": request}, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class AppointmentSlotView(APIView):
+    """
+    View for creating and getting appointment.
+
+    **Example requests**:
+
+        GET /appointment/
+            - id=1
+        POST /appointment/
+    """
+
+    authentication_classes = (UserAuthentication,)
+    permission_classes = (PatientDoctorPermission,)
+
+    def post(self, request):
+        serializer = AppointmentSerializer(data=request.data, context={"request": request})
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        raise InvalidInputDataException(str(serializer.errors))
+
+    def get(self, request):
+        id = request.query_params.get("id", None)
+        try:
+            appointment = Appointment.objects.get(id=id)
+            serializer = AppointmentSerializer(appointment, context={"request": request})
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Appointment.DoesNotExist:
+            raise AppointmentDoesNotExistsException()
