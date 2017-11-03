@@ -27,6 +27,11 @@ class InvalidCredentialsException(APIException):
     default_detail = "Invalid Credentials"
 
 
+class UserNotAllowedException(APIException):
+    status_code = 401
+    default_detail = "User Not Allowed"
+
+
 class AppointmentDoesNotExistsException(APIException):
     status_code = 404
     default_detail = "Appointment Does Not Exists"

@@ -1,20 +1,39 @@
 from django.contrib.auth import get_user_model
 from rest_framework import status
+from rest_framework.generics import RetrieveUpdateAPIView, ListAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.db.models import Q
 
 from entities.clinic.models import Clinic
+from entities.person.models import Patient
 from libs.authentication import UserAuthentication
-from libs.custom_exceptions import InvalidInputDataException, ClinicDoesNotExistsException, ClinicAlreadyAddedException
-from libs.permission import PatientPermission
+from libs.custom_exceptions import ClinicDoesNotExistsException, ClinicAlreadyAddedException
+from libs.permission import PatientPermission, PatientOwnerPermission
 from libs.utils import str2bool
-from api.v1.serializers import PatientSerializer, PatientUpdateSerializer, ClinicSerializer
+from api.v1.serializers import PatientSerializer, ClinicSerializer
 
 User = get_user_model()
 
 
-class PatientListView(APIView):
+class PatientView(RetrieveUpdateAPIView):
+    """
+    View for creating and getting patient.
+
+    **Example requests**:
+
+        GET /patient/
+        PUT /patient/
+        PATCH /patient/
+    """
+
+    authentication_classes = (UserAuthentication,)
+    permission_classes = (PatientOwnerPermission,)
+    serializer_class = PatientSerializer
+    queryset = Patient.objects.all()
+
+
+class PatientListView(ListAPIView):
     """
     View for getting all patients.
 
@@ -33,58 +52,33 @@ class PatientListView(APIView):
     """
 
     authentication_classes = (UserAuthentication,)
+    serializer_class = PatientSerializer
+    queryset = Patient.objects.all()
 
-    def get(self, request):
-        patients = User.objects.filter(role=User.Role.PATIENT)
+    def get_queryset(self):
+        patients = Patient.objects.all()
 
-        if 'clinic_id' in request.query_params:
-            patients = patients.filter(patient_profile__clinic=request.query_params.get('clinic_id', None))
+        if 'clinic_id' in self.request.query_params:
+            patients = patients.filter(clinic=self.request.query_params.get('clinic_id', None))
 
-        if 'country_id' in request.query_params:
-            patients = patients.filter(patient_profile__country_id=request.query_params.get('country_id'))
+        if 'country_id' in self.request.query_params:
+            patients = patients.filter(country_id=self.request.query_params.get('country_id'))
 
-        if 'city_id' in request.query_params:
-            patients = patients.filter(patient_profile__city_id=request.query_params.get('city_id'))
+        if 'city_id' in self.request.query_params:
+            patients = patients.filter(city_id=self.request.query_params.get('city_id'))
 
-        if 'occupation_id' in request.query_params:
-            patients = patients.filter(patient_profile__occupation_id=request.query_params.get('occupation_id'))
+        if 'occupation_id' in self.request.query_params:
+            patients = patients.filter(occupation_id=self.request.query_params.get('occupation_id'))
 
-        if 'marital_status' in request.query_params:
-            patients = patients.filter(patient_profile__marital_status=request.query_params.get('marital_status'))
+        if 'marital_status' in self.request.query_params:
+            patients = patients.filter(marital_status=self.request.query_params.get('marital_status'))
 
-        if 'query' in request.query_params:
-            patients = patients.filter(Q(first_name__icontains=request.query_params.get('query')) | Q(last_name__icontains=request.query_params.get('query')))
+        if 'query' in self.request.query_params:
+            patients = patients.filter(Q(first_name__icontains=self.request.query_params.get('query')) | Q(last_name__icontains=self.request.query_params.get('query')))
 
-        patients = patients.filter(is_active=str2bool(request.query_params.get('active', 'true'))).select_related('patient_profile')
+        patients = patients.filter(is_active=str2bool(self.request.query_params.get('active', 'true')))
 
-        serializer = PatientSerializer(patients, many=True, context={"request": request})
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-
-class PatientView(APIView):
-    """
-    View for creating and getting patient.
-
-    **Example requests**:
-
-        GET /patient/
-        POST /patient/
-    """
-
-    authentication_classes = (UserAuthentication,)
-    permission_classes = (PatientPermission,)
-
-    def get(self, request):
-        serializer = PatientSerializer(request.user, context={"request": request})
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-    def post(self, request):
-        serializer = PatientUpdateSerializer(instance=request.user, data=request.data)
-        if serializer.is_valid():
-            patient = serializer.save()
-            serializer = PatientSerializer(patient, context={"request": request})
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        raise InvalidInputDataException(str(serializer.errors))
+        return patients
 
 
 class PatientClinicView(APIView):

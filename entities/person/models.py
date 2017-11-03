@@ -6,7 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 
 from entities.clinic.models import Country, City, Clinic
-from entities.resources.models import Service, Specialization
+from entities.resources.models import Service, Specialization, Occupation
 from libs.managers import QueryManager
 from libs.utils import get_verification_code
 
@@ -48,6 +48,15 @@ class UserManager(BaseUserManager, QueryManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
 
+    class Role:
+        DOCTOR = 1
+        PATIENT = 2
+
+        Choices = (
+            (DOCTOR, 'Doctor'),
+            (PATIENT, 'Patient'),
+        )
+
     class Gender:
         UNKNOWN = 3
         MALE = 1
@@ -77,7 +86,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     dob = models.DateField(_('date of birth'), default=timezone.now().date())
     country = models.ForeignKey(Country, related_name="user", blank=True, null=True)
     city = models.ForeignKey(City, related_name="user", blank=True, null=True)
-    clinic = models.ManyToManyField(Clinic, related_name="user")
+    clinic = models.ManyToManyField(Clinic, related_name="user", blank=True, null=True)
     verified = models.BooleanField(default=False)
 
     objects = UserManager()
@@ -108,12 +117,6 @@ class User(AbstractBaseUser, PermissionsMixin):
         '''
         send_mail(subject, message, from_email, [self.email], **kwargs)
 
-    def is_doctor(self):
-        return User.Role.DOCTOR == self.role
-
-    def is_qadmin(self):
-        return User.Role.QADMIN == self.role
-
     def status(self):
         if self.is_active:
             return "ACTIVE"
@@ -127,9 +130,28 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class Doctor(User):
+    role = models.IntegerField(default=User.Role.DOCTOR)
     services = models.ManyToManyField(Service, related_name="doctor")
     specialization = models.ForeignKey(Specialization, related_name="doctor", blank=True, null=True)
     degree = models.CharField(_('degree'), max_length=50, blank=True, null=True)
+
+
+class Patient(User):
+
+    class MaritalStatus:
+        MARRIED = 1
+        SINGLE = 2
+
+        Choices = (
+            (MARRIED, 'MARRIED'),
+            (SINGLE, 'SINGLE'),
+        )
+
+    role = models.IntegerField(default=User.Role.PATIENT)
+    height = models.FloatField(_('height'), blank=True, null=True)
+    weight = models.FloatField(_('weight'), blank=True, null=True)
+    occupation = models.ForeignKey(Occupation, related_name="patient", blank=True, null=True)
+    marital_status = models.IntegerField(_('marital status'), choices=MaritalStatus.Choices, blank=True, null=True)
 
 
 class VerificationCode(models.Model):

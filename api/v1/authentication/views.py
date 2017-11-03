@@ -4,11 +4,11 @@ from django.db import transaction, IntegrityError
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from api.v1.serializers import PatientLoginSerializer, DoctorLoginSerializer, PatientSerializer, DoctorSerializer
-from entities.person.models import VerificationCode, Doctor
+from api.v1.serializers import PatientTokenSerializer, DoctorTokenSerializer, PatientSerializer
+from entities.person.models import VerificationCode
 from libs.authentication import UserAuthentication
 from libs.custom_exceptions import InvalidInputDataException, InvalidCredentialsException, \
-    PatientExistsException, InvalidVerificationCodeException
+    PatientExistsException, InvalidVerificationCodeException, UserNotAllowedException
 from libs.permission import PatientPermission
 
 User = get_user_model()
@@ -27,7 +27,7 @@ class RegistrationView(APIView):
 
     @transaction.atomic()
     def post(self, request):
-        serializer = PatientSerializer(data=request.data, context={"request": request})
+        serializer = PatientTokenSerializer(data=request.data, context={"request": request})
         if serializer.is_valid():
             try:
                 patient = serializer.save()
@@ -53,9 +53,13 @@ class LoginView(APIView):
 
         user = authenticate(phone=phone, password=password)
         if user:
-            if user.doctor:
-                serializer = DoctorSerializer(user.doctor, context={"request": request})
-                return Response(serializer.data, status=status.HTTP_200_OK)
+            if hasattr(user, 'doctor'):
+                serializer = DoctorTokenSerializer(user.doctor, context={"request": request})
+            elif hasattr(user, 'patient'):
+                serializer = PatientTokenSerializer(user.patient, context={"request": request})
+            else:
+                raise UserNotAllowedException()
+            return Response(serializer.data, status=status.HTTP_200_OK)
         raise InvalidCredentialsException()
 
 
