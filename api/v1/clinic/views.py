@@ -25,13 +25,14 @@ class ClinicView(APIView):
     authentication_classes = (UserAuthentication,)
 
     def get(self, request):
-        if 'id' in request.query_params:
-            clinic = Clinic.objects.filter(id=request.query_params.get("id")).first()
+        try:
+            if 'id' in request.query_params:
+                clinic = Clinic.objects.get(id=request.query_params.get("id"))
 
-        elif 'code' in request.query_params:
-            clinic = Clinic.objects.filter(code=request.query_params.get("code")).first()
+            elif 'code' in request.query_params:
+                clinic = Clinic.objects.get(code=request.query_params.get("code"))
 
-        if clinic:
             serializer = ClinicSerializer(clinic, context={"request": request})
             return Response(serializer.data, status=status.HTTP_200_OK)
-        raise ClinicDoesNotExistsException
+        except Clinic.DoesNotExist:
+            raise ClinicDoesNotExistsException()

@@ -319,9 +319,6 @@ class AppointmentSerializer(serializers.ModelSerializer):
         doc_setting_obj = DoctorSetting.objects.filter(doctor=doctor).first()
 
         if doc_setting_obj and doc_setting_obj.weekdays[get_weekday_from_datetime(appointment_start_datetime)]:
-            appointment_start_time = get_time_from_datetime(appointment_start_datetime)
-            appointment_end_time = get_time_from_datetime(appointment_end_datetime)
-
             doctor_start_time = doc_setting_obj.start_time
             doctor_end_time = doc_setting_obj.end_time
 
@@ -335,25 +332,24 @@ class AppointmentSerializer(serializers.ModelSerializer):
                 status=1
             )
 
-            if appointment_start_time >= doctor_start_time and appointment_end_time <= doctor_end_time:
-                for appointment in appointments:
-                    start = appointment.start_datetime
-                    end = appointment.end_datetime
-                    # (StartDate1 <= EndDate2) and (StartDate2 <= EndDate1)
-                    time_range_overlap = max(appointment_start_datetime, start) < min(appointment_end_datetime, end)
-                    if time_range_overlap:
-                        raise AppointmentOverlapException
+            for appointment in appointments:
+                start = appointment.start_datetime
+                end = appointment.end_datetime
+                # (StartDate1 <= EndDate2) and (StartDate2 <= EndDate1)
+                time_range_overlap = max(appointment_start_datetime, start) < min(appointment_end_datetime, end)
+                if time_range_overlap:
+                    raise AppointmentOverlapException
 
-                return Appointment.objects.create(
-                    patient=patient,
-                    reason=reason,
-                    clinic=clinic,
-                    doctor=doctor,
-                    is_active=True,
-                    start_datetime=appointment_start_datetime,
-                    end_datetime=appointment_end_datetime,
-                    **validated_data
-                )
+            return Appointment.objects.create(
+                patient=patient,
+                reason=reason,
+                clinic=clinic,
+                doctor=doctor,
+                is_active=True,
+                start_datetime=appointment_start_datetime,
+                end_datetime=appointment_end_datetime,
+                **validated_data
+            )
 
         return Appointment()
 
