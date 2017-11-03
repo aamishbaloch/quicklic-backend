@@ -7,7 +7,7 @@ from libs.authentication import UserAuthentication
 from libs.custom_exceptions import InvalidInputDataException
 from libs.permission import DoctorPermission
 from libs.utils import str2bool
-from api.v1.serializers import DoctorSerializer, DoctorUpdateSerializer, ClinicSerializer
+from api.v1.serializers import DoctorSerializer, ClinicSerializer
 
 User = get_user_model()
 
@@ -30,7 +30,7 @@ class DoctorView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
-        serializer = DoctorUpdateSerializer(instance=request.user, data=request.data)
+        serializer = DoctorSerializer(instance=request.user, data=request.data)
         if serializer.is_valid():
             doctor = serializer.save()
             serializer = DoctorSerializer(doctor, context={"request": request})

@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from entities.clinic.models import City, Country, Clinic
-from entities.person.models import Doctor
+from entities.person.models import Doctor, Patient
 from entities.resources.models import Specialization, Service, Occupation
 from entities.appointment.models import Appointment, AppointmentReason
 from libs.utils import get_qid_code
@@ -68,6 +68,7 @@ class BasicClinicSerializer(ClinicSerializer):
 
 
 class DoctorSerializer(serializers.ModelSerializer):
+    role = serializers.IntegerField(read_only=True)
     password = serializers.CharField(write_only=True)
     city = CitySerializer()
     country = CountrySerializer()
@@ -87,18 +88,26 @@ class DoctorSerializer(serializers.ModelSerializer):
             return request.build_absolute_uri(url)
 
 
-class BasicDoctorSerializer(serializers.Serializer):
-    id = serializers.IntegerField(read_only=True)
-    email = serializers.EmailField(required=False, allow_null=True)
-    first_name = serializers.CharField(max_length=255)
-    last_name = serializers.CharField(max_length=255)
-    gender = serializers.IntegerField(required=False, allow_null=True)
-    avatar = serializers.SerializerMethodField(required=False, allow_null=True)
-    address = serializers.CharField(max_length=500, required=False, allow_null=True)
-    phone = serializers.CharField(max_length=15)
-    services = ServiceSerializer(many=True, source='doctor_profile.services', required=False, allow_null=True)
-    specialization = SpecializationSerializer(source='doctor_profile.specialization', required=False, allow_null=True)
-    degree = serializers.CharField(source='doctor_profile.degree', required=False, allow_null=True)
+class DoctorTokenSerializer(DoctorSerializer):
+    token = serializers.SerializerMethodField()
+
+    def get_token(self, doctor):
+        doctor = JWTHelper.encode_token(doctor)
+        return doctor
+
+
+class PatientSerializer(serializers.ModelSerializer):
+    role = serializers.IntegerField(read_only=True)
+    password = serializers.CharField(write_only=True, required=False)
+    city = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+    country = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+    clinic = BasicClinicSerializer(many=True, required=False)
+    occupation = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+    avatar = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Patient
+        exclude = ('is_superuser', 'is_staff', 'groups', 'user_permissions')
 
     def get_avatar(self, doctor):
         request = self.context.get('request')
@@ -106,155 +115,75 @@ class BasicDoctorSerializer(serializers.Serializer):
             url = doctor.avatar.url
             return request.build_absolute_uri(url)
 
+    def to_representation(self, instance):
+        data = super(PatientSerializer, self).to_representation(instance)
+        if instance.city:
+            data['city'] = CitySerializer(instance.city).data
+        if instance.city:
+            data['country'] = CountrySerializer(instance.country).data
+        if instance.city:
+            data['occupation'] = OccupationSerializer(instance.occupation).data
+        return data
 
-class DoctorUpdateSerializer(serializers.Serializer):
-    id = serializers.IntegerField(read_only=True)
-    verified = serializers.BooleanField(read_only=True)
+    def to_internal_value(self, data):
+        data = super(PatientSerializer, self).to_internal_value(data)
+        if 'city' in data:
+            if data['city']:
+                city, created = City.objects.get_or_create(name=data['city'])
+                data['city'] = city
+            else:
+                data['city'] = None
+        if 'country' in data:
+            if data['country']:
+                country, created = Country.objects.get_or_create(name=data['country'])
+                data['country'] = country
+            else:
+                data['country'] = None
+        if 'occupation' in data:
+            if data['occupation']:
+                occupation, created = Occupation.objects.get_or_create(name=data['occupation'])
+                data['occupation'] = occupation
+            else:
+                data['occupation'] = None
+        return data
 
-    def update(self, instance, validated_data):
-        validated_data['role'] = User.Role.DOCTOR
+    def get_extra_kwargs(self):
+        extra_kwargs = super(PatientSerializer, self).get_extra_kwargs()
+        if self.instance is None:
+            kwargs = extra_kwargs.get('password', {})
+            kwargs['required'] = True
+            extra_kwargs['password'] = kwargs
+        else:
+            kwargs = extra_kwargs.get('password', {})
+            kwargs['required'] = False
+            extra_kwargs['password'] = kwargs
+            kwargs = extra_kwargs.get('phone', {})
+            kwargs['read_only'] = True
+            extra_kwargs['phone'] = kwargs
 
-        instance.first_name = validated_data['first_name'] if 'first_name' in validated_data else instance.first_name
-        instance.last_name = validated_data['last_name'] if 'last_name' in validated_data else instance.last_name
-        instance.avatar = validated_data['avatar'] if 'avatar' in validated_data else instance.avatar
-        instance.address = validated_data['address'] if 'address' in validated_data else instance.address
-        instance.dob = validated_data['dob'] if 'dob' in validated_data else instance.dob
-        instance.save()
-
-        if 'city' in validated_data and validated_data['city']:
-            city, created = City.objects.get_or_create(name=validated_data['city'])
-            instance.doctor_profile.city = city
-
-        if 'country' in validated_data and validated_data['country']:
-            country, created = Country.objects.get_or_create(name=validated_data['country'])
-            instance.doctor_profile.country = country
-
-        if 'specialization' in validated_data and validated_data['specialization']:
-            specialization, created = Specialization.objects.get_or_create(name=validated_data['specialization'])
-            instance.doctor_profile.specialization = specialization
-
-        if 'services' in validated_data and validated_data['services']:
-            instance.doctor_profile.services.clear()
-
-            for service_id in validated_data['services']:
-                service, created = Service.objects.get_or_create(name=service_id)
-                instance.doctor_profile.services.add(service)
-
-        instance.doctor_profile.degree = validated_data['degree'] if 'degree' in validated_data else instance.doctor_profile.degree
-        instance.doctor_profile.save()
-
-        return instance
-
-
-class DoctorLoginSerializer(DoctorSerializer):
-    token = serializers.SerializerMethodField()
-
-    def get_token(self, user):
-        user = JWTHelper.encode_token(user)
-        return user
-
-
-class PatientSerializer(serializers.Serializer):
-    id = serializers.IntegerField(read_only=True)
-    role = serializers.IntegerField(read_only=True)
-    password = serializers.CharField(write_only=True)
-    email = serializers.EmailField(required=False)
-    first_name = serializers.CharField(max_length=255)
-    last_name = serializers.CharField(max_length=255, allow_null=True, allow_blank=True)
-    gender = serializers.IntegerField()
-    avatar = serializers.SerializerMethodField(required=False)
-    address = serializers.CharField(max_length=500, required=False, allow_null=True)
-    phone = serializers.CharField(max_length=15)
-    dob = serializers.DateField(required=False, allow_null=True)
-    height = serializers.FloatField(source='patient_profile.height', required=False, allow_null=True)
-    weight = serializers.FloatField(source='patient_profile.weight', required=False, allow_null=True)
-    city = CitySerializer(source='patient_profile.city', required=False, allow_null=True)
-    country = CountrySerializer(source='patient_profile.country', required=False, allow_null=True)
-    occupation = OccupationSerializer(source='patient_profile.occupation', required=False, allow_null=True)
-    marital_status = serializers.IntegerField(source='patient_profile.marital_status', required=False, allow_null=True)
-    verified = serializers.BooleanField(read_only=True)
+        return extra_kwargs
 
     def create(self, validated_data):
-        validated_data['role'] = User.Role.PATIENT
-        user = User.objects.create(**validated_data)
-        user.set_password(validated_data['password'])
-        user.save()
-        return user
-
-    def get_avatar(self, patient):
-        request = self.context.get('request')
-        if patient.avatar:
-            url = patient.avatar.url
-            return request.build_absolute_uri(url)
-
-
-class BasicPatientSerializer(serializers.Serializer):
-    id = serializers.IntegerField(read_only=True)
-    email = serializers.EmailField(required=False, allow_null=True)
-    first_name = serializers.CharField(max_length=255)
-    last_name = serializers.CharField(max_length=255)
-    gender = serializers.IntegerField(required=False, allow_null=True)
-    avatar = serializers.SerializerMethodField(required=False, allow_null=True)
-    phone = serializers.CharField(max_length=15)
-    occupation = OccupationSerializer(source='patient_profile.occupation', required=False, allow_null=True)
-
-    def get_avatar(self, patient):
-        request = self.context.get('request')
-        if patient.avatar:
-            url = patient.avatar.url
-            return request.build_absolute_uri(url)
-
-
-class PatientUpdateSerializer(serializers.Serializer):
-    id = serializers.IntegerField(read_only=True)
-    password = serializers.CharField(write_only=True, allow_blank=True, allow_null=True, required=False)
-    verified = serializers.BooleanField(read_only=True)
-
-    def update(self, instance, validated_data):
-        validated_data['role'] = User.Role.PATIENT
-
-        instance.first_name = validated_data['first_name'] if 'first_name' in validated_data else instance.first_name
-        instance.last_name = validated_data['last_name'] if 'last_name' in validated_data else instance.last_name
-        instance.avatar = validated_data['avatar'] if 'avatar' in validated_data else instance.avatar
-        instance.address = validated_data['address'] if 'address' in validated_data else instance.address
-        instance.email = validated_data['email'] if 'email' in validated_data else instance.email
-        instance.dob = validated_data['dob'] if 'dob' in validated_data else instance.dob
+        instance = super(PatientSerializer, self).create(validated_data)
+        instance.set_password(validated_data['password'])
         instance.save()
-
-        if 'city' in validated_data and validated_data['city']:
-            city, created = City.objects.get_or_create(name=validated_data['city'])
-            instance.patient_profile.city = city
-
-        if 'country' in validated_data and validated_data['country']:
-            country, created = Country.objects.get_or_create(name=validated_data['country'])
-            instance.patient_profile.country = country
-
-        if 'occupation' in validated_data and validated_data['occupation']:
-            occupation, created = Occupation.objects.get_or_create(name=validated_data['occupation'])
-            instance.patient_profile.occupation = occupation
-
-        instance.patient_profile.marital_status = validated_data['marital_status'] if 'marital_status' in validated_data else instance.patient_profile.marital_status
-        instance.patient_profile.height = validated_data['height'] if 'height' in validated_data else instance.patient_profile.height
-        instance.patient_profile.weight = validated_data['weight'] if 'weight' in validated_data else instance.patient_profile.weight
-        instance.patient_profile.save()
-
         return instance
 
 
-class PatientLoginSerializer(PatientSerializer):
+class PatientTokenSerializer(PatientSerializer):
     token = serializers.SerializerMethodField()
 
-    def get_token(self, user):
-        user = JWTHelper.encode_token(user)
-        return user
+    def get_token(self, patient):
+        patient = JWTHelper.encode_token(patient)
+        return patient
 
 
 class AppointmentSerializer(serializers.ModelSerializer):
     qid = serializers.CharField(required=False, read_only=True)
     status = serializers.CharField(required=False)
     reason = serializers.CharField()
-    patient = BasicPatientSerializer()
-    doctor = BasicDoctorSerializer()
+    patient = PatientSerializer()
+    doctor = DoctorSerializer()
     clinic = ClinicSerializer()
 
     class Meta:
