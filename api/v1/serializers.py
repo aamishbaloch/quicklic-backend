@@ -2,8 +2,8 @@ from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from entities.clinic.models import City, Country, Clinic
 from entities.person.models import Doctor, Patient
-from entities.resources.models import Specialization, Service, Occupation
-from entities.appointment.models import Appointment, AppointmentReason
+from entities.resources.models import Specialization, Service, Occupation, AppointmentReason
+from entities.appointment.models import Appointment
 from libs.utils import get_qid_code
 from libs.jwt_helper import JWTHelper
 
@@ -42,6 +42,13 @@ class OccupationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Occupation
+        fields = ('id', 'name')
+
+
+class AppointmentReasonSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = AppointmentReason
         fields = ('id', 'name')
 
 

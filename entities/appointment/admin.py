@@ -9,11 +9,3 @@ class AppointmentAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Appointment, AppointmentAdmin)
-
-
-class AppointmentReasonAdmin(admin.ModelAdmin):
-    list_display = ['id', 'name']
-    ordering = ('name',)
-
-
-admin.site.register(AppointmentReason, AppointmentReasonAdmin)
