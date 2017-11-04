@@ -1,3 +1,4 @@
+import datetime
 from django.db import models
 from django.core.mail import send_mail
 from django.contrib.auth.models import PermissionsMixin
@@ -82,7 +83,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     gender = models.IntegerField(_('gender'), choices=Gender.Choices, default=Gender.UNKNOWN)
     address = models.CharField(_('address'), max_length=255, blank=True, null=True)
     phone = models.CharField(_('phone'), max_length=255, unique=True)
-    dob = models.DateField(_('date of birth'))
+    dob = models.DateField(_('date of birth'), default=datetime.date.today)
     country = models.ForeignKey(Country, related_name="user", blank=True, null=True)
     city = models.ForeignKey(City, related_name="user", blank=True, null=True)
     clinic = models.ManyToManyField(Clinic, related_name="user", blank=True)
