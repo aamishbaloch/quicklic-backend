@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 from django.db.models import Q
 
 from entities.clinic.models import Clinic
-from entities.person.models import Patient
+from entities.person.models import Patient, Doctor
 from libs.authentication import UserAuthentication
 from libs.custom_exceptions import ClinicDoesNotExistsException, ClinicAlreadyAddedException
 from libs.permission import PatientPermission, PatientOwnerPermission
@@ -81,71 +81,70 @@ class PatientListView(ListAPIView):
         return patients
 
 
-class PatientClinicView(APIView):
+class PatientClinicView(ListAPIView):
     """
     View for getting & creating patient's clinics.
 
     **Example requests**:
 
-        GET /patient/clinic/
-        POST /patient/clinic/
-            - code=123123
-        DELETE /patient/clinic/{id}
+        GET /patient/{id}/clinic/
+        POST /patient/{id}/clinic/
+            - code="123123"
+        DELETE /patient/{id}/clinic/{id}
     """
 
     authentication_classes = (UserAuthentication,)
-    permission_classes = (PatientPermission,)
+    permission_classes = (PatientOwnerPermission,)
+    serializer_class = ClinicSerializer
 
-    def get(self, request):
-        clinics = request.user.patient_profile.clinic.filter(is_active=True)
-        serializer = ClinicSerializer(clinics, context={"request": request}, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    def get_queryset(self):
+        return self.request.user.clinic.all()
 
-    def post(self, request):
+    def post(self, request, pk):
         code = request.data.get("code", None)
         try:
             clinic = Clinic.objects.get(code=code)
-            if request.user.patient_profile.clinic.filter(code=code).count() <= 0:
-                request.user.patient_profile.clinic.add(clinic)
+            if request.user.clinic.filter(code=code).count() <= 0:
+                request.user.clinic.add(clinic)
                 return Response({}, status=status.HTTP_200_OK)
             else:
                 raise ClinicAlreadyAddedException()
         except Clinic.DoesNotExist:
             raise ClinicDoesNotExistsException()
 
-    def delete(self, request, clinic_id):
+    def delete(self, request, pk, clinic_id):
         try:
             clinic = Clinic.objects.get(id=clinic_id)
-            if request.user.patient_profile.clinic.filter(id=clinic_id).count() <= 0:
+            if request.user.clinic.filter(id=clinic_id).count() <= 0:
                 raise ClinicDoesNotExistsException()
             else:
-                request.user.patient_profile.clinic.remove(clinic)
-                request.user.patient_profile.save()
+                request.user.clinic.remove(clinic)
+                request.user.save()
                 return Response({}, status=status.HTTP_200_OK)
         except Clinic.DoesNotExist:
             raise ClinicDoesNotExistsException()
 
 
-class PatientDoctorClinicView(APIView):
+class PatientDoctorClinicView(ListAPIView):
     """
     View for getting patient's and doctor's common clinics.
 
     **Example requests**:
 
-        GET /patient/doctor/{doctor_id}/clinic/
+        GET /patient/{id}/doctor/{id}/clinic/
     """
 
     authentication_classes = (UserAuthentication,)
-    permission_classes = (PatientPermission,)
+    permission_classes = (PatientOwnerPermission,)
+    serializer_class = ClinicSerializer
 
-    def get(self, request, doctor_id):
-        patient_clinics = request.user.patient_profile.clinic.filter(is_active=True)
-        doctor_clinics = Clinic.objects.filter(doctor_clinics__doctor_id=doctor_id)
+    def get_queryset(self):
+        doctor = Doctor.objects.get(pk=self.kwargs['doctor_id'])
+        doctor_clinics = doctor.clinic.all()
+        patient_clinics = self.request.user.clinic.filter(is_active=True)
 
         common_clinics = []
         for clinic in patient_clinics:
             if clinic in doctor_clinics:
                 common_clinics.append(clinic)
-
-        serializer = ClinicSerializer(common_clinics, context={"request": request}, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return common_clinics
