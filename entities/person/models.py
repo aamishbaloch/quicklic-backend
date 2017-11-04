@@ -35,7 +35,6 @@ class UserManager(BaseUserManager, QueryManager):
         extra_fields.setdefault('is_active', True)
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('verified', True)
-        extra_fields.setdefault('role', User.Role.QADMIN)
 
         if extra_fields.get('is_staff') is not True:
             raise ValueError('Staff must have is_staff=True.')
