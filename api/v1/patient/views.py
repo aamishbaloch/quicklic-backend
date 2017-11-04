@@ -1,19 +1,14 @@
-from django.contrib.auth import get_user_model
 from rest_framework import status
 from rest_framework.generics import RetrieveUpdateAPIView, ListAPIView
 from rest_framework.response import Response
-from rest_framework.views import APIView
 from django.db.models import Q
-
 from entities.clinic.models import Clinic
 from entities.person.models import Patient, Doctor
 from libs.authentication import UserAuthentication
 from libs.custom_exceptions import ClinicDoesNotExistsException, ClinicAlreadyAddedException
-from libs.permission import PatientPermission, PatientOwnerPermission
+from libs.permission import PatientOwnerPermission
 from libs.utils import str2bool
 from api.v1.serializers import PatientSerializer, ClinicSerializer
-
-User = get_user_model()
 
 
 class PatientView(RetrieveUpdateAPIView):
@@ -98,7 +93,7 @@ class PatientClinicView(ListAPIView):
     serializer_class = ClinicSerializer
 
     def get_queryset(self):
-        return self.request.user.clinic.all()
+        return self.request.user.clinic.all().order_by('id')
 
     def post(self, request, pk):
         code = request.data.get("code", None)

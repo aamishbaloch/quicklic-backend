@@ -12,6 +12,7 @@ urlpatterns = [
     url(r'^specialization/', views.SpecializationView.as_view()),
     url(r'^service/', views.ServiceView.as_view()),
     url(r'^occupation/', views.OccupationView.as_view()),
+    url(r'^reason/', views.AppointmentReasonView.as_view()),
     url(r'^auth/', include(auth_urls)),
     url(r'^doctor/', include(doctor_urls)),
     url(r'^patient/', include(patient_urls)),

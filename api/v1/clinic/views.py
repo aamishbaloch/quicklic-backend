@@ -1,33 +1,18 @@
-from django.contrib.auth import get_user_model
-from rest_framework import status
-from rest_framework.response import Response
-from rest_framework.views import APIView
+from rest_framework.generics import RetrieveAPIView
 from entities.clinic.models import Clinic
 from libs.authentication import UserAuthentication
-from libs.custom_exceptions import ClinicDoesNotExistsException, ClinicAlreadyAddedException
 from api.v1.serializers import ClinicSerializer
-from libs.permission import PatientPermission
-
-User = get_user_model()
 
 
-class ClinicView(APIView):
+class ClinicView(RetrieveAPIView):
     """
     View for getting Clinic.
 
     **Example requests**:
 
-        GET /clinic/
-            - id=1
+        GET /clinic/{id}
     """
 
     authentication_classes = (UserAuthentication,)
-
-    def get(self, request):
-        id = request.query_params.get("id", None)
-        try:
-            clinic = Clinic.objects.get(id=id)
-            serializer = ClinicSerializer(clinic, context={"request": request})
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        except Clinic.DoesNotExist:
-            raise ClinicDoesNotExistsException()
+    serializer_class = ClinicSerializer
+    queryset = Clinic.objects.all()

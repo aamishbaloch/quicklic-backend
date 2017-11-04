@@ -3,15 +3,9 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth import get_user_model
 
 from entities.clinic.models import Clinic
+from entities.resources.models import AppointmentReason
 
 User = get_user_model()
-
-
-class AppointmentReason(models.Model):
-    name = models.CharField(_('name'), max_length=255, db_index=True)
-
-    def __str__(self):
-        return self.name
 
 
 class Appointment(models.Model):

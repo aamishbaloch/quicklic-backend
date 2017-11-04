@@ -1,17 +1,16 @@
 from django.contrib.auth import get_user_model
-from rest_framework import status
-from rest_framework.response import Response
-from rest_framework.views import APIView
+from rest_framework.generics import ListAPIView
 
+from entities.appointment.models import AppointmentReason
 from entities.clinic.models import City, Country
 from entities.resources.models import Occupation, Service, Specialization
 from api.v1.serializers import OccupationSerializer, ServiceSerializer, SpecializationSerializer, CitySerializer, \
-    CountrySerializer
+    CountrySerializer, AppointmentReasonSerializer
 
 User = get_user_model()
 
 
-class CityView(APIView):
+class CityView(ListAPIView):
     """
     View for getting all cities.
 
@@ -19,15 +18,14 @@ class CityView(APIView):
 
         GET /city/
     """
+    serializer_class = CitySerializer
 
-    def get(self, request):
-        query = request.query_params.get("query", "")
-        cities = City.objects.filter(is_active=True, name__istartswith=query)
-        serializer = CitySerializer(cities, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    def get_queryset(self):
+        query = self.request.query_params.get("query", "")
+        return City.objects.filter(is_active=True, name__istartswith=query).order_by('id')
 
 
-class CountryView(APIView):
+class CountryView(ListAPIView):
     """
     View for getting all countries.
 
@@ -35,15 +33,14 @@ class CountryView(APIView):
 
         GET /countries/
     """
+    serializer_class = CountrySerializer
 
-    def get(self, request):
-        query = request.query_params.get("query", "")
-        countries = Country.objects.filter(is_active=True, name__istartswith=query)
-        serializer = CountrySerializer(countries, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    def get_queryset(self):
+        query = self.request.query_params.get("query", "")
+        return Country.objects.filter(is_active=True, name__istartswith=query).order_by('id')
 
 
-class OccupationView(APIView):
+class OccupationView(ListAPIView):
     """
     View for getting all occupations.
 
@@ -51,15 +48,14 @@ class OccupationView(APIView):
 
         GET /occupation/
     """
+    serializer_class = OccupationSerializer
 
-    def get(self, request):
-        query = request.query_params.get("query", "")
-        occupations = Occupation.objects.filter(is_active=True, name__istartswith=query)
-        serializer = OccupationSerializer(occupations, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    def get_queryset(self):
+        query = self.request.query_params.get("query", "")
+        return Occupation.objects.filter(is_active=True, name__istartswith=query).order_by('id')
 
 
-class ServiceView(APIView):
+class ServiceView(ListAPIView):
     """
     View for getting all services.
 
@@ -67,15 +63,14 @@ class ServiceView(APIView):
 
         GET /service/
     """
+    serializer_class = ServiceSerializer
 
-    def get(self, request):
-        query = request.query_params.get("query", "")
-        services = Service.objects.filter(is_active=True, name__istartswith=query)
-        serializer = ServiceSerializer(services, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    def get_queryset(self):
+        query = self.request.query_params.get("query", "")
+        return Service.objects.filter(is_active=True, name__istartswith=query).order_by('id')
 
 
-class SpecializationView(APIView):
+class SpecializationView(ListAPIView):
     """
     View for getting all specializations.
 
@@ -83,9 +78,23 @@ class SpecializationView(APIView):
 
         GET /specialization/
     """
+    serializer_class = SpecializationSerializer
 
-    def get(self, request):
-        query = request.query_params.get("query", "")
-        specializations = Specialization.objects.filter(is_active=True, name__istartswith=query)
-        serializer = SpecializationSerializer(specializations, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    def get_queryset(self):
+        query = self.request.query_params.get("query", "")
+        return Specialization.objects.filter(is_active=True, name__istartswith=query).order_by('id')
+
+
+class AppointmentReasonView(ListAPIView):
+    """
+    View for getting all appointment reasons.
+
+    **Example requests**:
+
+        GET /reason/
+    """
+    serializer_class = AppointmentReasonSerializer
+
+    def get_queryset(self):
+        query = self.request.query_params.get("query", "")
+        return AppointmentReason.objects.filter(is_active=True, name__istartswith=query).order_by('id')
