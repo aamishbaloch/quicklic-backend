@@ -76,12 +76,12 @@ class BasicClinicSerializer(ClinicSerializer):
 
 class DoctorSerializer(serializers.ModelSerializer):
     role = serializers.IntegerField(read_only=True)
-    password = serializers.CharField(write_only=True)
-    city = CitySerializer()
-    country = CountrySerializer()
-    clinic = BasicClinicSerializer(many=True)
-    services = ServiceSerializer(many=True)
-    specialization = SpecializationSerializer()
+    password = serializers.CharField(write_only=True, required=False)
+    city = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+    country = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+    clinic = BasicClinicSerializer(many=True, required=False)
+    services = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+    specialization = serializers.CharField(required=False, allow_blank=True, allow_null=True)
     avatar = serializers.SerializerMethodField()
 
     class Meta:
@@ -93,6 +93,65 @@ class DoctorSerializer(serializers.ModelSerializer):
         if doctor.avatar:
             url = doctor.avatar.url
             return request.build_absolute_uri(url)
+
+    def to_representation(self, instance):
+        data = super(DoctorSerializer, self).to_representation(instance)
+        if instance.city:
+            data['city'] = CitySerializer(instance.city).data
+        if instance.country:
+            data['country'] = CountrySerializer(instance.country).data
+        if instance.specialization:
+            data['specialization'] = SpecializationSerializer(instance.specialization).data
+        if instance.services:
+            data['services'] = ServiceSerializer(instance.services.all(), many=True).data
+        return data
+
+    def to_internal_value(self, data):
+        data = super(DoctorSerializer, self).to_internal_value(data)
+        if 'city' in data:
+            if data['city']:
+                city, created = City.objects.get_or_create(name=data['city'])
+                data['city'] = city
+            else:
+                data['city'] = None
+        if 'country' in data:
+            if data['country']:
+                country, created = Country.objects.get_or_create(name=data['country'])
+                data['country'] = country
+            else:
+                data['country'] = None
+        if 'specialization' in data:
+            if data['specialization']:
+                specialization, created = Specialization.objects.get_or_create(name=data['specialization'])
+                data['specialization'] = specialization
+            else:
+                data['specialization'] = None
+        if 'services' in data:
+            if data['services']:
+                services = []
+                for service in data['services'].split(","):
+                    service, created = Service.objects.get_or_create(name=service)
+                    services.append(service)
+                data['services'] = services
+            else:
+                data['specialization'] = None
+        return data
+
+    def get_extra_kwargs(self):
+        extra_kwargs = super(DoctorSerializer, self).get_extra_kwargs()
+        if self.instance is None:
+            kwargs = extra_kwargs.get('password', {})
+            kwargs['required'] = True
+            extra_kwargs['password'] = kwargs
+        else:
+            kwargs = extra_kwargs.get('password', {})
+            kwargs['required'] = False
+            extra_kwargs['password'] = kwargs
+            kwargs = extra_kwargs.get('phone', {})
+            kwargs['read_only'] = True
+            extra_kwargs['phone'] = kwargs
+
+        return extra_kwargs
 
 
 class DoctorTokenSerializer(DoctorSerializer):
@@ -126,9 +185,9 @@ class PatientSerializer(serializers.ModelSerializer):
         data = super(PatientSerializer, self).to_representation(instance)
         if instance.city:
             data['city'] = CitySerializer(instance.city).data
-        if instance.city:
+        if instance.country:
             data['country'] = CountrySerializer(instance.country).data
-        if instance.city:
+        if instance.occupation:
             data['occupation'] = OccupationSerializer(instance.occupation).data
         return data
 

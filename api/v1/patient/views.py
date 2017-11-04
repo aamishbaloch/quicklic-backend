@@ -48,10 +48,10 @@ class PatientListView(ListAPIView):
 
     authentication_classes = (UserAuthentication,)
     serializer_class = PatientSerializer
-    queryset = Patient.objects.all()
+    queryset = Patient.objects.all().order_by('id')
 
     def get_queryset(self):
-        patients = Patient.objects.all()
+        patients = Patient.objects.all().order_by('id')
 
         if 'clinic_id' in self.request.query_params:
             patients = patients.filter(clinic=self.request.query_params.get('clinic_id', None))

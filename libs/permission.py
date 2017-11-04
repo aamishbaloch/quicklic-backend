@@ -42,3 +42,6 @@ class PatientDoctorPermission(UserAccessPermission):
 class PatientOwnerPermission(PatientPermission, IsOwner):
     pass
 
+
+class DoctorOwnerPermission(DoctorPermission, IsOwner):
+    pass
