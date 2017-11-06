@@ -82,17 +82,11 @@ class DoctorSerializer(serializers.ModelSerializer):
     clinic = BasicClinicSerializer(many=True, required=False)
     services = serializers.CharField(required=False, allow_blank=True, allow_null=True)
     specialization = serializers.CharField(required=False, allow_blank=True, allow_null=True)
-    avatar = serializers.SerializerMethodField()
+    verified = serializers.BooleanField(read_only=True)
 
     class Meta:
         model = Doctor
-        exclude = ('is_superuser', 'is_staff', 'groups', 'user_permissions')
-
-    def get_avatar(self, doctor):
-        request = self.context.get('request')
-        if doctor.avatar:
-            url = doctor.avatar.url
-            return request.build_absolute_uri(url)
+        exclude = ('is_superuser', 'is_staff', 'groups', 'user_permissions', 'is_active')
 
     def to_representation(self, instance):
         data = super(DoctorSerializer, self).to_representation(instance)
@@ -153,6 +147,11 @@ class DoctorSerializer(serializers.ModelSerializer):
 
         return extra_kwargs
 
+    def update(self, instance, validated_data):
+        validated_data.pop('clinic')
+        instance = super(DoctorSerializer, self).update(instance, validated_data)
+        return instance
+
 
 class DoctorTokenSerializer(DoctorSerializer):
     token = serializers.SerializerMethodField()
@@ -169,17 +168,11 @@ class PatientSerializer(serializers.ModelSerializer):
     country = serializers.CharField(required=False, allow_blank=True, allow_null=True)
     clinic = BasicClinicSerializer(many=True, required=False)
     occupation = serializers.CharField(required=False, allow_blank=True, allow_null=True)
-    avatar = serializers.SerializerMethodField()
+    verified = serializers.BooleanField(read_only=True)
 
     class Meta:
         model = Patient
-        exclude = ('is_superuser', 'is_staff', 'groups', 'user_permissions')
-
-    def get_avatar(self, doctor):
-        request = self.context.get('request')
-        if doctor.avatar:
-            url = doctor.avatar.url
-            return request.build_absolute_uri(url)
+        exclude = ('is_superuser', 'is_staff', 'groups', 'user_permissions', 'is_active')
 
     def to_representation(self, instance):
         data = super(PatientSerializer, self).to_representation(instance)
@@ -233,6 +226,11 @@ class PatientSerializer(serializers.ModelSerializer):
         instance = super(PatientSerializer, self).create(validated_data)
         instance.set_password(validated_data['password'])
         instance.save()
+        return instance
+
+    def update(self, instance, validated_data):
+        validated_data.pop('clinic')
+        instance = super(PatientSerializer, self).update(instance, validated_data)
         return instance
 
 

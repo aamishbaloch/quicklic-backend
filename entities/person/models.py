@@ -10,6 +10,7 @@ from entities.clinic.models import Country, City, Clinic
 from entities.resources.models import Service, Specialization, Occupation
 from libs.managers import QueryManager
 from libs.utils import get_verification_code
+from quicklic_backend.settings import MEDIA_URL, MEDIA_ROOT
 
 
 class UserManager(BaseUserManager, QueryManager):
@@ -127,6 +128,11 @@ class User(AbstractBaseUser, PermissionsMixin):
         for choice in User.Gender.Choices:
             if choice[0] == self.gender:
                 return choice[1]
+
+    @property
+    def get_avatar(self):
+        if self.avatar:
+            return "{}{}{}".format(MEDIA_ROOT, MEDIA_URL, self.avatar.url)
 
 
 class Doctor(User):

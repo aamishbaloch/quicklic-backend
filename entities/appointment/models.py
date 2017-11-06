@@ -3,6 +3,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth import get_user_model
 
 from entities.clinic.models import Clinic
+from entities.person.models import Patient, Doctor
 from entities.resources.models import AppointmentReason
 
 User = get_user_model()
@@ -25,8 +26,8 @@ class Appointment(models.Model):
 
     qid = models.CharField(_('qid'), max_length=255, db_index=True, unique=True)
 
-    patient = models.ForeignKey(User, related_name='patient_appointments')
-    doctor = models.ForeignKey(User, related_name='doctor_appointments')
+    patient = models.ForeignKey(Patient, related_name='appointments')
+    doctor = models.ForeignKey(Doctor, related_name='appointments')
     clinic = models.ForeignKey(Clinic, related_name='appointments')
 
     start_datetime = models.DateTimeField(db_index=True)
