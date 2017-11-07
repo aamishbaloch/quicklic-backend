@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from rest_framework import status
+from rest_framework.generics import CreateAPIView, ListCreateAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -13,35 +14,25 @@ from libs.utils import get_datetime_from_date_string
 User = get_user_model()
 
 
-class AppointmentView(APIView):
+class AppointmentView(ListCreateAPIView):
     """
-    View for creating and getting appointment.
+    View for creating appointment and listing all.
 
     **Example requests**:
-
         GET /appointment/
-            - id=1
         POST /appointment/
     """
 
     authentication_classes = (UserAuthentication,)
     permission_classes = (PatientDoctorPermission,)
+    serializer_class = AppointmentSerializer
 
-    def post(self, request):
-        serializer = AppointmentSerializer(data=request.data, context={"request": request})
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        raise InvalidInputDataException(str(serializer.errors))
-
-    def get(self, request):
-        id = request.query_params.get("id", None)
-        try:
-            appointment = Appointment.objects.get(id=id)
-            serializer = AppointmentSerializer(appointment, context={"request": request})
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        except Appointment.DoesNotExist:
-            raise AppointmentDoesNotExistsException()
+    def get_queryset(self):
+        start_date = self.request.query_params.get('start_date', None)
+        if start_date:
+            start_datetime = get_datetime_from_date_string(start_date)
+            return Appointment.objects.filter(start_datetime__gte=start_datetime).order_by('start_datetime')
+        return Appointment.objects.all().order_by('start_datetime')
 
 
 class AppointmentListView(APIView):
@@ -96,33 +87,3 @@ class AppointmentListView(APIView):
         serializer = AppointmentSerializer(appointments, context={"request": request}, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-
-class AppointmentSlotView(APIView):
-    """
-    View for creating and getting appointment.
-
-    **Example requests**:
-
-        GET /appointment/
-            - id=1
-        POST /appointment/
-    """
-
-    authentication_classes = (UserAuthentication,)
-    permission_classes = (PatientDoctorPermission,)
-
-    def post(self, request):
-        serializer = AppointmentSerializer(data=request.data, context={"request": request})
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        raise InvalidInputDataException(str(serializer.errors))
-
-    def get(self, request):
-        id = request.query_params.get("id", None)
-        try:
-            appointment = Appointment.objects.get(id=id)
-            serializer = AppointmentSerializer(appointment, context={"request": request})
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        except Appointment.DoesNotExist:
-            raise AppointmentDoesNotExistsException()

@@ -7,8 +7,8 @@ from entities.person.models import Patient, Doctor
 from libs.authentication import UserAuthentication
 from libs.custom_exceptions import ClinicDoesNotExistsException, ClinicAlreadyAddedException
 from libs.permission import PatientOwnerPermission
-from libs.utils import str2bool
-from api.v1.serializers import PatientSerializer, ClinicSerializer
+from libs.utils import str2bool, get_datetime_from_date_string
+from api.v1.serializers import PatientSerializer, ClinicSerializer, AppointmentSerializer
 
 
 class PatientView(RetrieveUpdateAPIView):
@@ -143,3 +143,40 @@ class PatientDoctorClinicView(ListAPIView):
             if clinic in doctor_clinics:
                 common_clinics.append(clinic)
         return common_clinics
+
+
+class PatientAppointmentView(ListAPIView):
+    """
+    View for getting patient's appointments
+
+    **Example requests**:
+
+        GET /patient/{id}/appointments/
+    """
+
+    authentication_classes = (UserAuthentication,)
+    permission_classes = (PatientOwnerPermission,)
+    serializer_class = AppointmentSerializer
+
+    def get_queryset(self):
+        appointments = self.request.user.patient.appointments.all()
+
+        if 'start_date' in self.request.query_params:
+            start_datetime = get_datetime_from_date_string(self.request.query_params.get("start_date"))
+            appointments = appointments.filter(start_datetime__gte=start_datetime)
+
+        if 'end_date' in self.request.query_params:
+            end_datetime = get_datetime_from_date_string(self.request.query_params.get("end_date"))
+            appointments = appointments.filter(end_datetime__lte=end_datetime)
+
+        if 'status' in self.request.query_params:
+            statuses = [int(id) for id in self.request.query_params.get('status').split(',')]
+            appointments = appointments.filter(status__in=statuses)
+
+        if 'clinic_id' in self.request.query_params:
+            appointments = appointments.filter(clinic_id=self.request.query_params.get('clinic_id'))
+
+        if 'reason_id' in self.request.query_params:
+            appointments = appointments.filter(reason_id=self.request.query_params.get('reason_id'))
+
+        return appointments

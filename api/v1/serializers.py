@@ -56,19 +56,13 @@ class ClinicSerializer(serializers.ModelSerializer):
     code = serializers.CharField(write_only=True)
     city = CitySerializer()
     country = CountrySerializer()
-    image = serializers.SerializerMethodField()
 
     class Meta:
         model = Clinic
         fields = '__all__'
 
-    def get_image(self, clinic):
-        request = self.context.get('request')
-        url = clinic.image.url
-        return request.build_absolute_uri(url)
 
-
-class BasicClinicSerializer(ClinicSerializer):
+class BasicClinicSerializer(serializers.ModelSerializer):
     class Meta:
         model = Clinic
         fields = ('id', 'name', 'image')
@@ -153,6 +147,12 @@ class DoctorSerializer(serializers.ModelSerializer):
         return instance
 
 
+class BasicDoctorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Doctor
+        fields = ('id', 'first_name', 'last_name', 'avatar', 'phone')
+
+
 class DoctorTokenSerializer(DoctorSerializer):
     token = serializers.SerializerMethodField()
 
@@ -234,6 +234,12 @@ class PatientSerializer(serializers.ModelSerializer):
         return instance
 
 
+class BasicPatientSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Patient
+        fields = ('id', 'first_name', 'last_name', 'avatar', 'phone')
+
+
 class PatientTokenSerializer(PatientSerializer):
     token = serializers.SerializerMethodField()
 
@@ -243,19 +249,24 @@ class PatientTokenSerializer(PatientSerializer):
 
 
 class AppointmentSerializer(serializers.ModelSerializer):
-    qid = serializers.CharField(required=False, read_only=True)
-    status = serializers.CharField(required=False)
-    reason = serializers.CharField()
-    patient = PatientSerializer()
-    doctor = DoctorSerializer()
-    clinic = ClinicSerializer()
+    qid = serializers.CharField(read_only=True)
+    status = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = Appointment
-        fields = [
-            'id', 'qid', 'patient', 'doctor', 'clinic', 'start_datetime',
-            'end_datetime', 'reason', 'status', 'is_active', 'created_at'
-        ]
+        fields = '__all__'
+
+    def to_representation(self, instance):
+        data = super(AppointmentSerializer, self).to_representation(instance)
+        if instance.reason:
+            data['reason'] = AppointmentReasonSerializer(instance.reason).data
+        if instance.clinic:
+            data['clinic'] = BasicClinicSerializer(instance.clinic).data
+        if instance.patient:
+            data['patient'] = BasicPatientSerializer(instance.patient).data
+        if instance.doctor:
+            data['doctor'] = BasicDoctorSerializer(instance.doctor).data
+        return data
 
     def create(self, validated_data):
         validated_data['status'] = Appointment.Status.PENDING
@@ -265,9 +276,7 @@ class AppointmentSerializer(serializers.ModelSerializer):
         reason, created = AppointmentReason.objects.get_or_create(name=validated_data['reason'])
         validated_data['reason'] = reason
 
-        appointment = Appointment.objects.create(**validated_data)
-
-        return appointment
+        return super(AppointmentSerializer, self).create(validated_data)
 
 
 

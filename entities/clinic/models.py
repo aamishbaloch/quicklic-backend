@@ -33,6 +33,8 @@ class Clinic(models.Model):
     code = models.CharField(_('code'), max_length=6, db_index=True, unique=True)
     name = models.CharField(_('name'), max_length=255, db_index=True)
     phone = models.CharField(_('phone'), max_length=255)
+    email = models.EmailField(_('email'), blank=True, null=True)
+    website = models.URLField(_('website'), blank=True, null=True)
     location = models.CharField(_('location'), max_length=255)
     city = models.ForeignKey(City, related_name="city")
     country = models.ForeignKey(Country, related_name="country")
