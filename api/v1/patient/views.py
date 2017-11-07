@@ -152,6 +152,13 @@ class PatientAppointmentView(ListAPIView):
     **Example requests**:
 
         GET /patient/{id}/appointments/
+
+    **filters**:
+        - start_date
+        - end_date
+        - status=1
+        - clinic_id=1
+        - reason_id=1
     """
 
     authentication_classes = (UserAuthentication,)
@@ -159,7 +166,7 @@ class PatientAppointmentView(ListAPIView):
     serializer_class = AppointmentSerializer
 
     def get_queryset(self):
-        appointments = self.request.user.patient.appointments.all()
+        appointments = self.request.user.patient.appointments.all().order_by('start_datetime')
 
         if 'start_date' in self.request.query_params:
             start_datetime = get_datetime_from_date_string(self.request.query_params.get("start_date"))
