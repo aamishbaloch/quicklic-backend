@@ -14,7 +14,7 @@ class UserAccessPermission(permissions.BasePermission):
 class IsOwner(permissions.BasePermission):
 
     def has_permission(self, request, view):
-        user = User.objects.get(pk=view.kwargs['id'])
+        user = User.objects.get(pk=view.kwargs['pk'])
         if request.user == user:
             return True
         return False
@@ -39,9 +39,14 @@ class PatientDoctorPermission(UserAccessPermission):
                (hasattr(request.user, 'patient') or hasattr(request.user, 'doctor'))
 
 
-class PatientOwnerPermission(PatientPermission, IsOwner):
-    pass
+class PatientOwnerPermission(IsOwner):
+    def has_permission(self, request, view):
+        return super(PatientOwnerPermission, self).has_permission(request, view) \
+               and hasattr(request.user, 'patient')
 
 
-class DoctorOwnerPermission(DoctorPermission, IsOwner):
-    pass
+class DoctorOwnerPermission(IsOwner):
+    def has_permission(self, request, view):
+        return super(DoctorOwnerPermission, self).has_permission(request, view) \
+               and hasattr(request.user, 'doctor')
+

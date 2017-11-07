@@ -1,5 +1,6 @@
 from random import randint
 from datetime import datetime
+import pytz
 
 
 def str2bool(value):
@@ -22,10 +23,12 @@ def get_qid_code():
 
 def get_datetime_from_date_string(datetime_str):
     datetime_str = "{} {}".format(datetime_str, "00:00:00")
-    return datetime.strptime(datetime_str, "%Y-%m-%d %H:%M:%S")
+    unaware_date = datetime.strptime(datetime_str, "%Y-%m-%d %H:%M:%S")
+    return pytz.utc.localize(unaware_date)
 
 
 def get_time_from_string(time_str):
-    return datetime.strptime(time_str, '%H:%M').time()
+    unaware_time = datetime.strptime(time_str, '%H:%M').time()
+    return pytz.utc.localize(unaware_time)
 
 
