@@ -1,6 +1,8 @@
 from django.contrib.auth import get_user_model
 from rest_framework import permissions
 
+from entities.appointment.models import Appointment
+
 User = get_user_model()
 
 
@@ -14,10 +16,13 @@ class UserAccessPermission(permissions.BasePermission):
 class IsOwner(permissions.BasePermission):
 
     def has_permission(self, request, view):
-        user = User.objects.get(pk=view.kwargs['pk'])
-        if request.user == user:
-            return True
-        return False
+        try:
+            user = User.objects.get(pk=view.kwargs['pk'])
+            if request.user == user:
+                return True
+            return False
+        except User.DoesNotExist:
+            return False
 
 
 class PatientPermission(UserAccessPermission):
@@ -50,3 +55,13 @@ class DoctorOwnerPermission(IsOwner):
         return super(DoctorOwnerPermission, self).has_permission(request, view) \
                and hasattr(request.user, 'doctor')
 
+
+class AppointmentOwnerPermission(permissions.BasePermission):
+    def has_permission(self, request, view):
+        try:
+            appointment = Appointment.objects.get(pk=view.kwargs['appointment_id'])
+            if request.user.id == appointment.doctor.id or request.user.id == appointment.patient.id:
+                return True
+            return False
+        except Appointment.DoesNotExist:
+            return False

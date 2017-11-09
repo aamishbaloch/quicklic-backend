@@ -16,12 +16,14 @@ class Appointment(models.Model):
         PENDING = 2
         NOSHOW = 3
         CANCEL = 4
+        DISCARD = 5
 
         Choices = (
             (CONFIRM, 'CONFIRM'),
             (PENDING, 'PENDING'),
             (NOSHOW, 'NOSHOW'),
             (CANCEL, 'CANCEL'),
+            (DISCARD, 'DISCARD'),
         )
 
     qid = models.CharField(_('qid'), max_length=255, db_index=True, unique=True)

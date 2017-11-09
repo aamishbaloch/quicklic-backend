@@ -5,10 +5,11 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.db.models import Q
 
+from entities.appointment.models import Appointment
 from entities.person.models import Doctor
 from libs.authentication import UserAuthentication
-from libs.custom_exceptions import InvalidInputDataException
-from libs.permission import DoctorPermission, DoctorOwnerPermission
+from libs.custom_exceptions import InvalidInputDataException, InvalidAppointmentStatusException
+from libs.permission import DoctorPermission, DoctorOwnerPermission, AppointmentOwnerPermission
 from libs.utils import str2bool, get_datetime_from_date_string
 from api.v1.serializers import DoctorSerializer, ClinicSerializer, AppointmentSerializer
 
@@ -139,4 +140,31 @@ class DoctorAppointmentView(ListAPIView):
             appointments = appointments.filter(reason_id=self.request.query_params.get('reason_id'))
 
         return appointments
+
+
+class DoctorStatusView(APIView):
+    """
+    View for changing appointment status
+
+    **Example requests**:
+
+        POST /doctor/{id}/appointment/{appointment_id}
+
+        **params**
+        status: int
+    """
+
+    authentication_classes = (UserAuthentication,)
+    permission_classes = (DoctorOwnerPermission, AppointmentOwnerPermission)
+
+    def post(self, request, pk, appointment_id):
+        status_code = request.data.get('status', None)
+        if status_code:
+            if status_code in [Appointment.Status.CONFIRM, Appointment.Status.DISCARD, Appointment.Status.NOSHOW]:
+                appointment = Appointment.objects.get(pk=appointment_id)
+                appointment.status = status_code
+                appointment.save()
+
+                return Response({}, status=status.HTTP_200_OK)
+        raise InvalidAppointmentStatusException()
 
