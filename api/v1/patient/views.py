@@ -2,13 +2,16 @@ from rest_framework import status
 from rest_framework.generics import RetrieveUpdateAPIView, ListAPIView
 from rest_framework.response import Response
 from django.db.models import Q
+from rest_framework.views import APIView
+
+from entities.appointment.models import Appointment
 from entities.clinic.models import Clinic
 from entities.person.models import Patient, Doctor
 from libs.authentication import UserAuthentication
 from libs.custom_exceptions import ClinicDoesNotExistsException, ClinicAlreadyAddedException
-from libs.permission import PatientOwnerPermission
+from libs.permission import PatientOwnerPermission, AppointmentOwnerPermission
 from libs.utils import str2bool, get_datetime_from_date_string
-from api.v1.serializers import PatientSerializer, ClinicSerializer, AppointmentSerializer
+from api.v1.serializers import PatientSerializer, ClinicSerializer, AppointmentSerializer, DoctorSerializer
 
 
 class PatientView(RetrieveUpdateAPIView):
@@ -151,7 +154,7 @@ class PatientAppointmentView(ListAPIView):
 
     **Example requests**:
 
-        GET /patient/{id}/appointments/
+        GET /patient/{id}/appointment/
 
     **filters**:
         - start_date
@@ -187,3 +190,44 @@ class PatientAppointmentView(ListAPIView):
             appointments = appointments.filter(reason_id=self.request.query_params.get('reason_id'))
 
         return appointments
+
+
+class PatientAppointmentCancelView(APIView):
+    """
+    View for canceling appointment
+
+    **Example requests**:
+
+        GET /patient/{id}/appointment/{appointment_id}/cancel/
+    """
+
+    authentication_classes = (UserAuthentication,)
+    permission_classes = (PatientOwnerPermission, AppointmentOwnerPermission)
+
+    def get(self, request, pk, appointment_id):
+        appointment = Appointment.objects.get(pk=appointment_id)
+        appointment.status = Appointment.Status.CANCEL
+        appointment.save()
+
+        return Response({}, status=status.HTTP_200_OK)
+
+
+class PatientDoctorsView(ListAPIView):
+    """
+    View for getting doctors related to patient
+
+    **Example requests**:
+
+        GET /patient/{id}/doctors
+    """
+
+    authentication_classes = (UserAuthentication,)
+    permission_classes = (PatientOwnerPermission,)
+    serializer_class = DoctorSerializer
+
+    def get_queryset(self):
+        patient_clinics = self.request.user.clinic.filter(is_active=True).values_list('id', flat=True)
+        return Doctor.objects.filter(clinic__id__in=patient_clinics)
+
+
+

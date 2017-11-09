@@ -48,3 +48,12 @@ class ClinicAlreadyAddedException(AlreadyExistsException):
 
 class PatientExistsException(AlreadyExistsException):
     default_detail = "Patient Already Exists"
+
+
+class InvalidAppointmentStatusException(APIException):
+    status_code = 400
+    default_detail = "Invalid Input Data"
+
+    def __init__(self, message=None, *args, **kwargs):
+        send_manually_error_email(message)
+        super(InvalidAppointmentStatusException, self).__init__(*args, **kwargs)
