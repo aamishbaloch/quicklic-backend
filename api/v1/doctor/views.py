@@ -9,8 +9,10 @@ from entities.appointment.models import Appointment
 from entities.person.models import Doctor
 from libs.authentication import UserAuthentication
 from libs.custom_exceptions import InvalidInputDataException, InvalidAppointmentStatusException
-from libs.permission import DoctorPermission, DoctorOwnerPermission, AppointmentOwnerPermission
-from libs.utils import str2bool, get_datetime_from_date_string
+from libs.permission import DoctorPermission, DoctorOwnerPermission, AppointmentOwnerPermission, PatientDoctorPermission, \
+    PatientPermission, PatientBelongsDoctorPermission
+from libs.utils import str2bool, get_datetime_from_date_string, get_date_from_date_string, \
+    get_datetime_range_from_date_string, get_interval_between_time
 from api.v1.serializers import DoctorSerializer, ClinicSerializer, AppointmentSerializer
 
 User = get_user_model()
@@ -167,4 +169,42 @@ class DoctorStatusView(APIView):
 
                 return Response({}, status=status.HTTP_200_OK)
         raise InvalidAppointmentStatusException()
+
+
+class DoctorAppointmentSlotView(APIView):
+    """
+    View for getting slots
+
+    **Example requests**:
+        GET /doctor/{id}/appointment_slots/?date=2017-06-18
+    """
+
+    authentication_classes = (UserAuthentication,)
+    permission_classes = (PatientDoctorPermission, PatientBelongsDoctorPermission)
+
+    def get(self, request, pk):
+        date = self.request.query_params.get('date', None)
+        if date:
+            doctor = Doctor.objects.get(pk=pk)
+            start_time, end_time = doctor.setting.get_day_timings(get_date_from_date_string(date).weekday())
+
+            intervals = get_interval_between_time(start_time, end_time, doctor.setting.slot_time, date)
+            day_start, day_end = get_datetime_range_from_date_string(date)
+
+            appointments = doctor.appointments.filter(start_datetime__gte=day_start, end_datetime__lte=day_end)
+            appointments = [{
+                    "start": appointment.start_datetime,
+                    "end": appointment.end_datetime
+                } for appointment in appointments]
+
+            for interval in intervals:
+                for appointment in appointments:
+                    is_overlap = (interval['start'] <= appointment['start'] <= interval['end']) or (appointment['start'] <= interval['start'] <= appointment['end'])
+                    if is_overlap:
+                        interval['available'] = False
+
+            return Response(intervals, status=status.HTTP_200_OK)
+
+        raise InvalidInputDataException()
+
 
