@@ -164,6 +164,28 @@ class DoctorSetting(models.Model):
     def __str__(self):
         return self.physician.get_full_name()
 
+    def get_day_timings(self, day_number):
+        """
+        method will return day timings by getting a number
+
+        MONDAY 0, TUESDAY 1, WEDNESDAY 2, THURSDAY 3, FRIDAY 4, SATURDAY 5, SUNDAY 6
+        """
+
+        if day_number == 0:
+            return self.monday_start, self.monday_end
+        elif day_number == 1:
+            return self.tuesday_start, self.tuesday_end
+        elif day_number == 2:
+            return self.wednesday_start, self.wednesday_end
+        elif day_number == 3:
+            return self.thursday_start, self.thursday_end
+        elif day_number == 4:
+            return self.friday_start, self.friday_end
+        elif day_number == 5:
+            return self.saturday_start, self.saturday_end
+        elif day_number == 6:
+            return self.sunday_start, self.sunday_end
+
 
 @receiver(post_save, sender=Doctor)
 def doctor_post_save_callback(sender, **kwargs):

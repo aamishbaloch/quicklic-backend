@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from rest_framework import permissions
 
 from entities.appointment.models import Appointment
+from entities.person.models import Doctor
 
 User = get_user_model()
 
@@ -64,4 +65,17 @@ class AppointmentOwnerPermission(permissions.BasePermission):
                 return True
             return False
         except Appointment.DoesNotExist:
+            return False
+
+
+class PatientBelongsDoctorPermission(permissions.BasePermission):
+    def has_permission(self, request, view):
+        try:
+            doctor = Doctor.objects.get(pk=view.kwargs['pk'])
+            patient_clinics = request.user.patient.clinic.all().values_list('id', flat=True)
+            doctor_clinics = doctor.clinic.all().values_list('id', flat=True)
+            if any(patient_clinic in doctor_clinics for patient_clinic in patient_clinics):
+                return True
+            return False
+        except Doctor.DoesNotExist:
             return False
