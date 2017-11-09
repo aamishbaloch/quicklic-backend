@@ -5,7 +5,8 @@ from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
-
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from entities.clinic.models import Country, City, Clinic
 from entities.resources.models import Service, Specialization, Occupation
 from libs.managers import QueryManager
@@ -140,6 +141,32 @@ class Doctor(User):
     services = models.ManyToManyField(Service, related_name="doctor")
     specialization = models.ForeignKey(Specialization, related_name="doctor", blank=True, null=True)
     degree = models.CharField(_('degree'), max_length=50, blank=True, null=True)
+
+
+class DoctorSetting(models.Model):
+    physician = models.OneToOneField(Doctor, related_name='setting')
+    slot_time = models.IntegerField(db_index=True, default=10)
+    monday = models.TimeField(blank=True, null=True)
+    tuesday = models.TimeField(blank=True, null=True)
+    wednesday = models.TimeField(blank=True, null=True)
+    thursday = models.TimeField(blank=True, null=True)
+    friday = models.TimeField(blank=True, null=True)
+    saturday = models.TimeField(blank=True, null=True)
+    sunday = models.TimeField(blank=True, null=True)
+
+    def __str__(self):
+        return self.physician.get_full_name()
+
+
+@receiver(post_save, sender=Doctor)
+def doctor_post_save_callback(sender, **kwargs):
+    """
+    settings to be created after doctor's creation
+    """
+    doctor = kwargs['instance']
+    setting = DoctorSetting()
+    setting.physician = doctor
+    setting.save()
 
 
 class Patient(User):
