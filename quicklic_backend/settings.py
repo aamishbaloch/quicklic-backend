@@ -47,10 +47,10 @@ LOCAL_APPS = [
     'scripts',
     'entities.contact',
     'entities.blog',
-    'entities.person',
-    'entities.clinic',
-    'entities.appointment',
     'entities.resources',
+    'entities.clinic',
+    'entities.person',
+    'entities.appointment',
 ]
 
 INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
