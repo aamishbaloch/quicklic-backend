@@ -89,6 +89,19 @@ You have to set **DEBUG=FALSE** in your settings to get these reports.
 in libs.error_reports.send_manually_error_email and 
 libs.custom_exceptions.InvalidInputDataException. 
 
+
+Timezone Setting
+----------------
+Don't forget to add your desired timezone setting in your local_settings.py.
+```sh
+TIME_ZONE = 'Asia/Karachi'
+```
+NOTE: Things won't work without adding this. 
+
+In settings USE_TZ is set to be False. The reason of this is get the desired 
+timezone from the DB as well so the comparison won't require any extra effort.
+
+
 API Documentation
 -----------------
 We are using atlassian confluence for managing our documents. Here is 
