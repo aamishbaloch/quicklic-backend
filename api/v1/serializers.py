@@ -3,7 +3,7 @@ from rest_framework import serializers
 from entities.clinic.models import City, Country, Clinic
 from entities.person.models import Doctor, Patient
 from entities.resources.models import Specialization, Service, Occupation, AppointmentReason
-from entities.appointment.models import Appointment
+from entities.appointment.models import Appointment, Visit
 from libs.utils import get_qid_code
 from libs.jwt_helper import JWTHelper
 
@@ -279,5 +279,20 @@ class AppointmentSerializer(serializers.ModelSerializer):
         return super(AppointmentSerializer, self).create(validated_data)
 
 
+class VisitSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Visit
+        fields = '__all__'
 
+    def to_representation(self, instance):
+        data = super(VisitSerializer, self).to_representation(instance)
 
+        if instance.appointment:
+            data['appointment'] = AppointmentSerializer(instance.appointment).data
+        if instance.clinic:
+            data['clinic'] = BasicClinicSerializer(instance.clinic).data
+        if instance.patient:
+            data['patient'] = BasicPatientSerializer(instance.patient).data
+        if instance.doctor:
+            data['doctor'] = BasicDoctorSerializer(instance.doctor).data
+        return data

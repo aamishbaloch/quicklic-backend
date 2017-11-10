@@ -1,10 +1,14 @@
 from django.contrib.auth import get_user_model
-from rest_framework.generics import ListCreateAPIView
+from rest_framework.generics import ListCreateAPIView, CreateAPIView, RetrieveUpdateAPIView
 
-from entities.appointment.models import Appointment
+from entities.appointment.models import Appointment, Visit
 from libs.authentication import UserAuthentication
-from libs.permission import PatientDoctorPermission
-from api.v1.serializers import AppointmentSerializer
+from libs.permission import (
+    PatientDoctorPermission,
+    DoctorPermission,
+    PKAppointmentOwnerPermission,
+    AppointmentOwnerPermission, AppointmentVisitPermission)
+from api.v1.serializers import AppointmentSerializer, VisitSerializer
 from libs.utils import get_datetime_from_date_string
 
 User = get_user_model()
@@ -32,3 +36,30 @@ class AppointmentView(ListCreateAPIView):
             start_datetime = get_datetime_from_date_string(start_date)
             return Appointment.objects.filter(start_datetime__gte=start_datetime).order_by('start_datetime')
         return Appointment.objects.all().order_by('start_datetime')
+
+
+class AppointmentVisitView(CreateAPIView):
+    """
+    View for creating visit against appointment.
+
+    **Example requests**:
+        POST /appointment/{id}/visit/
+    """
+
+    authentication_classes = (UserAuthentication,)
+    permission_classes = (DoctorPermission, PKAppointmentOwnerPermission)
+    serializer_class = VisitSerializer
+
+
+class AppointmentVisitUpdateView(RetrieveUpdateAPIView):
+    """
+    View for updating visit against appointment.
+
+    **Example requests**:
+        POST /appointment/{id}/visit/{id}
+    """
+
+    authentication_classes = (UserAuthentication,)
+    permission_classes = (DoctorPermission, AppointmentOwnerPermission, AppointmentVisitPermission)
+    serializer_class = VisitSerializer
+    queryset = Visit.objects.all()
