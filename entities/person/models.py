@@ -193,9 +193,10 @@ def doctor_post_save_callback(sender, **kwargs):
     settings to be created after doctor's creation
     """
     doctor = kwargs['instance']
-    setting = DoctorSetting()
-    setting.physician = doctor
-    setting.save()
+    if not hasattr(doctor, 'setting'):
+        setting = DoctorSetting()
+        setting.physician = doctor
+        setting.save()
 
 
 class Patient(User):
