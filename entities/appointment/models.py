@@ -43,3 +43,20 @@ class Appointment(models.Model):
 
     def __str__(self):
         return self.qid
+
+
+class Visit(models.Model):
+    appointment = models.OneToOneField(Appointment, related_name='visit')
+    followup_required = models.BooleanField(default=False)
+    followup_date = models.DateField(blank=True, null=True)
+    prescription = models.TextField(blank=True, null=True)
+    comments = models.TextField(blank=True, null=True)
+
+    patient = models.ForeignKey(Patient, related_name='visits')
+    doctor = models.ForeignKey(Doctor, related_name='visits')
+    clinic = models.ForeignKey(Clinic, related_name='visits')
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.appointment.qid
