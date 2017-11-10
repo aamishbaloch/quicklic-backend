@@ -5,15 +5,21 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.db.models import Q
 
-from entities.appointment.models import Appointment
+from entities.appointment.models import Appointment, Visit
 from entities.person.models import Doctor
 from libs.authentication import UserAuthentication
 from libs.custom_exceptions import InvalidInputDataException, InvalidAppointmentStatusException
-from libs.permission import DoctorPermission, DoctorOwnerPermission, AppointmentOwnerPermission, PatientDoctorPermission, \
-    PatientPermission, PatientBelongsDoctorPermission
+from libs.permission import (
+    DoctorPermission,
+    DoctorOwnerPermission,
+    AppointmentOwnerPermission,
+    PatientDoctorPermission,
+    PatientPermission,
+    PatientBelongsDoctorPermission,
+)
 from libs.utils import str2bool, get_datetime_from_date_string, get_date_from_date_string, \
     get_datetime_range_from_date_string, get_interval_between_time
-from api.v1.serializers import DoctorSerializer, ClinicSerializer, AppointmentSerializer
+from api.v1.serializers import DoctorSerializer, ClinicSerializer, AppointmentSerializer, VisitSerializer
 
 User = get_user_model()
 
@@ -206,5 +212,46 @@ class DoctorAppointmentSlotView(APIView):
             return Response(intervals, status=status.HTTP_200_OK)
 
         raise InvalidInputDataException()
+
+
+class DoctorVisitView(ListAPIView):
+    """
+    View for getting doctor visits
+
+    **Example requests**:
+
+        GET /doctor/{id}/visit/
+
+        **filters**
+            patient_id: Filter with patient
+            clinic_id: Filter with clinic
+            start_date: time filter
+            end_date: time filter
+    """
+
+    authentication_classes = (UserAuthentication,)
+    permission_classes = (DoctorOwnerPermission,)
+    serializer_class = VisitSerializer
+
+    def get_queryset(self):
+        appointments = self.request.user.doctor.appointments.all()
+
+        if 'clinic_id' in self.request.query_params:
+            appointments = appointments.filter(clinic=self.request.query_params.get('clinic_id'))
+
+        if 'patient_id' in self.request.query_params:
+            appointments = appointments.filter(patient_id=self.request.query_params.get('patient_id'))
+
+        if 'start_date' in self.request.query_params:
+            start_datetime = get_datetime_from_date_string(self.request.query_params.get('start_date'))
+            appointments = appointments.filter(start_datetime__gte=start_datetime)
+
+        if 'end_date' in self.request.query_params:
+            end_datetime = get_datetime_from_date_string(self.request.query_params.get('end_date'))
+            appointments = appointments.filter(end_datetime__lte=end_datetime)
+
+        appointment_ids = appointments.values_list('id', flat=True)
+
+        return Visit.objects.filter(appointment_id__in=appointment_ids)
 
 
