@@ -68,6 +68,17 @@ class AppointmentOwnerPermission(permissions.BasePermission):
             return False
 
 
+class PKAppointmentOwnerPermission(permissions.BasePermission):
+    def has_permission(self, request, view):
+        try:
+            appointment = Appointment.objects.get(pk=view.kwargs['pk'])
+            if request.user.id == appointment.doctor.id or request.user.id == appointment.patient.id:
+                return True
+            return False
+        except Appointment.DoesNotExist:
+            return False
+
+
 class PatientBelongsDoctorPermission(permissions.BasePermission):
     def has_permission(self, request, view):
         try:
@@ -78,4 +89,16 @@ class PatientBelongsDoctorPermission(permissions.BasePermission):
                 return True
             return False
         except Doctor.DoesNotExist:
+            return False
+
+
+class AppointmentVisitPermission(permissions.BasePermission):
+    def has_permission(self, request, view):
+        try:
+            appointment = Appointment.objects.get(pk=view.kwargs['appointment_id'])
+            if hasattr(appointment, 'visit'):
+                if appointment.visit.id == int(view.kwargs['pk']):
+                    return True
+            return False
+        except Appointment.DoesNotExist:
             return False
