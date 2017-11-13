@@ -4,6 +4,7 @@ from entities.clinic.models import City, Country, Clinic
 from entities.person.models import Doctor, Patient
 from entities.resources.models import Specialization, Service, Occupation, AppointmentReason
 from entities.appointment.models import Appointment, Visit
+from entities.test_menu.models import Test
 from libs.utils import get_qid_code
 from libs.jwt_helper import JWTHelper
 
@@ -303,4 +304,17 @@ class VisitSerializer(serializers.ModelSerializer):
             data['patient'] = BasicPatientSerializer(instance.patient).data
         if instance.doctor:
             data['doctor'] = BasicDoctorSerializer(instance.doctor).data
+        return data
+
+
+class TestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Test
+        fields = '__all__'
+
+    def to_representation(self, instance):
+        data = super(TestSerializer, self).to_representation(instance)
+
+        if instance.clinic:
+            data['clinic'] = BasicClinicSerializer(instance.clinic, context={"request": self.context['request']}).data
         return data
