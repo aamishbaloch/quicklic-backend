@@ -1,4 +1,4 @@
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView
 
 from entities.test_menu.models import Test
 from libs.authentication import UserAuthentication
@@ -18,3 +18,17 @@ class TestView(ListAPIView):
     permission_classes = (PatientDoctorPermission,)
     serializer_class = TestSerializer
     queryset = Test.objects.filter(is_active=True, is_featured=True).order_by('id')
+
+
+class TestDetailView(RetrieveAPIView):
+    """
+    View for getting test details.
+
+    **Example requests**:
+        GET /test/{id}
+    """
+
+    authentication_classes = (UserAuthentication,)
+    permission_classes = (PatientDoctorPermission,)
+    serializer_class = TestSerializer
+    queryset = Test.objects.all()
