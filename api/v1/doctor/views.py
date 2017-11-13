@@ -10,11 +10,9 @@ from entities.person.models import Doctor
 from libs.authentication import UserAuthentication
 from libs.custom_exceptions import InvalidInputDataException, InvalidAppointmentStatusException
 from libs.permission import (
-    DoctorPermission,
     DoctorOwnerPermission,
     AppointmentOwnerPermission,
     PatientDoctorPermission,
-    PatientPermission,
     PatientBelongsDoctorPermission,
 )
 from libs.utils import str2bool, get_datetime_from_date_string, get_date_from_date_string, \
@@ -194,22 +192,24 @@ class DoctorAppointmentSlotView(APIView):
             doctor = Doctor.objects.get(pk=pk)
             start_time, end_time = doctor.setting.get_day_timings(get_date_from_date_string(date).weekday())
 
-            intervals = get_interval_between_time(start_time, end_time, doctor.setting.slot_time, date)
-            day_start, day_end = get_datetime_range_from_date_string(date)
+            if start_time and end_time:
+                intervals = get_interval_between_time(start_time, end_time, doctor.setting.slot_time, date)
+                day_start, day_end = get_datetime_range_from_date_string(date)
 
-            appointments = doctor.appointments.filter(start_datetime__gte=day_start, end_datetime__lte=day_end)
-            appointments = [{
-                    "start": appointment.start_datetime,
-                    "end": appointment.end_datetime
-                } for appointment in appointments]
+                appointments = doctor.appointments.filter(start_datetime__gte=day_start, end_datetime__lte=day_end)
+                appointments = [{
+                        "start": appointment.start_datetime,
+                        "end": appointment.end_datetime
+                    } for appointment in appointments]
 
-            for interval in intervals:
-                for appointment in appointments:
-                    is_overlap = (interval['start'] <= appointment['start'] <= interval['end']) or (appointment['start'] <= interval['start'] <= appointment['end'])
-                    if is_overlap:
-                        interval['available'] = False
+                for interval in intervals:
+                    for appointment in appointments:
+                        is_overlap = (interval['start'] <= appointment['start'] <= interval['end']) or (appointment['start'] <= interval['start'] <= appointment['end'])
+                        if is_overlap:
+                            interval['available'] = False
 
-            return Response(intervals, status=status.HTTP_200_OK)
+                return Response(intervals, status=status.HTTP_200_OK)
+            return Response([], status=status.HTTP_200_OK)
 
         raise InvalidInputDataException()
 
