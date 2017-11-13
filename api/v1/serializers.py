@@ -63,9 +63,17 @@ class ClinicSerializer(serializers.ModelSerializer):
 
 
 class BasicClinicSerializer(serializers.ModelSerializer):
+    image = serializers.SerializerMethodField()
+
     class Meta:
         model = Clinic
         fields = ('id', 'name', 'image')
+
+    def get_image(self, clinic):
+        request = self.context.get('request')
+        photo_url = clinic.image.url
+        if photo_url:
+            return request.build_absolute_uri(photo_url)
 
 
 class DoctorSerializer(serializers.ModelSerializer):
@@ -261,7 +269,7 @@ class AppointmentSerializer(serializers.ModelSerializer):
         if instance.reason:
             data['reason'] = AppointmentReasonSerializer(instance.reason).data
         if instance.clinic:
-            data['clinic'] = BasicClinicSerializer(instance.clinic).data
+            data['clinic'] = BasicClinicSerializer(instance.clinic, context={"request": self.context['request']}).data
         if instance.patient:
             data['patient'] = BasicPatientSerializer(instance.patient).data
         if instance.doctor:
@@ -290,7 +298,7 @@ class VisitSerializer(serializers.ModelSerializer):
         if instance.appointment:
             data['appointment'] = AppointmentSerializer(instance.appointment).data
         if instance.clinic:
-            data['clinic'] = BasicClinicSerializer(instance.clinic).data
+            data['clinic'] = BasicClinicSerializer(instance.clinic, context={"request": self.context['request']}).data
         if instance.patient:
             data['patient'] = BasicPatientSerializer(instance.patient).data
         if instance.doctor:
