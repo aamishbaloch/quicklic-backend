@@ -38,6 +38,21 @@ class AppointmentView(ListCreateAPIView):
         return Appointment.objects.all().order_by('start_datetime')
 
 
+class AppointmentDetailView(RetrieveUpdateAPIView):
+    """
+    View for getting and updating appointment.
+
+    **Example requests**:
+        GET /appointment/{id}
+        PUT /appointment/{id}
+    """
+
+    authentication_classes = (UserAuthentication,)
+    permission_classes = (PatientDoctorPermission,)
+    serializer_class = AppointmentSerializer
+    queryset = Appointment.objects.all()
+
+
 class AppointmentVisitView(CreateAPIView):
     """
     View for creating visit against appointment.
