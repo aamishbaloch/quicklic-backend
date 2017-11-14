@@ -167,9 +167,10 @@ class BasicDoctorSerializer(serializers.ModelSerializer):
 
     def get_avatar(self, doctor):
         request = self.context.get('request')
-        photo_url = doctor.avatar.url
-        if photo_url:
-            return request.build_absolute_uri(photo_url)
+        if doctor.avatar:
+            photo_url = doctor.avatar.url
+            if photo_url:
+                return request.build_absolute_uri(photo_url)
 
 
 class DoctorTokenSerializer(DoctorSerializer):
@@ -254,9 +255,18 @@ class PatientSerializer(serializers.ModelSerializer):
 
 
 class BasicPatientSerializer(serializers.ModelSerializer):
+    avatar = serializers.SerializerMethodField()
+
     class Meta:
         model = Patient
         fields = ('id', 'first_name', 'last_name', 'avatar', 'phone')
+
+    def get_avatar(self, patient):
+        request = self.context.get('request')
+        if patient.avatar:
+            photo_url = patient.avatar.url
+            if photo_url:
+                return request.build_absolute_uri(photo_url)
 
 
 class PatientTokenSerializer(PatientSerializer):
