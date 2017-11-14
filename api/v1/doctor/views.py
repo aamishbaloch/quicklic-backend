@@ -8,7 +8,8 @@ from django.db.models import Q
 from entities.appointment.models import Appointment, Visit
 from entities.person.models import Doctor
 from libs.authentication import UserAuthentication
-from libs.custom_exceptions import InvalidInputDataException, InvalidAppointmentStatusException
+from libs.custom_exceptions import InvalidInputDataException, InvalidAppointmentStatusException, \
+    DoctorDoesNotExistsException
 from libs.permission import (
     DoctorOwnerPermission,
     AppointmentOwnerPermission,
@@ -18,7 +19,8 @@ from libs.permission import (
 from libs.utils import str2bool, get_datetime_from_date_string, get_date_from_date_string, \
     get_datetime_range_from_date_string, get_interval_between_time, get_start_datetime_from_date_string, \
     get_end_datetime_from_date_string
-from api.v1.serializers import DoctorSerializer, ClinicSerializer, AppointmentSerializer, VisitSerializer
+from api.v1.serializers import DoctorSerializer, ClinicSerializer, AppointmentSerializer, VisitSerializer, \
+    ReviewSerializer
 
 User = get_user_model()
 
@@ -256,3 +258,40 @@ class DoctorVisitView(ListAPIView):
         return Visit.objects.filter(appointment_id__in=appointment_ids)
 
 
+class DoctorReviewView(ListAPIView):
+    """
+    View for getting doctor reviews
+
+    **Example requests**:
+
+        GET /doctor/{id}/review/
+
+        **filters**
+            clinic_id: Filter with clinic
+            start_date: time filter
+            end_date: time filter
+    """
+
+    authentication_classes = (UserAuthentication,)
+    permission_classes = (PatientDoctorPermission,)
+    serializer_class = ReviewSerializer
+
+    def get_queryset(self):
+        try:
+            doctor = Doctor.objects.get(pk=int(self.kwargs['pk']))
+            reviews = doctor.reviews.all().order_by('created_at')
+
+            if 'clinic_id' in self.request.query_params:
+                reviews = reviews.filter(clinic=self.request.query_params.get('clinic_id'))
+
+            if 'start_date' in self.request.query_params:
+                start_datetime = get_start_datetime_from_date_string(self.request.query_params.get('start_date'))
+                reviews = reviews.filter(created_at__gte=start_datetime)
+
+            if 'end_date' in self.request.query_params:
+                end_datetime = get_end_datetime_from_date_string(self.request.query_params.get('end_date'))
+                reviews = reviews.filter(created_at__lte=end_datetime)
+
+            return reviews
+        except Doctor.DoesNotExist:
+            raise DoctorDoesNotExistsException()
