@@ -18,7 +18,7 @@ from api.v1.serializers import (
     AppointmentSerializer,
     DoctorSerializer,
     VisitSerializer,
-)
+    ReviewSerializer)
 
 
 class PatientView(RetrieveUpdateAPIView):
@@ -276,3 +276,42 @@ class PatientVisitView(ListAPIView):
         appointment_ids = appointments.values_list('id', flat=True)
 
         return Visit.objects.filter(appointment_id__in=appointment_ids)
+
+
+class PatientReviewView(ListAPIView):
+    """
+    View for getting patient reviews
+
+    **Example requests**:
+
+        GET /patient/{id}/review/
+
+        **filters**
+            doctor_id: Filter with doctor
+            clinic_id: Filter with clinic
+            start_date: time filter
+            end_date: time filter
+    """
+
+    authentication_classes = (UserAuthentication,)
+    permission_classes = (PatientOwnerPermission,)
+    serializer_class = ReviewSerializer
+
+    def get_queryset(self):
+        reviews = self.request.user.patient.reviews.all().order_by('created_at')
+
+        if 'clinic_id' in self.request.query_params:
+            reviews = reviews.filter(clinic=self.request.query_params.get('clinic_id'))
+
+        if 'doctor_id' in self.request.query_params:
+            reviews = reviews.filter(doctor_id=self.request.query_params.get('doctor_id'))
+
+        if 'start_date' in self.request.query_params:
+            start_datetime = get_start_datetime_from_date_string(self.request.query_params.get('start_date'))
+            reviews = reviews.filter(created_at__gte=start_datetime)
+
+        if 'end_date' in self.request.query_params:
+            end_datetime = get_end_datetime_from_date_string(self.request.query_params.get('end_date'))
+            reviews = reviews.filter(created_at__lte=end_datetime)
+
+        return reviews

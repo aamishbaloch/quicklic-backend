@@ -57,3 +57,8 @@ class InvalidAppointmentStatusException(APIException):
     def __init__(self, message=None, *args, **kwargs):
         send_manually_error_email(message)
         super(InvalidAppointmentStatusException, self).__init__(*args, **kwargs)
+
+
+class DoctorDoesNotExistsException(APIException):
+    status_code = 404
+    default_detail = "Doctor Does Not Exists"
