@@ -37,6 +37,7 @@ class Appointment(models.Model):
 
     reason = models.ForeignKey(AppointmentReason, related_name="appointments")
     status = models.IntegerField(_('status'), db_index=True, choices=Status.Choices, default=Status.PENDING)
+    notes = models.TextField(_('notes'), blank=True, null=True)
 
     is_active = models.BooleanField(default=True, db_index=True)
     created_at = models.DateTimeField(auto_now_add=True)
