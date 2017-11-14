@@ -16,7 +16,8 @@ from libs.permission import (
     PatientBelongsDoctorPermission,
 )
 from libs.utils import str2bool, get_datetime_from_date_string, get_date_from_date_string, \
-    get_datetime_range_from_date_string, get_interval_between_time
+    get_datetime_range_from_date_string, get_interval_between_time, get_start_datetime_from_date_string, \
+    get_end_datetime_from_date_string
 from api.v1.serializers import DoctorSerializer, ClinicSerializer, AppointmentSerializer, VisitSerializer
 
 User = get_user_model()
@@ -128,11 +129,11 @@ class DoctorAppointmentView(ListAPIView):
         appointments = self.request.user.doctor.appointments.all().order_by('start_datetime')
 
         if 'start_date' in self.request.query_params:
-            start_datetime = get_datetime_from_date_string(self.request.query_params.get("start_date"))
+            start_datetime = get_start_datetime_from_date_string(self.request.query_params.get("start_date"))
             appointments = appointments.filter(start_datetime__gte=start_datetime)
 
         if 'end_date' in self.request.query_params:
-            end_datetime = get_datetime_from_date_string(self.request.query_params.get("end_date"))
+            end_datetime = get_end_datetime_from_date_string(self.request.query_params.get("end_date"))
             appointments = appointments.filter(end_datetime__lte=end_datetime)
 
         if 'status' in self.request.query_params:
@@ -243,11 +244,11 @@ class DoctorVisitView(ListAPIView):
             appointments = appointments.filter(patient_id=self.request.query_params.get('patient_id'))
 
         if 'start_date' in self.request.query_params:
-            start_datetime = get_datetime_from_date_string(self.request.query_params.get('start_date'))
+            start_datetime = get_start_datetime_from_date_string(self.request.query_params.get('start_date'))
             appointments = appointments.filter(start_datetime__gte=start_datetime)
 
         if 'end_date' in self.request.query_params:
-            end_datetime = get_datetime_from_date_string(self.request.query_params.get('end_date'))
+            end_datetime = get_end_datetime_from_date_string(self.request.query_params.get('end_date'))
             appointments = appointments.filter(end_datetime__lte=end_datetime)
 
         appointment_ids = appointments.values_list('id', flat=True)
