@@ -9,7 +9,7 @@ from libs.permission import (
     PKAppointmentOwnerPermission,
     AppointmentOwnerPermission, AppointmentVisitPermission)
 from api.v1.serializers import AppointmentSerializer, VisitSerializer
-from libs.utils import get_datetime_from_date_string
+from libs.utils import get_datetime_from_date_string, get_start_datetime_from_date_string
 
 User = get_user_model()
 
@@ -33,7 +33,7 @@ class AppointmentView(ListCreateAPIView):
     def get_queryset(self):
         start_date = self.request.query_params.get('start_date', None)
         if start_date:
-            start_datetime = get_datetime_from_date_string(start_date)
+            start_datetime = get_start_datetime_from_date_string(start_date)
             return Appointment.objects.filter(start_datetime__gte=start_datetime).order_by('start_datetime')
         return Appointment.objects.all().order_by('start_datetime')
 

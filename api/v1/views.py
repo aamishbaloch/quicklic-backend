@@ -19,6 +19,7 @@ class CityView(ListAPIView):
         GET /city/
     """
     serializer_class = CitySerializer
+    pagination_class = None
 
     def get_queryset(self):
         query = self.request.query_params.get("query", "")
@@ -34,6 +35,7 @@ class CountryView(ListAPIView):
         GET /countries/
     """
     serializer_class = CountrySerializer
+    pagination_class = None
 
     def get_queryset(self):
         query = self.request.query_params.get("query", "")
@@ -49,6 +51,7 @@ class OccupationView(ListAPIView):
         GET /occupation/
     """
     serializer_class = OccupationSerializer
+    pagination_class = None
 
     def get_queryset(self):
         query = self.request.query_params.get("query", "")
@@ -64,6 +67,7 @@ class ServiceView(ListAPIView):
         GET /service/
     """
     serializer_class = ServiceSerializer
+    pagination_class = None
 
     def get_queryset(self):
         query = self.request.query_params.get("query", "")
@@ -79,6 +83,7 @@ class SpecializationView(ListAPIView):
         GET /specialization/
     """
     serializer_class = SpecializationSerializer
+    pagination_class = None
 
     def get_queryset(self):
         query = self.request.query_params.get("query", "")
@@ -94,6 +99,7 @@ class AppointmentReasonView(ListAPIView):
         GET /reason/
     """
     serializer_class = AppointmentReasonSerializer
+    pagination_class = None
 
     def get_queryset(self):
         query = self.request.query_params.get("query", "")

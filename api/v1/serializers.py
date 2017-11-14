@@ -4,6 +4,7 @@ from entities.clinic.models import City, Country, Clinic
 from entities.person.models import Doctor, Patient
 from entities.resources.models import Specialization, Service, Occupation, AppointmentReason
 from entities.appointment.models import Appointment, Visit
+from entities.review.models import Review
 from entities.test_menu.models import Test
 from libs.utils import get_qid_code
 from libs.jwt_helper import JWTHelper
@@ -157,9 +158,18 @@ class DoctorSerializer(serializers.ModelSerializer):
 
 
 class BasicDoctorSerializer(serializers.ModelSerializer):
+    avatar = serializers.SerializerMethodField()
+    specialization = SpecializationSerializer()
+
     class Meta:
         model = Doctor
-        fields = ('id', 'first_name', 'last_name', 'avatar', 'phone')
+        fields = ('id', 'first_name', 'last_name', 'avatar', 'phone', 'specialization')
+
+    def get_avatar(self, doctor):
+        request = self.context.get('request')
+        photo_url = doctor.avatar.url
+        if photo_url:
+            return request.build_absolute_uri(photo_url)
 
 
 class DoctorTokenSerializer(DoctorSerializer):
@@ -272,9 +282,9 @@ class AppointmentSerializer(serializers.ModelSerializer):
         if instance.clinic:
             data['clinic'] = BasicClinicSerializer(instance.clinic, context={"request": self.context['request']}).data
         if instance.patient:
-            data['patient'] = BasicPatientSerializer(instance.patient).data
+            data['patient'] = BasicPatientSerializer(instance.patient, context={"request": self.context['request']}).data
         if instance.doctor:
-            data['doctor'] = BasicDoctorSerializer(instance.doctor).data
+            data['doctor'] = BasicDoctorSerializer(instance.doctor, context={"request": self.context['request']}).data
         return data
 
     def create(self, validated_data):
@@ -301,9 +311,9 @@ class VisitSerializer(serializers.ModelSerializer):
         if instance.clinic:
             data['clinic'] = BasicClinicSerializer(instance.clinic, context={"request": self.context['request']}).data
         if instance.patient:
-            data['patient'] = BasicPatientSerializer(instance.patient).data
+            data['patient'] = BasicPatientSerializer(instance.patient, context={"request": self.context['request']}).data
         if instance.doctor:
-            data['doctor'] = BasicDoctorSerializer(instance.doctor).data
+            data['doctor'] = BasicDoctorSerializer(instance.doctor, context={"request": self.context['request']}).data
         return data
 
 
@@ -318,3 +328,27 @@ class TestSerializer(serializers.ModelSerializer):
         if instance.clinic:
             data['clinic'] = BasicClinicSerializer(instance.clinic, context={"request": self.context['request']}).data
         return data
+
+
+class ReviewSerializer(serializers.ModelSerializer):
+    creator = BasicPatientSerializer(read_only=True)
+
+    class Meta:
+        model = Review
+        fields = '__all__'
+
+    def to_representation(self, instance):
+        data = super(ReviewSerializer, self).to_representation(instance)
+
+        if instance.clinic:
+            data['clinic'] = BasicClinicSerializer(instance.clinic, context={"request": self.context['request']}).data
+        if instance.creator:
+            data['creator'] = BasicPatientSerializer(instance.creator, context={"request": self.context['request']}).data
+        if instance.doctor:
+            data['doctor'] = BasicDoctorSerializer(instance.doctor, context={"request": self.context['request']}).data
+        return data
+
+    def create(self, validated_data):
+        validated_data['creator'] = self.context['request'].user.patient
+        instance = super(ReviewSerializer, self).create(validated_data)
+        return instance
