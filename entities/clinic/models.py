@@ -39,6 +39,7 @@ class Clinic(models.Model):
     city = models.ForeignKey(City, related_name="city")
     country = models.ForeignKey(Country, related_name="country")
     image = models.ImageField(upload_to='uploads/clinics/')
+    is_lab = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True, db_index=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
