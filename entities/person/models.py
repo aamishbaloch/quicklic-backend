@@ -7,6 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.db.models import Avg
 from entities.clinic.models import Country, City, Clinic
 from entities.resources.models import Service, Specialization, Occupation
 from libs.managers import QueryManager
@@ -53,10 +54,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     class Role:
         DOCTOR = 1
         PATIENT = 2
+        ADMIN = 3
 
         Choices = (
             (DOCTOR, 'Doctor'),
             (PATIENT, 'Patient'),
+            (ADMIN, 'ADMIN'),
         )
 
     class Gender:
@@ -136,11 +139,21 @@ class User(AbstractBaseUser, PermissionsMixin):
             return "{}{}{}".format(MEDIA_ROOT, MEDIA_URL, self.avatar.url)
 
 
+class Moderator(User):
+    role = models.IntegerField(default=User.Role.ADMIN)
+
+
 class Doctor(User):
     role = models.IntegerField(default=User.Role.DOCTOR)
     services = models.ManyToManyField(Service, related_name="doctor")
     specialization = models.ForeignKey(Specialization, related_name="doctor", blank=True, null=True)
     degree = models.CharField(_('degree'), max_length=50, blank=True, null=True)
+    rating = models.DecimalField(max_digits=5, decimal_places=2)
+
+    def calculate_rating(self):
+        rating = self.reviews.aggregate(Avg('rating'))
+        self.rating = rating['rating__avg']
+        self.save(update_fields=["rating"])
 
 
 class DoctorSetting(models.Model):

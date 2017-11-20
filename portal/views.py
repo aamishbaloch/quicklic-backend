@@ -29,7 +29,7 @@ class LoginView(TemplateView):
                 password=form.cleaned_data["password"],
             )
             if user is not None:
-                if not user.role == User.Role.PATIENT:
+                if hasattr(user, 'moderator'):
                     if user.is_active:
                         login(request, user)
                     else:
@@ -79,7 +79,6 @@ class ProfileView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(ProfileView, self).get_context_data(**kwargs)
 
-        if self.request.user.role == User.Role.DOCTOR:
-            context['settings'] = self.request.user.doctor_setting
-            context['clinics'] = self.request.user.doctor_profile.clinic.all()
+        if hasattr(self.request.user, 'moderator'):
+            context['clinics'] = self.request.user.clinic.all()
         return context

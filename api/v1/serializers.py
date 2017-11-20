@@ -58,6 +58,7 @@ class ClinicSerializer(serializers.ModelSerializer):
     code = serializers.CharField(write_only=True)
     city = CitySerializer()
     country = CountrySerializer()
+    rating = serializers.DecimalField(read_only=True, max_digits=5, decimal_places=2)
 
     class Meta:
         model = Clinic
@@ -66,10 +67,11 @@ class ClinicSerializer(serializers.ModelSerializer):
 
 class BasicClinicSerializer(serializers.ModelSerializer):
     image = serializers.SerializerMethodField()
+    rating = serializers.DecimalField(read_only=True, max_digits=5, decimal_places=2)
 
     class Meta:
         model = Clinic
-        fields = ('id', 'name', 'image')
+        fields = ('id', 'name', 'image', 'rating')
 
     def get_image(self, clinic):
         request = self.context.get('request')
@@ -87,6 +89,7 @@ class DoctorSerializer(serializers.ModelSerializer):
     services = serializers.CharField(required=False, allow_blank=True, allow_null=True)
     specialization = serializers.CharField(required=False, allow_blank=True, allow_null=True)
     verified = serializers.BooleanField(read_only=True)
+    rating = serializers.DecimalField(read_only=True, max_digits=5, decimal_places=2)
 
     class Meta:
         model = Doctor
@@ -160,10 +163,11 @@ class DoctorSerializer(serializers.ModelSerializer):
 class BasicDoctorSerializer(serializers.ModelSerializer):
     avatar = serializers.SerializerMethodField()
     specialization = SpecializationSerializer()
+    rating = serializers.DecimalField(read_only=True, max_digits=5, decimal_places=2)
 
     class Meta:
         model = Doctor
-        fields = ('id', 'first_name', 'last_name', 'avatar', 'phone', 'specialization')
+        fields = ('id', 'first_name', 'last_name', 'avatar', 'phone', 'specialization', 'rating')
 
     def get_avatar(self, doctor):
         request = self.context.get('request')
@@ -361,4 +365,10 @@ class ReviewSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data['creator'] = self.context['request'].user.patient
         instance = super(ReviewSerializer, self).create(validated_data)
+
+        if instance.type == Review.Type.DOCTOR:
+            instance.doctor.calculate_rating()
+        elif instance.type == Review.Type.CLINIC:
+            instance.clinic.calculate_rating()
+
         return instance

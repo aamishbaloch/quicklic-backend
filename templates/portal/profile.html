@@ -114,124 +114,64 @@
                                         </div>
                                     </div>
                                     <div class="col-sm-7 col-md-8">
-                                        <table class="table table-condensed">
-                                                <thead>
-                                                    <tr>
-                                                        <th colspan="3">Settings</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>Timings:</td>
-                                                        <td>{{ settings.start_time }} - {{ settings.end_time }}</td>
-                                                    </tr>
-                                                </tbody>
-                                                <thead>
-                                                    <tr>
-                                                        <th colspan="3">Weekdays Schedule</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>Monday:</td>
-                                                        <td>
-                                                            {% if settings.weekdays.0 == True %}
-                                                                <span class="label label-sm label-info">
-                                                                    Open
-                                                                </span>
-                                                            {% else %}
-                                                                <span class="label label-sm label-danger">
-                                                                    Closed
-                                                                </span>
-                                                            {% endif %}
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Tuesday:</td>
-                                                        <td>
-                                                            {% if settings.weekdays.1 == True %}
-                                                                <span class="label label-sm label-info">
-                                                                    Open
-                                                                </span>
-                                                            {% else %}
-                                                                <span class="label label-sm label-danger">
-                                                                    Closed
-                                                                </span>
-                                                            {% endif %}
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Wednesday:</td>
-                                                        <td>
-                                                            {% if settings.weekdays.2 == True %}
-                                                                <span class="label label-sm label-info">
-                                                                    Open
-                                                                </span>
-                                                            {% else %}
-                                                                <span class="label label-sm label-danger">
-                                                                    Closed
-                                                                </span>
-                                                            {% endif %}
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Thursday:</td>
-                                                        <td>
-                                                            {% if settings.weekdays.3 == True %}
-                                                                <span class="label label-sm label-info">
-                                                                    Open
-                                                                </span>
-                                                            {% else %}
-                                                                <span class="label label-sm label-danger">
-                                                                    Closed
-                                                                </span>
-                                                            {% endif %}
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Friday:</td>
-                                                        <td>
-                                                            {% if settings.weekdays.4 == True %}
-                                                                <span class="label label-sm label-info">
-                                                                    Open
-                                                                </span>
-                                                            {% else %}
-                                                                <span class="label label-sm label-danger">
-                                                                    Closed
-                                                                </span>
-                                                            {% endif %}
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Saturday:</td>
-                                                        <td>
-                                                            {% if settings.weekdays.5 == True %}
-                                                                <span class="label label-sm label-info">
-                                                                    Open
-                                                                </span>
-                                                            {% else %}
-                                                                <span class="label label-sm label-danger">
-                                                                    Closed
-                                                                </span>
-                                                            {% endif %}
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Sunday:</td>
-                                                        <td>
-                                                            {% if settings.weekdays.6 == True %}
-                                                                <span class="label label-sm label-info">
-                                                                    Open
-                                                                </span>
-                                                            {% else %}
-                                                                <span class="label label-sm label-danger">
-                                                                    Closed
-                                                                </span>
-                                                            {% endif %}
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
+                                        <div class="panel panel-white">
+												<div class="panel-heading border-light">
+													<h4 class="panel-title">Toolbar</h4>
+													<ul class="panel-heading-tabs border-light">
+														<li>
+															<div class="pull-right">
+																<div class="btn-group" dropdown>
+																	<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+																		Tools <span class="caret"></span>
+																	</button>
+																	<ul class="dropdown-menu" role="menu">
+																		<li>
+																			<a href="ui_panels.html#">
+																				Action
+																			</a>
+																		</li>
+																		<li>
+																			<a href="ui_panels.html#">
+																				Another action
+																			</a>
+																		</li>
+																		<li>
+																			<a href="ui_panels.html#">
+																				Something else here
+																			</a>
+																		</li>
+																		<li class="divider"></li>
+																		<li>
+																			<a href="ui_panels.html#">
+																				Separated link
+																			</a>
+																		</li>
+																	</ul>
+																</div>
+															</div>
+														</li>
+														<li>
+															<div class="rate">
+																<i class="fa fa-caret-up text-primary"></i><span class="value">15</span><span class="percentage">%</span>
+															</div>
+														</li>
+														<li class="panel-tools">
+															<a data-original-title="Refresh" data-toggle="tooltip" data-placement="top" class="btn btn-transparent btn-sm panel-refresh" href="ui_panels.html#"><i class="ti-reload"></i></a>
+														</li>
+													</ul>
+												</div>
+												<div class="panel-body">
+													<p>
+														Nullam quis risus eget urna mollis ornare vel eu leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam id dolor id nibh ultricies vehicula.
+													</p>
+													<p>
+														Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+													</p>
+													<p>
+														Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec ullamcorper nulla non metus auctor fringilla. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Donec ullamcorper nulla non metus auctor fringilla.
+													</p>
+												</div>
+											</div>
                                     </div>
                                 </div>
                             </div>

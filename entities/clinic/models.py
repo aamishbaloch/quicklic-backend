@@ -1,5 +1,6 @@
 from django.core.validators import RegexValidator, MaxValueValidator, MinValueValidator
 from django.db import models
+from django.db.models import Avg
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -42,8 +43,14 @@ class Clinic(models.Model):
     is_lab = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True, db_index=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    rating = models.DecimalField(max_digits=5, decimal_places=2)
 
     def __str__(self):
         return self.name
+
+    def calculate_rating(self):
+        rating = self.reviews.aggregate(Avg('rating'))
+        self.rating = rating['rating__avg']
+        self.save(update_fields=["rating"])
 
 

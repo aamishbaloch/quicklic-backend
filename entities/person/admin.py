@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin as OrigUserAdmin
 from django.utils.translation import ugettext_lazy as _
 
-from entities.person.models import VerificationCode, Doctor, Patient, DoctorSetting
+from entities.person.models import VerificationCode, Doctor, Patient, DoctorSetting, Moderator
 
 User = get_user_model()
 
@@ -63,6 +63,29 @@ class UserAdmin(OrigUserAdmin):
 
 
 admin.site.register(User, UserAdmin)
+
+
+class Admin(UserAdmin):
+    fieldsets = (
+        (_('Personal Info'), {
+            'fields': (
+                'phone', 'first_name', 'last_name', 'verified', 'email', 'dob',
+                'gender', 'avatar', 'clinic', 'city', 'country'
+            )
+        }),
+        (_('Permissions Info'), {'fields': ('is_active', 'is_superuser',)}),
+        (_('Important dates'), {'fields': ('last_login', 'joined_on')}),
+        ('Password Info', {'fields': ('password',)}),
+    )
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('phone', 'first_name', 'last_name', 'verified', 'email', 'password1', 'password2', 'dob',
+                       'gender', 'avatar', 'clinic', 'city', 'country')}
+         ),
+    )
+
+admin.site.register(Moderator, Admin)
 
 
 class DoctorAdmin(UserAdmin):
