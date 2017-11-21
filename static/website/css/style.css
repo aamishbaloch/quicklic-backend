@@ -671,11 +671,11 @@ h2.light {
 }
 
 .navbar-light .navbar-brand:focus,.navbar-light .navbar-brand:hover {
-    color: #37B874;
+    color: #ffffff;
 }
 
 .navbar-light .navbar-nav li a:hover {
-    color: #37B874;
+    color: #ffffff;
 }
 
 .navbar-light .navbar-nav li a:focus {
@@ -691,7 +691,7 @@ h2.light {
 }
 
 .navbar-light .navbar-nav.social li a:hover {
-    color: #37B874;
+    color: #fff;
 }
 
 .navbar-light .navicon {
@@ -732,7 +732,7 @@ h2.light {
 }
 
 .navbar-light.shrink .navbar-nav.social li:hover a {
-    color: #FFF !important;
+    color: #37B874 !important;
 }
 
 .navbar-light.shrink .navbar-nav.social li {
@@ -866,9 +866,7 @@ section.colored {
 }
 
 .hero .cta p {
-    font-size: 16px;
     font-weight: 300;
-    letter-spacing: .1em;
     margin: 0 0 30px;
 }
 
@@ -882,7 +880,6 @@ section.colored {
 
 .hero-bg-colored .cta h2,.hero-bg-colored .cta p {
     color: #37B874;
-    font-weight: 100;
 }
 
 .hero-bg-video .cta h2,.hero-bg-video .cta p {
