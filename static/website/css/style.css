@@ -671,11 +671,11 @@ h2.light {
 }
 
 .navbar-light .navbar-brand:focus,.navbar-light .navbar-brand:hover {
-    color: #37B874;
+    color: #ffffff;
 }
 
 .navbar-light .navbar-nav li a:hover {
-    color: #37B874;
+    color: #ffffff;
 }
 
 .navbar-light .navbar-nav li a:focus {
@@ -691,7 +691,7 @@ h2.light {
 }
 
 .navbar-light .navbar-nav.social li a:hover {
-    color: #37B874;
+    color: #fff;
 }
 
 .navbar-light .navicon {
@@ -732,7 +732,7 @@ h2.light {
 }
 
 .navbar-light.shrink .navbar-nav.social li:hover a {
-    color: #FFF !important;
+    color: #37B874 !important;
 }
 
 .navbar-light.shrink .navbar-nav.social li {
