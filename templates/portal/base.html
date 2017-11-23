@@ -15,16 +15,18 @@
             </div>
         {% endfor %}
     {% endif %}
-    <div id="app">
-        {% include 'portal/includes/navbar.html' %}
-			<div class="app-content">
-				{% include 'portal/includes/top_navbar.html' %}
-				<div class="main-content" >
-                    {% block body_block %}{% endblock %}
-				</div>
-			</div>
-            {% include 'portal/includes/footer.html' %}
-    </div>
+    <section class="vbox">
+        {% include 'portal/includes/top_navbar.html' %}
+        <section>
+          <section class="hbox stretch">
+            {% include 'portal/includes/navbar.html' %}
+            <section id="content">
+                {% block body_block %} {% endblock %}
+              <a href="#" class="hide nav-off-screen-block" data-toggle="class:nav-off-screen" data-target="#nav"></a>
+            </section>
+          </section>
+        </section>
+    </section>
     {% include 'portal/includes/footer_includes.html' %}
 </body>
 </html>
