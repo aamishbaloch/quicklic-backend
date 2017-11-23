@@ -1,0 +1,7 @@
+#footer{ background: #41586e; }
+.cfa{ color: white; font-size: 15px; }
+.cdiary{ font-size: 20px; font-weight: normal;   }
+.cspan{ display: block; color:white; font-size: 16px; padding-left:20px; }
+.bg-primary.dker, .bg-primary .dker{ background: white; }
+.bg-dark{     background-color: rgba(50,50,50,0) !important;    color: #9db1c5; }
+.device {    border-radius: 0px !important;    box-shadow: -15px 15px 0 rgba(0, 0, 0, 0);}  
