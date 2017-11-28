@@ -281,9 +281,16 @@ class PatientTokenSerializer(PatientSerializer):
         return patient
 
 
+class BasicVisitSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Visit
+        fields = '__all__'
+
+
 class AppointmentSerializer(serializers.ModelSerializer):
     qid = serializers.CharField(read_only=True)
     status = serializers.IntegerField(read_only=True)
+    visit = BasicVisitSerializer()
 
     class Meta:
         model = Appointment
