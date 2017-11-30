@@ -62,3 +62,8 @@ class InvalidAppointmentStatusException(APIException):
 class DoctorDoesNotExistsException(APIException):
     status_code = 404
     default_detail = "Doctor Does Not Exists"
+
+
+class InvalidDateTimeException(APIException):
+    status_code = 400
+    default_detail = "Invalid Date Time"

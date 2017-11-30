@@ -6,6 +6,8 @@ urlpatterns = [
     url(r'^$', views.DoctorListView.as_view()),
     url(r'^(?P<pk>[\d]+)/clinic/$', views.DoctorClinicView.as_view()),
     url(r'^(?P<pk>[\d]+)/appointment/$', views.DoctorAppointmentView.as_view()),
+    url(r'^(?P<pk>[\d]+)/appointment/history$', views.DoctorAppointmentHistoryView.as_view()),
+    url(r'^(?P<pk>[\d]+)/appointment/visit$', views.DoctorAppointmentVisitView.as_view()),
     url(r'^(?P<pk>[\d]+)/appointment/(?P<appointment_id>[\d]+)/status/$', views.DoctorStatusView.as_view()),
     url(r'^(?P<pk>[\d]+)/appointment_slots/$', views.DoctorAppointmentSlotView.as_view()),
     url(r'^(?P<pk>[\d]+)/visit/$', views.DoctorVisitView.as_view()),
