@@ -1,15 +1,18 @@
+import pytz
 from django.contrib.auth import get_user_model
 from rest_framework import status
 from rest_framework.generics import RetrieveUpdateAPIView, ListAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.db.models import Q
+from datetime import datetime, timedelta
 
+from quicklic_backend import settings
 from entities.appointment.models import Appointment, Visit
 from entities.person.models import Doctor
 from libs.authentication import UserAuthentication
 from libs.custom_exceptions import InvalidInputDataException, InvalidAppointmentStatusException, \
-    DoctorDoesNotExistsException
+    DoctorDoesNotExistsException, InvalidDateTimeException
 from libs.permission import (
     DoctorOwnerPermission,
     AppointmentOwnerPermission,
@@ -136,6 +139,110 @@ class DoctorAppointmentView(ListAPIView):
 
         if 'end_date' in self.request.query_params:
             end_datetime = get_end_datetime_from_date_string(self.request.query_params.get("end_date"))
+            appointments = appointments.filter(end_datetime__lte=end_datetime)
+
+        if 'status' in self.request.query_params:
+            statuses = [int(id) for id in self.request.query_params.get('status').split(',')]
+            appointments = appointments.filter(status__in=statuses)
+
+        if 'clinic_id' in self.request.query_params:
+            appointments = appointments.filter(clinic_id=self.request.query_params.get('clinic_id'))
+
+        if 'reason_id' in self.request.query_params:
+            appointments = appointments.filter(reason_id=self.request.query_params.get('reason_id'))
+
+        return appointments
+
+
+class DoctorAppointmentHistoryView(ListAPIView):
+    """
+    View for getting doctor's historic appointments
+
+    **Example requests**:
+
+        GET /doctor/{id}/appointments/history
+
+    **filters**:
+        - start_date
+        - end_date
+        - status=1
+        - clinic_id=1
+        - reason_id=1
+    """
+
+    authentication_classes = (UserAuthentication,)
+    permission_classes = (DoctorOwnerPermission,)
+    serializer_class = AppointmentSerializer
+
+    def get_queryset(self):
+        appointments = self.request.user.doctor.appointments.\
+            filter(Q(status=Appointment.Status.NOSHOW) | Q(visit__isnull=False)).order_by('start_datetime')
+
+        date_time_now = pytz.timezone(settings.TIME_ZONE).localize(datetime.now())
+        date_time_now = date_time_now - timedelta(days=1)
+
+        if 'start_date' in self.request.query_params:
+            start_datetime = get_start_datetime_from_date_string(self.request.query_params.get("start_date"))
+            if start_datetime > date_time_now:
+                raise InvalidDateTimeException()
+            appointments = appointments.filter(start_datetime__gte=start_datetime)
+
+        if 'end_date' in self.request.query_params:
+            end_datetime = get_end_datetime_from_date_string(self.request.query_params.get("end_date"))
+            if end_datetime > date_time_now:
+                raise InvalidDateTimeException()
+            appointments = appointments.filter(end_datetime__lte=end_datetime)
+
+        if 'status' in self.request.query_params:
+            statuses = [int(id) for id in self.request.query_params.get('status').split(',')]
+            appointments = appointments.filter(status__in=statuses)
+
+        if 'clinic_id' in self.request.query_params:
+            appointments = appointments.filter(clinic_id=self.request.query_params.get('clinic_id'))
+
+        if 'reason_id' in self.request.query_params:
+            appointments = appointments.filter(reason_id=self.request.query_params.get('reason_id'))
+
+        return appointments
+
+
+class DoctorAppointmentVisitView(ListAPIView):
+    """
+    View for getting doctor's appointments needed any action to be taken on
+
+    **Example requests**:
+
+        GET /doctor/{id}/appointments/visit
+
+    **filters**:
+        - start_date
+        - end_date
+        - status=1
+        - clinic_id=1
+        - reason_id=1
+    """
+
+    authentication_classes = (UserAuthentication,)
+    permission_classes = (DoctorOwnerPermission,)
+    serializer_class = AppointmentSerializer
+
+    def get_queryset(self):
+        appointments = self.request.user.doctor.appointments.\
+            filter(~Q(status=Appointment.Status.NOSHOW) & Q(visit__isnull=True)).order_by('start_datetime')
+
+        date_time_now = pytz.timezone(settings.TIME_ZONE).localize(datetime.now())
+        date_time_now = date_time_now - timedelta(days=1)
+
+        if 'start_date' in self.request.query_params:
+            start_datetime = get_start_datetime_from_date_string(self.request.query_params.get("start_date"))
+            if start_datetime > date_time_now:
+                raise InvalidDateTimeException()
+            appointments = appointments.filter(start_datetime__gte=start_datetime)
+
+        if 'end_date' in self.request.query_params:
+            end_datetime = get_end_datetime_from_date_string(self.request.query_params.get("end_date"))
+            if end_datetime > date_time_now:
+                raise InvalidDateTimeException()
             appointments = appointments.filter(end_datetime__lte=end_datetime)
 
         if 'status' in self.request.query_params:
