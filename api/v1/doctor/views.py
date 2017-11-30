@@ -21,7 +21,7 @@ from libs.permission import (
 )
 from libs.utils import str2bool, get_datetime_from_date_string, get_date_from_date_string, \
     get_datetime_range_from_date_string, get_interval_between_time, get_start_datetime_from_date_string, \
-    get_end_datetime_from_date_string
+    get_end_datetime_from_date_string, get_datetime_now_by_date
 from api.v1.serializers import DoctorSerializer, ClinicSerializer, AppointmentSerializer, VisitSerializer, \
     ReviewSerializer
 
@@ -178,18 +178,17 @@ class DoctorAppointmentHistoryView(ListAPIView):
         appointments = self.request.user.doctor.appointments.\
             filter(Q(status=Appointment.Status.NOSHOW) | Q(visit__isnull=False)).order_by('start_datetime')
 
-        date_time_now = pytz.timezone(settings.TIME_ZONE).localize(datetime.now())
-        date_time_now = date_time_now - timedelta(days=1)
+        date_time_now = get_datetime_now_by_date()
 
         if 'start_date' in self.request.query_params:
             start_datetime = get_start_datetime_from_date_string(self.request.query_params.get("start_date"))
-            if start_datetime > date_time_now:
+            if start_datetime >= date_time_now:
                 raise InvalidDateTimeException()
             appointments = appointments.filter(start_datetime__gte=start_datetime)
 
         if 'end_date' in self.request.query_params:
             end_datetime = get_end_datetime_from_date_string(self.request.query_params.get("end_date"))
-            if end_datetime > date_time_now:
+            if end_datetime >= date_time_now:
                 raise InvalidDateTimeException()
             appointments = appointments.filter(end_datetime__lte=end_datetime)
 
@@ -230,18 +229,17 @@ class DoctorAppointmentVisitView(ListAPIView):
         appointments = self.request.user.doctor.appointments.\
             filter(~Q(status=Appointment.Status.NOSHOW) & Q(visit__isnull=True)).order_by('start_datetime')
 
-        date_time_now = pytz.timezone(settings.TIME_ZONE).localize(datetime.now())
-        date_time_now = date_time_now - timedelta(days=1)
+        date_time_now = get_datetime_now_by_date()
 
         if 'start_date' in self.request.query_params:
             start_datetime = get_start_datetime_from_date_string(self.request.query_params.get("start_date"))
-            if start_datetime > date_time_now:
+            if start_datetime >= date_time_now:
                 raise InvalidDateTimeException()
             appointments = appointments.filter(start_datetime__gte=start_datetime)
 
         if 'end_date' in self.request.query_params:
             end_datetime = get_end_datetime_from_date_string(self.request.query_params.get("end_date"))
-            if end_datetime > date_time_now:
+            if end_datetime >= date_time_now:
                 raise InvalidDateTimeException()
             appointments = appointments.filter(end_datetime__lte=end_datetime)
 
