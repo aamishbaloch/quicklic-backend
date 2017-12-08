@@ -328,7 +328,7 @@ class VisitSerializer(serializers.ModelSerializer):
         data = super(VisitSerializer, self).to_representation(instance)
 
         if instance.appointment:
-            data['appointment'] = AppointmentSerializer(instance.appointment).data
+            data['appointment'] = AppointmentSerializer(instance.appointment, context={"request": self.context['request']}).data
         if instance.clinic:
             data['clinic'] = BasicClinicSerializer(instance.clinic, context={"request": self.context['request']}).data
         if instance.patient:
