@@ -3,6 +3,7 @@ from rest_framework.generics import ListCreateAPIView, CreateAPIView, RetrieveUp
 
 from entities.appointment.models import Appointment, Visit
 from libs.authentication import UserAuthentication
+from libs.mixins import AtomicMixin
 from libs.permission import (
     PatientDoctorPermission,
     DoctorPermission,
@@ -53,7 +54,7 @@ class AppointmentDetailView(RetrieveUpdateAPIView):
     queryset = Appointment.objects.all()
 
 
-class AppointmentVisitView(CreateAPIView):
+class AppointmentVisitView(AtomicMixin, CreateAPIView):
     """
     View for creating visit against appointment.
 
@@ -66,7 +67,7 @@ class AppointmentVisitView(CreateAPIView):
     serializer_class = VisitSerializer
 
 
-class AppointmentVisitUpdateView(RetrieveUpdateAPIView):
+class AppointmentVisitUpdateView(AtomicMixin, RetrieveUpdateAPIView):
     """
     View for updating visit against appointment.
 
