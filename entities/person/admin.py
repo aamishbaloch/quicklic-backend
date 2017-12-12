@@ -40,12 +40,13 @@ class UserAdmin(OrigUserAdmin):
     list_filter = ('verified',)
     list_display = (
         'id', 'first_name', 'last_name', 'verified', 'phone', 'email', 'gender', 'avatar', 'is_active',
-        'is_staff', 'is_superuser', 'last_login', 'joined_on')
+        'is_staff', 'is_superuser', 'last_login', 'joined_on', 'device_id', 'device_type')
     ordering = ('first_name',)
     fieldsets = (
         (_('Personal Info'), {
             'fields': (
-                'phone', 'verified', 'email', 'first_name', 'last_name', 'gender', 'avatar', 'city', 'country', 'clinic'
+                'phone', 'verified', 'email', 'first_name', 'last_name', 'gender', 'avatar', 'city', 'country',
+                'clinic', 'device_id', 'device_type'
             )
         }),
         (_('Permissions Info'), {'fields': ('is_active', 'is_superuser',)}),
@@ -57,7 +58,7 @@ class UserAdmin(OrigUserAdmin):
         (None, {
             'classes': ('wide',),
             'fields': ('phone', 'first_name', 'last_name', 'verified', 'email', 'password1', 'password2',
-                       'city', 'country', 'clinic', 'dob', 'gender', 'avatar')}
+                       'city', 'country', 'clinic', 'dob', 'gender', 'avatar', 'device_id', 'device_type')}
          ),
     )
 
