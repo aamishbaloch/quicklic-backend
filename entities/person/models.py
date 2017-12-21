@@ -94,6 +94,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     clinic = models.ManyToManyField(Clinic, related_name="user", blank=True)
     verified = models.BooleanField(default=False)
 
+    device_id = models.CharField(max_length=255, blank=True, null=True)
+    device_type = models.IntegerField(blank=True, null=True)
+
     objects = UserManager()
 
     USERNAME_FIELD = 'phone'
@@ -132,6 +135,11 @@ class User(AbstractBaseUser, PermissionsMixin):
         for choice in User.Gender.Choices:
             if choice[0] == self.gender:
                 return choice[1]
+
+    def update_device_information(self, device_id, device_type):
+        self.device_type = device_type
+        self.device_id = device_id
+        self.save()
 
     @property
     def get_avatar(self):
