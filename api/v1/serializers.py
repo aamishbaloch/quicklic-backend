@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from entities.clinic.models import City, Country, Clinic
+from entities.notification.models import Notification
 from entities.person.models import Doctor, Patient
 from entities.resources.models import Specialization, Service, Occupation, AppointmentReason
 from entities.appointment.models import Appointment, Visit
@@ -316,7 +317,17 @@ class AppointmentSerializer(serializers.ModelSerializer):
         reason, created = AppointmentReason.objects.get_or_create(name=validated_data['reason'])
         validated_data['reason'] = reason
 
-        return super(AppointmentSerializer, self).create(validated_data)
+        appointment = super(AppointmentSerializer, self).create(validated_data)
+        Notification.create_notification(
+            appointment.doctor,
+            Notification.Message.APPOINTMENT_CREATED.format(appointment.qid),
+            Notification.Type.DOCTOR,
+            patient=appointment.patient,
+            doctor=appointment.doctor,
+            clinic=appointment.clinic
+        )
+
+        return appointment
 
 
 class VisitSerializer(serializers.ModelSerializer):
