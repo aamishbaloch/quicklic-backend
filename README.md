@@ -102,6 +102,17 @@ In settings USE_TZ is set to be False. The reason of this is get the desired
 timezone from the DB as well so the comparison won't require any extra effort.
 
 
+Notification Setting
+--------------------
+We have used One Signal for Push notifications. You need to add 
+following two params in local settings to make notifications work for you.
+```sh
+ONE_SIGNAL_APP_ID
+ONE_SIGNAL_USER_AUTH_KEY
+```
+Note: You can bet those keys from your OneSignal dashboard account.
+
+
 API Documentation
 -----------------
 We are using atlassian confluence for managing our documents. Here is 
