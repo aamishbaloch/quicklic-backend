@@ -3,6 +3,6 @@ from entities.notification.models import Notification
 
 
 class NotificationAdmin(admin.ModelAdmin):
-    list_display = ('id', 'text', 'type', 'user', 'is_read', 'patient', 'doctor', 'clinic')
+    list_display = ('id', 'type', 'heading', 'user', 'user_type', 'is_read', 'patient', 'doctor', 'clinic')
 
 admin.site.register(Notification, NotificationAdmin)

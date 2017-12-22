@@ -319,9 +319,12 @@ class AppointmentSerializer(serializers.ModelSerializer):
 
         appointment = super(AppointmentSerializer, self).create(validated_data)
         Notification.create_notification(
-            appointment.doctor,
-            Notification.Message.APPOINTMENT_CREATED.format(appointment.qid),
-            Notification.Type.DOCTOR,
+            user=appointment.doctor,
+            user_type=Notification.UserType.DOCTOR,
+            heading=Notification.Message.APPOINTMENT_CREATED["headings"].format(appointment_id=appointment.qid),
+            content=Notification.Message.APPOINTMENT_CREATED["contents"].format(
+                patient=appointment.patient.get_full_name(), appointment_id=appointment.qid),
+            type=Notification.Type.APPOINTMENT,
             patient=appointment.patient,
             doctor=appointment.doctor,
             clinic=appointment.clinic
