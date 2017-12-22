@@ -8,27 +8,51 @@ from libs.onesignal_sdk import OneSignalSdk
 class Notification(models.Model):
 
     class Message:
-        APPOINTMENT_CREATED = "New Appointment {} has been Scheduled."
-        APPOINTMENT_CANCELED = "Appointment {} has been Canceled."
-        APPOINTMENT_UPDATED = "Appointment {} has been Updated."
-        APPOINTMENT_CONFIRMED = "Appointment {} has been Confirmed."
-        APPOINTMENT_NOSHOW = "Appointment {} has been Marked as No-Show."
+        APPOINTMENT_CREATED = {
+            "contents": "{patient} has scheduled a new appointment {appointment_id} with you.",
+            "headings": "New appointment {appointment_id} has been scheduled.",
+        }
+        APPOINTMENT_CANCELED = {
+            "contents": "{patient} has canceled an appointment {appointment_id} with you.",
+            "headings": "Appointment {appointment_id} has been canceled.",
+        }
+        APPOINTMENT_UPDATED = {
+            "contents": "{patient} has updated an appointment {appointment_id} with you.",
+            "headings": "Appointment {} has been updated.",
+        }
+        APPOINTMENT_CONFIRMED = {
+            "contents": "{doctor} has confirmed your appointment {appointment_id}.",
+            "headings": "Appointment {appointment_id} has been confirmed.",
+        }
+        APPOINTMENT_NOSHOW = {
+            "contents": "{doctor} has marked your appointment {appointment_id} as no show.",
+            "headings": "Appointment {appointment_id} has been marked as no show.",
+        }
 
     class Type:
+        APPOINTMENT = 1
+        ANNOUNCEMENT = 2
+
+        Choices = (
+            (APPOINTMENT, 'APPOINTMENT'),
+            (ANNOUNCEMENT, 'ANNOUNCEMENT'),
+        )
+
+    class UserType:
         DOCTOR = 1
         PATIENT = 2
         ADMIN = 3
-        GENERAL = 4
 
         Choices = (
             (DOCTOR, 'DOCTOR'),
             (PATIENT, 'PATIENT'),
             (ADMIN, 'ADMIN'),
-            (GENERAL, 'GENERAL'),
         )
 
-    text = models.CharField(_('text'), max_length=255)
-    type = models.IntegerField(_('type'), db_index=True, choices=Type.Choices, default=Type.GENERAL)
+    content = models.CharField(_('content'), max_length=255)
+    heading = models.CharField(_('heading'), max_length=255)
+    type = models.IntegerField(_('type'), db_index=True, choices=Type.Choices, default=Type.ANNOUNCEMENT)
+    user_type = models.IntegerField(_('type'), db_index=True, choices=UserType.Choices, default=UserType.DOCTOR)
 
     user = models.ForeignKey(User, related_name='notifications')
     patient = models.ForeignKey(Patient, related_name='patient_notifications')
@@ -36,14 +60,17 @@ class Notification(models.Model):
     clinic = models.ForeignKey(Clinic, related_name='clinic_notifications')
 
     is_read = models.BooleanField(default=False)
-
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.text
+        return self.heading
 
     @staticmethod
-    def create_notification(user, text, type, patient=None, doctor=None, clinic=None):
-        Notification.objects.create(user=user, type=type, text=text, patient=patient, doctor=doctor, clinic=clinic)
-        one_signal_sdk = OneSignalSdk()
-        one_signal_sdk.create_notification(contents="text", heading="Quicklic", player_ids=[user.device_id])
+    def create_notification(user, user_type, heading, content, type, patient=None, doctor=None, clinic=None):
+        if type == Notification.Type.APPOINTMENT:
+            Notification.objects.create(
+                user=user, user_type=user_type, type=type, content=content, heading=heading,
+                patient=patient, doctor=doctor, clinic=clinic
+            )
+            one_signal_sdk = OneSignalSdk()
+            one_signal_sdk.create_notification(contents=content, heading=heading, player_ids=[user.device_id])
