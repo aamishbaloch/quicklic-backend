@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from entities.clinic.models import Clinic
-from entities.person.models import Patient, Doctor, User
+from entities.person.models import Patient, Doctor, User, Moderator
 from libs.onesignal_sdk import OneSignalSdk
 
 
@@ -52,11 +52,12 @@ class Notification(models.Model):
     content = models.CharField(_('content'), max_length=255)
     heading = models.CharField(_('heading'), max_length=255)
     type = models.IntegerField(_('type'), db_index=True, choices=Type.Choices, default=Type.ANNOUNCEMENT)
-    user_type = models.IntegerField(_('type'), db_index=True, choices=UserType.Choices, default=UserType.DOCTOR)
+    user_type = models.IntegerField(_('user type'), db_index=True, choices=UserType.Choices, default=UserType.DOCTOR)
 
     user = models.ForeignKey(User, related_name='notifications')
     patient = models.ForeignKey(Patient, related_name='patient_notifications')
     doctor = models.ForeignKey(Doctor, related_name='doctor_notifications')
+    moderator = models.ForeignKey(Moderator, related_name='moderator_notifications', blank=True, null=True)
     clinic = models.ForeignKey(Clinic, related_name='clinic_notifications')
 
     is_read = models.BooleanField(default=False)

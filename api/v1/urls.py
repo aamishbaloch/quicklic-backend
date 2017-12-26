@@ -6,6 +6,7 @@ from api.v1.appointment import urls as appointment_urls
 from api.v1.clinic import urls as clinic_urls
 from api.v1.test import urls as test_urls
 from api.v1.review import urls as review_urls
+from api.v1.notification import urls as notification_urls
 from . import views
 
 urlpatterns = [
@@ -22,4 +23,5 @@ urlpatterns = [
     url(r'^clinic/', include(clinic_urls)),
     url(r'^test/', include(test_urls)),
     url(r'^review/', include(review_urls)),
+    url(r'^notification/', include(notification_urls)),
 ]
