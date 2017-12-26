@@ -67,3 +67,8 @@ class DoctorDoesNotExistsException(APIException):
 class InvalidDateTimeException(APIException):
     status_code = 400
     default_detail = "Invalid Date Time"
+
+
+class NotificationDoesNotExistsException(APIException):
+    status_code = 404
+    default_detail = "Notification Does Not Exists"
