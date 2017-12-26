@@ -1,3 +1,5 @@
+certifi==2017.7.27.1
+chardet==3.0.4
 Django==1.11.4
 django-filter==1.0.4
 djangorestframework==3.6.4
@@ -11,6 +13,10 @@ olefile==0.44
 Pillow==4.2.1
 psycopg2==2.7.3.1
 PyJWT==1.5.3
+PySocks==1.6.7
 python-dateutil==2.6.1
 pytz==2017.2
+requests==2.18.4
 six==1.11.0
+twilio==6.7.1
+urllib3==1.22
