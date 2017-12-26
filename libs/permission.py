@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from rest_framework import permissions
 
 from entities.appointment.models import Appointment
+from entities.notification.models import Notification
 from entities.person.models import Doctor
 
 User = get_user_model()
@@ -101,4 +102,15 @@ class AppointmentVisitPermission(permissions.BasePermission):
                     return True
             return False
         except Appointment.DoesNotExist:
+            return False
+
+
+class PKNotificationOwnerPermission(permissions.BasePermission):
+    def has_permission(self, request, view):
+        try:
+            notification = Notification.objects.get(pk=view.kwargs['pk'])
+            if request.user.id == notification.user.id:
+                return True
+            return False
+        except Notification.DoesNotExist:
             return False
