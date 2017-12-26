@@ -393,3 +393,32 @@ class ReviewSerializer(serializers.ModelSerializer):
             instance.clinic.calculate_rating()
 
         return instance
+
+
+class NotificationSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Notification
+        fields = '__all__'
+
+    # def to_representation(self, instance):
+    #     data = super(ReviewSerializer, self).to_representation(instance)
+    #
+    #     if instance.clinic:
+    #         data['clinic'] = BasicClinicSerializer(instance.clinic, context={"request": self.context['request']}).data
+    #     if instance.creator:
+    #         data['creator'] = BasicPatientSerializer(instance.creator, context={"request": self.context['request']}).data
+    #     if instance.doctor:
+    #         data['doctor'] = BasicDoctorSerializer(instance.doctor, context={"request": self.context['request']}).data
+    #     return data
+    #
+    # def create(self, validated_data):
+    #     validated_data['creator'] = self.context['request'].user.patient
+    #     instance = super(ReviewSerializer, self).create(validated_data)
+    #
+    #     if instance.type == Review.Type.DOCTOR:
+    #         instance.doctor.calculate_rating()
+    #     elif instance.type == Review.Type.CLINIC:
+    #         instance.clinic.calculate_rating()
+    #
+    #     return instance
