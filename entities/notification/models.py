@@ -1,5 +1,7 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+
+from entities.appointment.models import Appointment
 from entities.clinic.models import Clinic
 from entities.person.models import Patient, Doctor, User, Moderator
 from libs.onesignal_sdk import OneSignalSdk
@@ -59,6 +61,7 @@ class Notification(models.Model):
     doctor = models.ForeignKey(Doctor, related_name='doctor_notifications')
     moderator = models.ForeignKey(Moderator, related_name='moderator_notifications', blank=True, null=True)
     clinic = models.ForeignKey(Clinic, related_name='clinic_notifications')
+    appointment = models.ForeignKey(Appointment, related_name='notifications', blank=True, null=True)
 
     is_read = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -67,11 +70,11 @@ class Notification(models.Model):
         return self.heading
 
     @staticmethod
-    def create_notification(user, user_type, heading, content, type, patient=None, doctor=None, clinic=None):
+    def create_notification(user, user_type, heading, content, type, appointment_id=None, patient=None, doctor=None, clinic=None):
         if type == Notification.Type.APPOINTMENT:
             Notification.objects.create(
                 user=user, user_type=user_type, type=type, content=content, heading=heading,
-                patient=patient, doctor=doctor, clinic=clinic
+                appointment_id=appointment_id, patient=patient, doctor=doctor, clinic=clinic
             )
             one_signal_sdk = OneSignalSdk()
             one_signal_sdk.create_notification(contents=content, heading=heading, player_ids=[user.device_id])
