@@ -9,7 +9,7 @@ from django.views.generic.base import View
 
 from portal import constants
 from portal.forms import LoginForm
-from portal.statistics_helper import get_doctor_appointment_stats
+from portal.statistics_helper import get_doctor_appointment_stats, get_admin_clinic_stats
 
 User = get_user_model()
 
@@ -68,7 +68,7 @@ class PortalHomeView(TemplateView):
         if self.request.user.is_doctor():
             context['doctor_stats'] = get_doctor_appointment_stats(self.request.user.doctor)
         elif self.request.user.is_admin():
-            pass
+            context['admin_stats'] = get_admin_clinic_stats(self.request.user.moderator)
         return context
 
 
