@@ -22,17 +22,33 @@
                 <i class="fa fa-dashboard icon">
                   <b class="bg-danger"></b>
                 </i>
-                <span>Statistics</span>
+                  {% if admin_stats %}
+                    <span>Clinic Statistics</span>
+                  {% else %}
+                    <span>Statistics</span>
+                  {% endif %}
               </a>
             </li>
-              <li >
-              <a href="index.html"  >
-                <i class="fa fa-dashboard icon">
-                  <b class="bg-danger"></b>
-                </i>
-                <span>Appointments</span>
-              </a>
-            </li>
+              {% if doctor_stats %}
+                  <li >
+                  <a href="index.html"  >
+                    <i class="fa fa-dashboard icon">
+                      <b class="bg-danger"></b>
+                    </i>
+                    <span>Appointments</span>
+                  </a>
+                </li>
+              {% endif %}
+                {% if admin_stats %}
+                  <li >
+                  <a href="index.html"  >
+                    <i class="fa fa-dashboard icon">
+                      <b class="bg-danger"></b>
+                    </i>
+                    <span>Doctors Statistics</span>
+                  </a>
+                </li>
+              {% endif %}
               <li >
               <a href="index.html"  >
                 <i class="fa fa-dashboard icon">
