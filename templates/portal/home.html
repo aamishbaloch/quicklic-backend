@@ -42,7 +42,7 @@
                               <small class="text-muted block">Appointments</small>
                               <div class="inline">
                                 <div class="easypiechart" data-percent="{{ doctor_stats.appointment_done_percentage }}" data-line-width="30" data-track-color="#eee" data-bar-color="#afcf6f" data-scale-color="#fff" data-size="188" data-line-cap='butt'>
-                                  <span class="h2 step">{{ doctor_stats.appointment_done_percentage }}</span>%
+                                  <span class="h2 step">{{ doctor_stats.appointment_done_percentage|floatformat:1 }}</span>%
                                 </div>
                               </div>
                             </div>
@@ -59,7 +59,7 @@
                               <small class="text-muted block">Appointments</small>
                               <div class="inline">
                                 <div class="easypiechart" data-percent="{{ doctor_stats.appointment_noshow_percentage }}" data-line-width="30" data-track-color="#eee" data-bar-color="#afcf6f" data-scale-color="#fff" data-size="188" data-line-cap='butt'>
-                                  <span class="h2 step">{{ doctor_stats.appointment_noshow_percentage }}</span>%
+                                  <span class="h2 step">{{ doctor_stats.appointment_noshow_percentage|floatformat:1 }}</span>%
                                 </div>
                               </div>
                             </div>
@@ -76,7 +76,7 @@
                               <small class="text-muted block">Appointments</small>
                               <div class="inline">
                                 <div class="easypiechart" data-percent="{{ doctor_stats.appointment_cancel_percentage }}" data-line-width="30" data-track-color="#eee" data-bar-color="#afcf6f" data-scale-color="#fff" data-size="188" data-line-cap='butt'>
-                                  <span class="h2 step">{{ doctor_stats.appointment_cancel_percentage }}</span>%
+                                  <span class="h2 step">{{ doctor_stats.appointment_cancel_percentage|floatformat:1 }}</span>%
                                 </div>
                               </div>
                             </div>
@@ -93,7 +93,7 @@
                               <small class="text-muted block">Appointments</small>
                               <div class="inline">
                                 <div class="easypiechart" data-percent="{{ doctor_stats.appointment_discard_percentage }}" data-line-width="30" data-track-color="#eee" data-bar-color="#afcf6f" data-scale-color="#fff" data-size="188" data-line-cap='butt'>
-                                  <span class="h2 step">{{ doctor_stats.appointment_discard_percentage }}</span>%
+                                  <span class="h2 step">{{ doctor_stats.appointment_discard_percentage|floatformat:1 }}</span>%
                                 </div>
                               </div>
                             </div>
@@ -110,7 +110,7 @@
                               <small class="text-muted block">Appointments</small>
                               <div class="inline">
                                 <div class="easypiechart" data-percent="{{ doctor_stats.appointment_other_percentage }}" data-line-width="30" data-track-color="#eee" data-bar-color="#afcf6f" data-scale-color="#fff" data-size="188" data-line-cap='butt'>
-                                  <span class="h2 step">{{ doctor_stats.appointment_other_percentage }}</span>%
+                                  <span class="h2 step">{{ doctor_stats.appointment_other_percentage|floatformat:1 }}</span>%
                                 </div>
                               </div>
                             </div>
@@ -128,7 +128,7 @@
                                 <div class="line pull-in"></div>
                                 <div class="sparkline inline" data-type="pie" data-height="150" data-slice-colors="{{ doctor_stats.appointment_clinic_colors }}">
                                       {% for clinic in doctor_stats.clinics_appointment_count %}
-                                        {{ clinic.percentage }},
+                                        {{ clinic.percentage|floatformat:1 }},
                                       {% endfor %}
                                 </div>
                                 <div class="line pull-in"></div>
@@ -174,7 +174,7 @@
                                 <div class="line pull-in"></div>
                                 <div class="sparkline inline" data-type="pie" data-height="188" data-slice-colors="{{ admin_stats.clinics_colors_data }}">
                                       {% for clinic in admin_stats.clinics_data %}
-                                        {{ clinic.clinic_appointment_percentage }},
+                                        {{ clinic.clinic_appointment_percentage|floatformat:1 }},
                                       {% endfor %}
                                 </div>
                                 <div class="line pull-in"></div>
@@ -197,7 +197,7 @@
                                 <div class="line pull-in"></div>
                                 <div class="sparkline inline" data-type="pie" data-height="188" data-slice-colors="{{ admin_stats.clinics_colors_data }}">
                                       {% for clinic in admin_stats.clinics_data %}
-                                        {{ clinic.clinic_appointment_done_percentage }},
+                                        {{ clinic.clinic_appointment_done_percentage|floatformat:1 }},
                                       {% endfor %}
                                 </div>
                                 <div class="line pull-in"></div>
@@ -220,7 +220,7 @@
                                 <div class="line pull-in"></div>
                                 <div class="sparkline inline" data-type="pie" data-height="188" data-slice-colors="{{ admin_stats.clinics_colors_data }}">
                                       {% for clinic in admin_stats.clinics_data %}
-                                        {{ clinic.clinic_appointment_noshow_percentage }},
+                                        {{ clinic.clinic_appointment_noshow_percentage|floatformat:1 }},
                                       {% endfor %}
                                 </div>
                                 <div class="line pull-in"></div>
