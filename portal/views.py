@@ -9,6 +9,7 @@ from django.views.generic.base import View
 
 from portal import constants
 from portal.forms import LoginForm
+from portal.statistics_helper import get_doctor_appointment_stats
 
 User = get_user_model()
 
@@ -29,7 +30,7 @@ class LoginView(TemplateView):
                 password=form.cleaned_data["password"],
             )
             if user is not None:
-                if hasattr(user, 'moderator'):
+                if hasattr(user, 'moderator') or hasattr(user, 'doctor'):
                     if user.is_active:
                         login(request, user)
                     else:
@@ -64,6 +65,10 @@ class PortalHomeView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(PortalHomeView, self).get_context_data(**kwargs)
+        if self.request.user.is_doctor():
+            context['doctor_stats'] = get_doctor_appointment_stats(self.request.user.doctor)
+        elif self.request.user.is_admin():
+            pass
         return context
 
 

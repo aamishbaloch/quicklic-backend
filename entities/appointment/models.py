@@ -17,6 +17,7 @@ class Appointment(models.Model):
         NOSHOW = 3
         CANCEL = 4
         DISCARD = 5
+        DONE = 6
 
         Choices = (
             (CONFIRM, 'CONFIRM'),
@@ -24,6 +25,7 @@ class Appointment(models.Model):
             (NOSHOW, 'NOSHOW'),
             (CANCEL, 'CANCEL'),
             (DISCARD, 'DISCARD'),
+            (DONE, 'DONE'),
         )
 
     qid = models.CharField(_('qid'), max_length=255, db_index=True, unique=True)
