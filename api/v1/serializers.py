@@ -339,6 +339,12 @@ class VisitSerializer(serializers.ModelSerializer):
         model = Visit
         fields = '__all__'
 
+    def create(self, validated_data):
+        visit = super(VisitSerializer, self).create(validated_data)
+        visit.appointment.status = Appointment.Status.DONE
+        visit.appointment.save(update_fields=['status'])
+        return visit
+
     def to_representation(self, instance):
         data = super(VisitSerializer, self).to_representation(instance)
 

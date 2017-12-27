@@ -141,6 +141,15 @@ class User(AbstractBaseUser, PermissionsMixin):
         self.device_id = device_id
         self.save()
 
+    def is_doctor(self):
+        return hasattr(self, 'doctor')
+
+    def is_patient(self):
+        return hasattr(self, 'patient')
+
+    def is_admin(self):
+        return hasattr(self, 'moderator')
+
     @property
     def get_avatar(self):
         if self.avatar:
