@@ -6,6 +6,7 @@ from rest_framework.views import APIView
 
 from entities.appointment.models import Appointment, Visit
 from entities.clinic.models import Clinic
+from entities.notification.models import Notification
 from entities.person.models import Patient, Doctor
 from libs.authentication import UserAuthentication
 from libs.custom_exceptions import ClinicDoesNotExistsException, ClinicAlreadyAddedException
@@ -215,6 +216,19 @@ class PatientAppointmentCancelView(APIView):
         appointment = Appointment.objects.get(pk=appointment_id)
         appointment.status = Appointment.Status.CANCEL
         appointment.save()
+
+        Notification.create_notification(
+            user=appointment.doctor,
+            user_type=Notification.UserType.DOCTOR,
+            heading=Notification.Message.APPOINTMENT_CANCELED["headings"].format(appointment_id=appointment.qid),
+            content=Notification.Message.APPOINTMENT_CANCELED["contents"].format(
+                        patient=appointment.patient.get_full_name(), appointment_id=appointment.qid),
+            type=Notification.Type.APPOINTMENT,
+            appointment_id=appointment.id,
+            patient=appointment.patient,
+            doctor=appointment.doctor,
+            clinic=appointment.clinic
+        )
 
         return Response({}, status=status.HTTP_200_OK)
 

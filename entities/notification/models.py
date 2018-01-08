@@ -20,7 +20,7 @@ class Notification(models.Model):
         }
         APPOINTMENT_UPDATED = {
             "contents": "{patient} has updated an appointment {appointment_id} with you.",
-            "headings": "Appointment {} has been updated.",
+            "headings": "Appointment {appointment_id} has been updated.",
         }
         APPOINTMENT_CONFIRMED = {
             "contents": "{doctor} has confirmed your appointment {appointment_id}.",
@@ -29,6 +29,10 @@ class Notification(models.Model):
         APPOINTMENT_NOSHOW = {
             "contents": "{doctor} has marked your appointment {appointment_id} as no show.",
             "headings": "Appointment {appointment_id} has been marked as no show.",
+        }
+        APPOINTMENT_DISCARD = {
+            "contents": "{doctor} has discarded your appointment {appointment_id}.",
+            "headings": "Appointment {appointment_id} has been discarded.",
         }
 
     class Type:

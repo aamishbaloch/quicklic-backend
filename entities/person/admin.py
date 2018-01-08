@@ -94,7 +94,8 @@ class DoctorAdmin(UserAdmin):
         (_('Personal Info'), {
             'fields': (
                 'phone', 'first_name', 'last_name', 'verified', 'email', 'dob',
-                'gender', 'avatar', 'clinic', 'city', 'country', 'services', 'specialization', 'degree'
+                'gender', 'avatar', 'clinic', 'city', 'country', 'services', 'specialization', 'degree',
+                'device_id', 'device_type',
             )
         }),
         (_('Permissions Info'), {'fields': ('is_active', 'is_superuser',)}),

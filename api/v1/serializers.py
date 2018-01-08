@@ -330,7 +330,22 @@ class AppointmentSerializer(serializers.ModelSerializer):
             doctor=appointment.doctor,
             clinic=appointment.clinic
         )
+        return appointment
 
+    def update(self, instance, validated_data):
+        appointment = super(AppointmentSerializer, self).update(instance, validated_data)
+        Notification.create_notification(
+            user=appointment.doctor,
+            user_type=Notification.UserType.DOCTOR,
+            heading=Notification.Message.APPOINTMENT_UPDATED["headings"].format(appointment_id=appointment.qid),
+            content=Notification.Message.APPOINTMENT_UPDATED["contents"].format(
+                patient=appointment.patient.get_full_name(), appointment_id=appointment.qid),
+            type=Notification.Type.APPOINTMENT,
+            appointment_id=appointment.id,
+            patient=appointment.patient,
+            doctor=appointment.doctor,
+            clinic=appointment.clinic
+        )
         return appointment
 
 

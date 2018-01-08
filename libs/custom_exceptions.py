@@ -5,7 +5,7 @@ from libs.error_reports import send_manually_error_email
 
 class AlreadyExistsException(APIException):
     status_code = 409
-    default_detail = "Object Already Exists"
+    default_detail = "Already Exists"
 
 
 class InvalidInputDataException(APIException):
