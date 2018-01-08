@@ -150,6 +150,13 @@ class User(AbstractBaseUser, PermissionsMixin):
     def is_admin(self):
         return hasattr(self, 'moderator')
 
+    @staticmethod
+    def is_exists(phone):
+        user = User.objects.filter(phone=phone).first()
+        if user:
+            return True
+        return False
+
     @property
     def get_avatar(self):
         if self.avatar:

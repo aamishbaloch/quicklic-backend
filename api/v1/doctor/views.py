@@ -7,6 +7,7 @@ from rest_framework.views import APIView
 from django.db.models import Q
 from datetime import datetime, timedelta
 
+from entities.notification.models import Notification
 from quicklic_backend import settings
 from entities.appointment.models import Appointment, Visit
 from entities.person.models import Doctor
@@ -278,6 +279,31 @@ class DoctorStatusView(APIView):
                 appointment = Appointment.objects.get(pk=appointment_id)
                 appointment.status = status_code
                 appointment.save()
+
+                if status_code == Appointment.Status.CONFIRM:
+                    heading = Notification.Message.APPOINTMENT_CONFIRMED["headings"].format(appointment_id=appointment.qid)
+                    content = Notification.Message.APPOINTMENT_CONFIRMED["contents"].format(
+                        patient=appointment.doctor.get_full_name(), appointment_id=appointment.qid)
+                elif status_code == Appointment.Status.DISCARD:
+                    heading = Notification.Message.APPOINTMENT_CONFIRMED["headings"].format(appointment_id=appointment.qid)
+                    content = Notification.Message.APPOINTMENT_CONFIRMED["contents"].format(
+                        patient=appointment.doctor.get_full_name(), appointment_id=appointment.qid)
+                else:
+                    heading = Notification.Message.APPOINTMENT_NOSHOW["headings"].format(appointment_id=appointment.qid)
+                    content = Notification.Message.APPOINTMENT_NOSHOW["contents"].format(
+                        patient=appointment.doctor.get_full_name(), appointment_id=appointment.qid)
+
+                Notification.create_notification(
+                    user=appointment.patient,
+                    user_type=Notification.UserType.PATIENT,
+                    heading=heading,
+                    content=content,
+                    type=Notification.Type.APPOINTMENT,
+                    appointment_id=appointment.id,
+                    patient=appointment.patient,
+                    doctor=appointment.doctor,
+                    clinic=appointment.clinic
+                )
 
                 return Response({}, status=status.HTTP_200_OK)
         raise InvalidAppointmentStatusException()

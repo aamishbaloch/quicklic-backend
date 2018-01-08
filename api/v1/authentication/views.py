@@ -30,16 +30,19 @@ class RegistrationView(APIView):
     def post(self, request):
         device_id = request.data.get('device_id', None)
         device_type = request.data.get('device_type', None)
-        serializer = PatientTokenSerializer(data=request.data, context={"request": request})
-        if serializer.is_valid():
-            try:
-                patient = serializer.save()
-                patient.update_device_information(device_id, device_type)
-                code = VerificationCode.generate_code_for_user(patient)
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-            except IntegrityError as e:
-                raise PatientExistsException()
-        raise InvalidInputDataException(str(serializer.errors))
+
+        if not User.is_exists(request.data['phone']):
+            serializer = PatientTokenSerializer(data=request.data, context={"request": request})
+            if serializer.is_valid():
+                try:
+                    patient = serializer.save()
+                    patient.update_device_information(device_id, device_type)
+                    code = VerificationCode.generate_code_for_user(patient)
+                    return Response(serializer.data, status=status.HTTP_201_CREATED)
+                except IntegrityError as e:
+                    raise PatientExistsException()
+            raise InvalidInputDataException(str(serializer.errors))
+        raise PatientExistsException()
 
 
 class LoginView(APIView):
