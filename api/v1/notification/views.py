@@ -6,7 +6,7 @@ from entities.notification.models import Notification
 from libs.authentication import UserAuthentication
 from api.v1.serializers import NotificationSerializer
 from libs.custom_exceptions import NotificationDoesNotExistsException
-from libs.permission import PKNotificationOwnerPermission
+from libs.permission import PKNotificationOwnerPermission, PatientDoctorPermission
 
 
 class NotificationView(ListAPIView):
@@ -47,3 +47,20 @@ class NotificationUpdateView(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Notification.DoesNotExist:
             raise NotificationDoesNotExistsException()
+
+
+class NotificationAllReadView(APIView):
+    """
+    View for getting notifications.
+
+    **Example requests**:
+
+        GET /notifications/{user_id}/read_all
+    """
+
+    authentication_classes = (UserAuthentication,)
+    permission_classes = (PatientDoctorPermission,)
+
+    def get(self, request, user_id):
+        Notification.objects.filter(user_id=user_id).update(is_read=True)
+        return Response({}, status=status.HTTP_200_OK)

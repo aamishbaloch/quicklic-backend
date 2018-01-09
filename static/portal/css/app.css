@@ -2527,6 +2527,10 @@ fieldset[disabled] .btn-gplus.active {
 .bg-info .icon-muted {
   color: #5fc7c8 !important;
 }
+.bg-nav-portal {
+  background-color: #65bd77;
+  color: #fff8e6;
+}
 .bg-warning {
   background-color: #ffc333;
   color: #fff8e6;
