@@ -37,7 +37,7 @@ class NotificationUpdateView(APIView):
     authentication_classes = (UserAuthentication,)
     permission_classes = (PKNotificationOwnerPermission,)
 
-    def get(self, request, pk):
+    def post(self, request, pk):
         try:
             notification = Notification.objects.get(pk=pk)
             notification.is_read = True
@@ -61,6 +61,6 @@ class NotificationAllReadView(APIView):
     authentication_classes = (UserAuthentication,)
     permission_classes = (PatientDoctorPermission,)
 
-    def get(self, request, user_id):
+    def post(self, request, user_id):
         Notification.objects.filter(user_id=user_id).update(is_read=True)
         return Response({}, status=status.HTTP_200_OK)
