@@ -6,6 +6,7 @@
 	var sr, sparkline = function($re){
 		$(".sparkline").each(function(){
 			var $data = $(this).data();
+			//$data.sliceColors = null;
 			if($re && !$data.resize) return;
 			($data.type == 'pie') && $data.sliceColors && ($data.sliceColors = eval($data.sliceColors));
 			($data.type == 'bar') && $data.stackedBarColor && ($data.stackedBarColor = eval($data.stackedBarColor));

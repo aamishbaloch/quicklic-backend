@@ -11,22 +11,26 @@
         <nav class="nav-primary hidden-xs">
           <ul class="nav">
             <li >
-              <a href="index.html"  >
-                <i class="fa fa-dashboard icon">
-                  <b class="bg-danger"></b>
+              <a href="{% url 'portal:profile' %}"  >
+                <i class="fa fa-user icon">
+                  <b class="bg-nav-portal"></b>
                 </i>
-                  {% if admin_stats %}
-                    <span>Clinic Statistics</span>
-                  {% else %}
-                    <span>Statistics</span>
-                  {% endif %}
+                <span>Profile</span>
+              </a>
+            </li>
+            <li >
+              <a href="{% url 'portal:home' %}"  >
+                <i class="fa fa-bar-chart-o icon">
+                  <b class="bg-nav-portal"></b>
+                </i>
+                <span>Statistics</span>
               </a>
             </li>
               {% if doctor_stats %}
                   <li >
                   <a href="index.html"  >
                     <i class="fa fa-dashboard icon">
-                      <b class="bg-danger"></b>
+                      <b class="bg-nav-portal"></b>
                     </i>
                     <span>Appointments</span>
                   </a>
@@ -36,7 +40,7 @@
                   <li >
                   <a href="index.html"  >
                     <i class="fa fa-dashboard icon">
-                      <b class="bg-danger"></b>
+                      <b class="bg-nav-portal"></b>
                     </i>
                     <span>Doctors Statistics</span>
                   </a>
@@ -45,7 +49,7 @@
               <li >
               <a href="index.html"  >
                 <i class="fa fa-dashboard icon">
-                  <b class="bg-danger"></b>
+                  <b class="bg-nav-portal"></b>
                 </i>
                 <span>Settings</span>
               </a>

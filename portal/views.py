@@ -8,8 +8,8 @@ from django.contrib import messages
 from django.views.generic.base import View
 
 from portal import constants
-from portal.forms import LoginForm
-from portal.statistics_helper import get_doctor_appointment_stats, get_admin_clinic_stats
+from portal.forms import LoginForm, ProfileForm
+from portal.statistics_helper import get_doctor_appointment_stats, get_admin_appointment_stats
 
 User = get_user_model()
 
@@ -66,9 +66,9 @@ class PortalHomeView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(PortalHomeView, self).get_context_data(**kwargs)
         if self.request.user.is_doctor():
-            context['doctor_stats'] = get_doctor_appointment_stats(self.request.user.doctor)
+            context['stats'] = get_doctor_appointment_stats(self.request.user.doctor)
         elif self.request.user.is_admin():
-            context['admin_stats'] = get_admin_clinic_stats(self.request.user.moderator)
+            context['stats'] = get_admin_appointment_stats(self.request.user.moderator)
         return context
 
 
@@ -84,6 +84,19 @@ class ProfileView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(ProfileView, self).get_context_data(**kwargs)
 
-        if hasattr(self.request.user, 'moderator'):
-            context['clinics'] = self.request.user.clinic.all()
+        if self.request.user.is_doctor():
+            context['type'] = User.Role.DOCTOR
+            context['user'] = self.request.user.doctor
+        elif self.request.user.is_admin():
+            context['type'] = User.Role.ADMIN
+            context['user'] = self.request.user.moderator
         return context
+
+    def post(self, request):
+        form = ProfileForm(request.POST, instance=self.request.user)
+
+        if form.is_valid():
+            user = form.save()
+        else:
+            messages.error(request, constants.OPERATION_UNSUCCESSFUL)
+        return HttpResponseRedirect(reverse('portal:profile'))
