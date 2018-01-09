@@ -223,6 +223,85 @@ class DoctorSetting(models.Model):
         elif day_number == 6:
             return self.sunday_start, self.sunday_end
 
+    def get_timings_with_switch(self):
+        return {
+            "monday": {
+                "switch": True if self.monday_start and self.monday_end else False,
+                "start": "{}:{}".format(self.monday_start.hour, self.monday_start.minute) if self.monday_start else "00:00",
+                "end": "{}:{}".format(self.monday_end.hour, self.monday_end.minute) if self.monday_end else "00:00",
+            },
+            "tuesday": {
+                "switch": True if self.tuesday_start and self.tuesday_end else False,
+                "start": "{}:{}".format(self.tuesday_start.hour, self.tuesday_start.minute) if self.tuesday_start else "00:00",
+                "end": "{}:{}".format(self.tuesday_end.hour, self.tuesday_end.minute) if self.tuesday_end else "00:00",
+            },
+            "wednesday": {
+                "switch": True if self.wednesday_start and self.wednesday_end else False,
+                "start": "{}:{}".format(self.wednesday_start.hour, self.wednesday_start.minute) if self.wednesday_start else "00:00",
+                "end": "{}:{}".format(self.wednesday_end.hour, self.wednesday_end.minute) if self.wednesday_end else "00:00",
+            },
+            "thursday": {
+                "switch": True if self.thursday_start and self.thursday_end else False,
+                "start": "{}:{}".format(self.thursday_start.hour, self.thursday_start.minute) if self.thursday_start else "00:00",
+                "end": "{}:{}".format(self.thursday_end.hour, self.thursday_end.minute) if self.thursday_end else "00:00",
+            },
+            "friday": {
+                "switch": True if self.friday_start and self.friday_end else False,
+                "start": "{}:{}".format(self.friday_start.hour, self.friday_start.minute) if self.friday_start else "00:00",
+                "end": "{}:{}".format(self.friday_end.hour, self.friday_end.minute) if self.friday_end else "00:00",
+            },
+            "saturday": {
+                "switch": True if self.saturday_start and self.saturday_end else False,
+                "start": "{}:{}".format(self.saturday_start.hour, self.saturday_start.minute) if self.saturday_start else "00:00",
+                "end": "{}:{}".format(self.saturday_end.hour, self.saturday_end.minute) if self.saturday_end else "00:00",
+            },
+            "sunday": {
+                "switch": True if self.sunday_start and self.sunday_end else False,
+                "start": "{}:{}".format(self.sunday_start.hour, self.sunday_start.minute) if self.sunday_start else "00:00",
+                "end": "{}:{}".format(self.sunday_end.hour, self.sunday_end.minute) if self.sunday_end else "00:00",
+            }
+        }
+
+    def get_timings_list(self):
+        return [
+            {
+                "day": "Monday",
+                "start": self.monday_start,
+                "end": self.monday_end,
+            },
+            {
+                "day": "Tuesday",
+                "start": self.tuesday_start,
+                "end": self.tuesday_end,
+            },
+            {
+                "day": "Wednesday",
+                "start": self.wednesday_start,
+                "end": self.wednesday_end,
+            },
+            {
+                "day": "Thursday",
+                "start": self.thursday_start,
+                "end": self.thursday_end,
+            },
+            {
+                "day": "Friday",
+                "start": self.friday_start,
+                "end": self.friday_end,
+            },
+            {
+                "day": "Saturday",
+                "start": self.saturday_start,
+                "end": self.saturday_end,
+            },
+            {
+                "day": "Sunday",
+                "start": self.sunday_start,
+                "end": self.sunday_end,
+            },
+
+        ]
+
 
 @receiver(post_save, sender=Doctor)
 def doctor_post_save_callback(sender, **kwargs):
