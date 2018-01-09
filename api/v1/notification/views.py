@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from rest_framework import status
 from entities.notification.models import Notification
 from libs.authentication import UserAuthentication
-from api.v1.serializers import NotificationSerializer
+from api.v1.serializers import NotificationSerializer, BasicNotificationSerializer
 from libs.custom_exceptions import NotificationDoesNotExistsException
 from libs.permission import PKNotificationOwnerPermission, PatientDoctorPermission
 
@@ -15,7 +15,7 @@ class NotificationView(ListAPIView):
 
     **Example requests**:
 
-        GET /notifications/
+        GET /notification/
     """
 
     authentication_classes = (UserAuthentication,)
@@ -31,7 +31,7 @@ class NotificationUpdateView(APIView):
 
     **Example requests**:
 
-        GET /notifications/{id}/read
+        GET /notification/{id}/read
     """
 
     authentication_classes = (UserAuthentication,)
@@ -43,7 +43,7 @@ class NotificationUpdateView(APIView):
             notification.is_read = True
             notification.save(update_fields=['is_read'])
 
-            serializer = NotificationSerializer(notification)
+            serializer = BasicNotificationSerializer(notification)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Notification.DoesNotExist:
             raise NotificationDoesNotExistsException()
@@ -55,7 +55,7 @@ class NotificationAllReadView(APIView):
 
     **Example requests**:
 
-        GET /notifications/{user_id}/read_all
+        GET /notification/{user_id}/read_all
     """
 
     authentication_classes = (UserAuthentication,)

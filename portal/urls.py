@@ -7,4 +7,5 @@ urlpatterns = [
     url(r'^logout$', views.LogoutView.as_view(), name='logout'),
     url(r'^home$', views.PortalHomeView.as_view(), name='home'),
     url(r'^profile$', views.ProfileView.as_view(), name='profile'),
+    url(r'^doctor_setting$', views.DoctorSettingView.as_view(), name='doctor_setting'),
 ]

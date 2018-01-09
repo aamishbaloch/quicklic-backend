@@ -429,3 +429,10 @@ class NotificationSerializer(serializers.ModelSerializer):
         if instance.appointment:
             data['appointment'] = AppointmentSerializer(instance.appointment, context={"request": self.context['request']}).data
         return data
+
+
+class BasicNotificationSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Notification
+        fields = ('id', 'content', 'heading', 'type', 'user_type', 'is_read', 'created_at', 'appointment')
