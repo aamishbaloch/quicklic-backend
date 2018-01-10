@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db import transaction
 from django.http.response import HttpResponseRedirect
 from django.views.generic import TemplateView
 from django.core.urlresolvers import reverse
@@ -104,9 +105,13 @@ class ProfileView(TemplateView):
 
 
 class DoctorSettingView(APIView):
+
+    @transaction.atomic()
     def post(self, request):
         data = request.POST
         setting = self.request.user.doctor.setting
+
+        previous_timings = setting.get_timings_with_switch()
 
         if "monday_check" in data:
             setting.monday_start = data['monday_start']
@@ -158,4 +163,20 @@ class DoctorSettingView(APIView):
             setting.sunday_end = "00:00"
 
         setting.save()
+
+        if previous_timings['monday']['start'] != setting.monday_start or previous_timings['monday']['end'] != setting.monday_end:
+            self.request.user.doctor.cancel_appointment_due_to_time_changed(0)
+        elif previous_timings['tuesday']['start'] != setting.tuesday_start or previous_timings['tuesday']['end'] != setting.tuesday_end:
+            self.request.user.doctor.cancel_appointment_due_to_time_changed(1)
+        elif previous_timings['wednesday']['start'] != setting.wednesday_start or previous_timings['wednesday']['end'] != setting.wednesday_end:
+            self.request.user.doctor.cancel_appointment_due_to_time_changed(2)
+        elif previous_timings['thursday']['start'] != setting.thursday_start or previous_timings['thursday']['end'] != setting.thursday_end:
+            self.request.user.doctor.cancel_appointment_due_to_time_changed(3)
+        elif previous_timings['friday']['start'] != setting.friday_start or previous_timings['friday']['end'] != setting.friday_end:
+            self.request.user.doctor.cancel_appointment_due_to_time_changed(4)
+        elif previous_timings['saturday']['start'] != setting.saturday_start or previous_timings['saturday']['end'] != setting.saturday_end:
+            self.request.user.doctor.cancel_appointment_due_to_time_changed(5)
+        elif previous_timings['sunday']['start'] != setting.sunday_start or previous_timings['sunday']['end'] != setting.sunday_end:
+            self.request.user.doctor.cancel_appointment_due_to_time_changed(6)
+
         return HttpResponseRedirect(reverse('portal:profile'))

@@ -7,8 +7,15 @@ from rest_framework.views import APIView
 from api.v1.serializers import PatientTokenSerializer, DoctorTokenSerializer, PatientSerializer
 from entities.person.models import VerificationCode
 from libs.authentication import UserAuthentication
-from libs.custom_exceptions import InvalidInputDataException, InvalidCredentialsException, \
-    PatientExistsException, InvalidVerificationCodeException, UserNotAllowedException
+from libs.custom_exceptions import (
+    InvalidInputDataException,
+    InvalidCredentialsException,
+    PatientExistsException,
+    InvalidVerificationCodeException,
+    UserNotAllowedException,
+    UserDoesNotExistsException,
+    VerificationException
+)
 from libs.error_reports import send_manually_error_email
 from libs.onesignal_sdk import OneSignalSdk
 from libs.twilio_helper import TwilioHelper
@@ -104,3 +111,82 @@ class VerificationView(APIView):
                 request.user.save(update_fields=['verified'])
                 return Response({}, status=status.HTTP_200_OK)
         raise InvalidVerificationCodeException()
+
+
+class ForgotPasswordView(APIView):
+    """
+    View for creating forgot code of user.
+
+    **Example requests**:
+
+        POST /api/auth/forgot_password/
+    """
+    def post(self, request):
+        phone = request.data.get('phone', None)
+
+        try:
+            user = User.objects.get(phone=phone)
+            if user.verified:
+                code = VerificationCode.generate_code_for_user(user)
+                try:
+                    TwilioHelper().message(
+                        user.phone,
+                        "Hello from Quicklic! Your Code is {}.".format(code)
+                    )
+                except Exception as e:
+                    send_manually_error_email("Unable to send code. Code is {}".format(code))
+                return Response(None, status=status.HTTP_200_OK)
+            raise VerificationException()
+        except User.DoesNotExist:
+            raise UserDoesNotExistsException()
+
+
+class ChangePasswordVerificationView(APIView):
+    """
+    View for verifying a user to change the password.
+
+    **Example requests**:
+
+        POST /api/auth/password/verify/
+    """
+    def post(self, request):
+        code = request.data.get('code', None)
+        phone = request.data.get('phone', None)
+
+        try:
+            user = User.objects.get(phone=phone)
+            if user.verified:
+                if user.verification_code:
+                    if user.verification_code.code == code:
+                        return Response({}, status=status.HTTP_200_OK)
+                    raise InvalidVerificationCodeException()
+            raise VerificationException()
+        except User.DoesNotExist:
+            raise UserDoesNotExistsException()
+
+
+class ChangePasswordView(APIView):
+    """
+    View for changing password with code.
+
+    **Example requests**:
+
+        POST /api/auth/password/change/
+    """
+    def post(self, request):
+        code = request.data.get('code', None)
+        phone = request.data.get('phone', None)
+        password = request.data.get('password', None)
+
+        try:
+            user = User.objects.get(phone=phone)
+            if user.verified:
+                if user.verification_code:
+                    if user.verification_code.code == code:
+                        user.set_password(password)
+                        user.save()
+                        return Response({}, status=status.HTTP_200_OK)
+                    raise InvalidVerificationCodeException()
+            raise VerificationException()
+        except User.DoesNotExist:
+            raise UserDoesNotExistsException()

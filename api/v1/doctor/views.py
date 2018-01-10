@@ -281,15 +281,15 @@ class DoctorStatusView(APIView):
                 appointment.save()
 
                 if status_code == Appointment.Status.CONFIRM:
-                    heading = Notification.Message.APPOINTMENT_CONFIRMED["headings"].format(appointment_id=appointment.qid)
+                    heading = Notification.Message.HEADING
                     content = Notification.Message.APPOINTMENT_CONFIRMED["contents"].format(
                         patient=appointment.doctor.get_full_name(), appointment_id=appointment.qid)
                 elif status_code == Appointment.Status.DISCARD:
-                    heading = Notification.Message.APPOINTMENT_CONFIRMED["headings"].format(appointment_id=appointment.qid)
+                    heading = Notification.Message.HEADING
                     content = Notification.Message.APPOINTMENT_CONFIRMED["contents"].format(
                         patient=appointment.doctor.get_full_name(), appointment_id=appointment.qid)
                 else:
-                    heading = Notification.Message.APPOINTMENT_NOSHOW["headings"].format(appointment_id=appointment.qid)
+                    heading = Notification.Message.HEADING
                     content = Notification.Message.APPOINTMENT_NOSHOW["contents"].format(
                         patient=appointment.doctor.get_full_name(), appointment_id=appointment.qid)
 

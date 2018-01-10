@@ -1,4 +1,5 @@
 import datetime
+from datetime import timedelta
 from django.db import models
 from django.core.mail import send_mail
 from django.contrib.auth.models import PermissionsMixin
@@ -11,7 +12,8 @@ from django.db.models import Avg
 from entities.clinic.models import Country, City, Clinic
 from entities.resources.models import Service, Specialization, Occupation
 from libs.managers import QueryManager
-from libs.utils import get_verification_code
+from libs.utils import get_verification_code, next_weekday, get_start_datetime_from_date_string, \
+    get_end_datetime_from_date_string
 from quicklic_backend.settings import MEDIA_URL, MEDIA_ROOT
 
 
@@ -179,6 +181,20 @@ class Doctor(User):
         self.rating = rating['rating__avg']
         self.save(update_fields=["rating"])
 
+    def cancel_appointment_due_to_time_changed(self, day_number):
+        """
+        MONDAY 0, TUESDAY 1, WEDNESDAY 2, THURSDAY 3, FRIDAY 4, SATURDAY 5, SUNDAY 6
+        """
+        from libs.quicklic_utils import cancel_appointments_of_day_and_send_notify
+
+        current = datetime.datetime.now()
+        limit = current + timedelta(30)
+        date_to_cancel = next_weekday(current, day_number)
+
+        while date_to_cancel <= limit:
+            cancel_appointments_of_day_and_send_notify(date_to_cancel)
+            date_to_cancel = next_weekday(date_to_cancel, day_number)
+
 
 class DoctorSetting(models.Model):
     physician = models.OneToOneField(Doctor, related_name='setting')
@@ -227,38 +243,38 @@ class DoctorSetting(models.Model):
         return {
             "monday": {
                 "switch": True if self.monday_start and self.monday_end else False,
-                "start": "{}:{}".format(self.monday_start.hour, self.monday_start.minute) if self.monday_start else "00:00",
-                "end": "{}:{}".format(self.monday_end.hour, self.monday_end.minute) if self.monday_end else "00:00",
+                "start": "{:02d}:{:02d}".format(self.monday_start.hour, self.monday_start.minute) if self.monday_start else "00:00",
+                "end": "{:02d}:{:02d}".format(self.monday_end.hour, self.monday_end.minute) if self.monday_end else "00:00",
             },
             "tuesday": {
                 "switch": True if self.tuesday_start and self.tuesday_end else False,
-                "start": "{}:{}".format(self.tuesday_start.hour, self.tuesday_start.minute) if self.tuesday_start else "00:00",
-                "end": "{}:{}".format(self.tuesday_end.hour, self.tuesday_end.minute) if self.tuesday_end else "00:00",
+                "start": "{:02d}:{:02d}".format(self.tuesday_start.hour, self.tuesday_start.minute) if self.tuesday_start else "00:00",
+                "end": "{:02d}:{:02d}".format(self.tuesday_end.hour, self.tuesday_end.minute) if self.tuesday_end else "00:00",
             },
             "wednesday": {
                 "switch": True if self.wednesday_start and self.wednesday_end else False,
-                "start": "{}:{}".format(self.wednesday_start.hour, self.wednesday_start.minute) if self.wednesday_start else "00:00",
-                "end": "{}:{}".format(self.wednesday_end.hour, self.wednesday_end.minute) if self.wednesday_end else "00:00",
+                "start": "{:02d}:{:02d}".format(self.wednesday_start.hour, self.wednesday_start.minute) if self.wednesday_start else "00:00",
+                "end": "{:02d}:{:02d}".format(self.wednesday_end.hour, self.wednesday_end.minute) if self.wednesday_end else "00:00",
             },
             "thursday": {
                 "switch": True if self.thursday_start and self.thursday_end else False,
-                "start": "{}:{}".format(self.thursday_start.hour, self.thursday_start.minute) if self.thursday_start else "00:00",
-                "end": "{}:{}".format(self.thursday_end.hour, self.thursday_end.minute) if self.thursday_end else "00:00",
+                "start": "{:02d}:{:02d}".format(self.thursday_start.hour, self.thursday_start.minute) if self.thursday_start else "00:00",
+                "end": "{:02d}:{:02d}".format(self.thursday_end.hour, self.thursday_end.minute) if self.thursday_end else "00:00",
             },
             "friday": {
                 "switch": True if self.friday_start and self.friday_end else False,
-                "start": "{}:{}".format(self.friday_start.hour, self.friday_start.minute) if self.friday_start else "00:00",
-                "end": "{}:{}".format(self.friday_end.hour, self.friday_end.minute) if self.friday_end else "00:00",
+                "start": "{:02d}:{:02d}".format(self.friday_start.hour, self.friday_start.minute) if self.friday_start else "00:00",
+                "end": "{:02d}:{:02d}".format(self.friday_end.hour, self.friday_end.minute) if self.friday_end else "00:00",
             },
             "saturday": {
                 "switch": True if self.saturday_start and self.saturday_end else False,
-                "start": "{}:{}".format(self.saturday_start.hour, self.saturday_start.minute) if self.saturday_start else "00:00",
-                "end": "{}:{}".format(self.saturday_end.hour, self.saturday_end.minute) if self.saturday_end else "00:00",
+                "start": "{:02d}:{:02d}".format(self.saturday_start.hour, self.saturday_start.minute) if self.saturday_start else "00:00",
+                "end": "{:02d}:{:02d}".format(self.saturday_end.hour, self.saturday_end.minute) if self.saturday_end else "00:00",
             },
             "sunday": {
                 "switch": True if self.sunday_start and self.sunday_end else False,
-                "start": "{}:{}".format(self.sunday_start.hour, self.sunday_start.minute) if self.sunday_start else "00:00",
-                "end": "{}:{}".format(self.sunday_end.hour, self.sunday_end.minute) if self.sunday_end else "00:00",
+                "start": "{:02d}:{:02d}".format(self.sunday_start.hour, self.sunday_start.minute) if self.sunday_start else "00:00",
+                "end": "{:02d}:{:02d}".format(self.sunday_end.hour, self.sunday_end.minute) if self.sunday_end else "00:00",
             }
         }
 
@@ -342,5 +358,10 @@ class VerificationCode(models.Model):
 
     @staticmethod
     def generate_code_for_user(user):
-        verification_code = VerificationCode.objects.create(user=user, code=get_verification_code())
+        verification_code = user.verification_code
+        if verification_code:
+            verification_code.code = get_verification_code()
+            verification_code.save()
+        else:
+            verification_code = VerificationCode.objects.create(user=user, code=get_verification_code())
         return verification_code.code

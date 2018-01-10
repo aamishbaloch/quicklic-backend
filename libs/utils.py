@@ -29,6 +29,7 @@ def get_datetime_now_by_date():
     unaware_date = datetime.strptime(datetime_str, "%Y-%m-%d %H:%M:%S")
     return pytz.timezone(settings.TIME_ZONE).localize(unaware_date)
 
+
 def get_datetime_from_date_string(datetime_str):
     datetime_str = "{} {}".format(datetime_str, "00:00:00")
     unaware_date = datetime.strptime(datetime_str, "%Y-%m-%d %H:%M:%S")
@@ -86,3 +87,9 @@ def get_interval_between_time(start, end, length, date):
     return intervals
 
 
+def next_weekday(d, weekday):
+    import datetime
+    days_ahead = weekday - d.weekday()
+    if days_ahead <= 0: # Target day already happened this week
+        days_ahead += 7
+    return d + datetime.timedelta(days_ahead)

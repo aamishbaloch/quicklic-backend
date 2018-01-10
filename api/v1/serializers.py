@@ -321,7 +321,7 @@ class AppointmentSerializer(serializers.ModelSerializer):
         Notification.create_notification(
             user=appointment.doctor,
             user_type=Notification.UserType.DOCTOR,
-            heading=Notification.Message.APPOINTMENT_CREATED["headings"].format(appointment_id=appointment.qid),
+            heading=Notification.Message.HEADING,
             content=Notification.Message.APPOINTMENT_CREATED["contents"].format(
                 patient=appointment.patient.get_full_name(), appointment_id=appointment.qid),
             type=Notification.Type.APPOINTMENT,
@@ -337,7 +337,7 @@ class AppointmentSerializer(serializers.ModelSerializer):
         Notification.create_notification(
             user=appointment.doctor,
             user_type=Notification.UserType.DOCTOR,
-            heading=Notification.Message.APPOINTMENT_UPDATED["headings"].format(appointment_id=appointment.qid),
+            heading=Notification.Message.HEADING,
             content=Notification.Message.APPOINTMENT_UPDATED["contents"].format(
                 patient=appointment.patient.get_full_name(), appointment_id=appointment.qid),
             type=Notification.Type.APPOINTMENT,
