@@ -3234,3 +3234,8 @@ fieldset[disabled] .btn-gplus.active {
     display: inherit !important;
   }
 }
+
+.portal-logo {
+  display: block;
+  margin: 0 auto ;
+}

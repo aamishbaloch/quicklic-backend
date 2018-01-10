@@ -93,7 +93,7 @@ class DoctorAdmin(UserAdmin):
     fieldsets = (
         (_('Personal Info'), {
             'fields': (
-                'phone', 'first_name', 'last_name', 'verified', 'email', 'dob',
+                'phone', 'first_name', 'last_name', 'verified', 'email', 'dob', 'rating',
                 'gender', 'avatar', 'clinic', 'city', 'country', 'services', 'specialization', 'degree',
                 'device_id', 'device_type',
             )
@@ -106,7 +106,8 @@ class DoctorAdmin(UserAdmin):
         (None, {
             'classes': ('wide',),
             'fields': ('phone', 'first_name', 'last_name', 'verified', 'email', 'password1', 'password2', 'dob',
-                       'gender', 'avatar', 'clinic', 'city', 'country', 'services', 'specialization', 'degree')}
+                       'gender', 'avatar', 'clinic', 'city', 'country', 'services', 'specialization', 'degree',
+                       'rating')}
          ),
     )
 
