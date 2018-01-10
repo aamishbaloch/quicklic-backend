@@ -358,5 +358,10 @@ class VerificationCode(models.Model):
 
     @staticmethod
     def generate_code_for_user(user):
-        verification_code = VerificationCode.objects.create(user=user, code=get_verification_code())
+        verification_code = user.verification_code
+        if verification_code:
+            verification_code.code = get_verification_code()
+            verification_code.save()
+        else:
+            verification_code = VerificationCode.objects.create(user=user, code=get_verification_code())
         return verification_code.code

@@ -22,6 +22,11 @@ class InvalidVerificationCodeException(APIException):
     default_detail = "Invalid Verification Data"
 
 
+class VerificationException(APIException):
+    status_code = 400
+    default_detail = "User Not Verified"
+
+
 class InvalidCredentialsException(APIException):
     status_code = 401
     default_detail = "Invalid Credentials"
@@ -59,9 +64,19 @@ class InvalidAppointmentStatusException(APIException):
         super(InvalidAppointmentStatusException, self).__init__(*args, **kwargs)
 
 
+class UserDoesNotExistsException(APIException):
+    status_code = 404
+    default_detail = "User Does Not Exists"
+
+
 class DoctorDoesNotExistsException(APIException):
     status_code = 404
     default_detail = "Doctor Does Not Exists"
+
+
+class PatientDoesNotExistsException(APIException):
+    status_code = 404
+    default_detail = "Patient Does Not Exists"
 
 
 class InvalidDateTimeException(APIException):
