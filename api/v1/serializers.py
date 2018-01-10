@@ -60,10 +60,14 @@ class ClinicSerializer(serializers.ModelSerializer):
     city = CitySerializer()
     country = CountrySerializer()
     rating = serializers.DecimalField(read_only=True, max_digits=5, decimal_places=2)
+    formatted_address = serializers.SerializerMethodField()
 
     class Meta:
         model = Clinic
         fields = '__all__'
+
+    def get_formatted_address(self, obj):
+        return "{}, {}, {}".format(obj.location, obj.city.name, obj.country.name)
 
 
 class BasicClinicSerializer(serializers.ModelSerializer):
@@ -91,6 +95,10 @@ class DoctorSerializer(serializers.ModelSerializer):
     specialization = serializers.CharField(required=False, allow_blank=True, allow_null=True)
     verified = serializers.BooleanField(read_only=True)
     rating = serializers.DecimalField(read_only=True, max_digits=5, decimal_places=2)
+    patients_seen = serializers.SerializerMethodField()
+
+    def get_patients_seen(self, obj):
+        return obj.appointments.filter(status=Appointment.Status.DONE).count()
 
     class Meta:
         model = Doctor

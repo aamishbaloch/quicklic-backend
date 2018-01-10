@@ -239,7 +239,7 @@ class PatientDoctorsView(ListAPIView):
 
     **Example requests**:
 
-        GET /patient/{id}/doctors
+        GET /patient/{id}/doctor
     """
 
     authentication_classes = (UserAuthentication,)
@@ -248,7 +248,7 @@ class PatientDoctorsView(ListAPIView):
 
     def get_queryset(self):
         patient_clinics = self.request.user.clinic.filter(is_active=True).values_list('id', flat=True)
-        return Doctor.objects.filter(clinic__id__in=patient_clinics)
+        return Doctor.objects.filter(clinic__id__in=patient_clinics).order_by('rating')
 
 
 class PatientVisitView(ListAPIView):

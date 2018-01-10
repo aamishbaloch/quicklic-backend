@@ -10,7 +10,7 @@ from datetime import datetime, timedelta
 from entities.notification.models import Notification
 from quicklic_backend import settings
 from entities.appointment.models import Appointment, Visit
-from entities.person.models import Doctor
+from entities.person.models import Doctor, Patient
 from libs.authentication import UserAuthentication
 from libs.custom_exceptions import InvalidInputDataException, InvalidAppointmentStatusException, \
     DoctorDoesNotExistsException, InvalidDateTimeException
@@ -24,7 +24,7 @@ from libs.utils import str2bool, get_datetime_from_date_string, get_date_from_da
     get_datetime_range_from_date_string, get_interval_between_time, get_start_datetime_from_date_string, \
     get_end_datetime_from_date_string, get_datetime_now_by_date
 from api.v1.serializers import DoctorSerializer, ClinicSerializer, AppointmentSerializer, VisitSerializer, \
-    ReviewSerializer
+    ReviewSerializer, PatientSerializer
 
 User = get_user_model()
 
@@ -92,6 +92,25 @@ class DoctorListView(ListAPIView):
         doctors = doctors.filter(is_active=str2bool(self.request.query_params.get('active', 'true')))
 
         return doctors
+
+
+class DoctorPatientListView(ListAPIView):
+    """
+    View for getting all patients.
+
+    **Example requests**:
+
+        GET /doctor/{doctor_id}/patients
+    """
+
+    authentication_classes = (UserAuthentication,)
+    serializer_class = PatientSerializer
+    queryset = Patient.objects.all().order_by('first_name')
+
+    def get_queryset(self):
+        clinic_ids = self.request.user.doctor.clinic.all().values_list("id", flat=True)
+        patients = Patient.objects.filter(clinic__id__in=clinic_ids, is_active=True).order_by('first_name')
+        return patients
 
 
 class DoctorClinicView(ListAPIView):
