@@ -135,7 +135,7 @@ class ForgotPasswordView(APIView):
                     )
                 except Exception as e:
                     send_manually_error_email("Unable to send code. Code is {}".format(code))
-                return Response(None, status=status.HTTP_200_OK)
+                return Response({}, status=status.HTTP_200_OK)
             raise VerificationException()
         except User.DoesNotExist:
             raise UserDoesNotExistsException()
