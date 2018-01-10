@@ -9,7 +9,9 @@ from entities.person.models import VerificationCode
 from libs.authentication import UserAuthentication
 from libs.custom_exceptions import InvalidInputDataException, InvalidCredentialsException, \
     PatientExistsException, InvalidVerificationCodeException, UserNotAllowedException
+from libs.error_reports import send_manually_error_email
 from libs.onesignal_sdk import OneSignalSdk
+from libs.twilio_helper import TwilioHelper
 from libs.permission import PatientPermission
 
 User = get_user_model()
@@ -37,7 +39,15 @@ class RegistrationView(APIView):
                 try:
                     patient = serializer.save()
                     patient.update_device_information(device_id, device_type)
+
                     code = VerificationCode.generate_code_for_user(patient)
+                    try:
+                        TwilioHelper().message(
+                            patient.phone,
+                            "Welcome to Quicklic! Your Code is {}.".format(code)
+                        )
+                    except Exception as e:
+                        send_manually_error_email("Unable to send code. Code is {}".format(code))
                     return Response(serializer.data, status=status.HTTP_201_CREATED)
                 except IntegrityError as e:
                     raise PatientExistsException()
