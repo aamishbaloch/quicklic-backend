@@ -10,29 +10,25 @@ from libs.onesignal_sdk import OneSignalSdk
 class Notification(models.Model):
 
     class Message:
+        HEADING = "Quicklic Notification!"
+
         APPOINTMENT_CREATED = {
             "contents": "{patient} has scheduled a new appointment {appointment_id} with you.",
-            "headings": "New appointment {appointment_id} has been scheduled.",
         }
         APPOINTMENT_CANCELED = {
             "contents": "{patient} has canceled an appointment {appointment_id} with you.",
-            "headings": "Appointment {appointment_id} has been canceled.",
         }
         APPOINTMENT_UPDATED = {
             "contents": "{patient} has updated an appointment {appointment_id} with you.",
-            "headings": "Appointment {appointment_id} has been updated.",
         }
         APPOINTMENT_CONFIRMED = {
             "contents": "{doctor} has confirmed your appointment {appointment_id}.",
-            "headings": "Appointment {appointment_id} has been confirmed.",
         }
         APPOINTMENT_NOSHOW = {
             "contents": "{doctor} has marked your appointment {appointment_id} as no show.",
-            "headings": "Appointment {appointment_id} has been marked as no show.",
         }
         APPOINTMENT_DISCARD = {
             "contents": "{doctor} has discarded your appointment {appointment_id}.",
-            "headings": "Appointment {appointment_id} has been discarded.",
         }
 
     class Type:
@@ -82,3 +78,25 @@ class Notification(models.Model):
             )
             one_signal_sdk = OneSignalSdk()
             one_signal_sdk.create_notification(contents=content, heading=heading, player_ids=[user.device_id])
+
+
+    @staticmethod
+    def create_batch_notification_for_discard(appointments):
+        player_ids = []
+        for appointment in appointments:
+            Notification.objects.create(
+                user=appointment.patient,
+                user_type=Notification.UserType.PATIENT,
+                type=Notification.Type.APPOINTMENT,
+                content=Notification.Message.APPOINTMENT_DISCARD["contents"].format(
+                        patient=appointment.doctor.get_full_name(), appointment_id=appointment.qid),
+                heading=Notification.Message.HEADING,
+                appointment_id=appointment.id,
+                patient=appointment.patient,
+                doctor=appointment.doctor,
+                clinic=appointment.clinic,
+            )
+            player_ids.append(appointment.patient.device_id)
+
+        one_signal_sdk = OneSignalSdk()
+        one_signal_sdk.create_notification(contents="Your appointment has been discarded by the doctor.", heading=Notification.Message.HEADING, player_ids=player_ids)
