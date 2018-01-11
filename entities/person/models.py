@@ -199,6 +199,21 @@ class Doctor(User):
         from libs.quicklic_utils import cancel_appointments_of_day_and_send_notify
         cancel_appointments_of_day_and_send_notify(day, self.id)
 
+    @property
+    def formatted_address(self):
+        formatted_address = []
+        if self.address:
+            formatted_address.append(self.address)
+        if self.city:
+            formatted_address.append(self.city.name)
+        if self.country:
+            formatted_address.append(self.country.name)
+        return ",".join(formatted_address)
+
+    @property
+    def clinic_names(self):
+        return ",".join(self.clinic.all().values_list('name', flat=True))
+
 
 class DoctorSetting(models.Model):
     physician = models.OneToOneField(Doctor, related_name='setting')

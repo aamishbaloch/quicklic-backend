@@ -94,11 +94,11 @@ class Notification(models.Model):
             Notification.objects.create(
                 user=appointment.patient,
                 user_type=Notification.UserType.PATIENT,
-                type=Notification.Message.APPOINTMENT_DISCARD["heading"].format(
-                        doctor=appointment.doctor.get_full_name()),
+                type=Notification.Type.APPOINTMENT,
                 content=Notification.Message.APPOINTMENT_DISCARD["contents"].format(
                         doctor=appointment.doctor.get_full_name(), appointment_id=appointment.qid),
-                heading=Notification.Message.HEADING,
+                heading=Notification.Message.APPOINTMENT_DISCARD["heading"].format(
+                        doctor=appointment.doctor.get_full_name()),
                 appointment_id=appointment.id,
                 patient=appointment.patient,
                 doctor=appointment.doctor,

@@ -1,0 +1,54 @@
+{% extends "portal/base.html" %}
+{% load static %}
+
+{% block body_block %}
+    <section id="content">
+      <section class="vbox">
+        <section class="scrollable padder">
+          <div class="m-b-md">
+            <div class="row">
+              <div class="col-sm-6">
+                <h3 class="m-b-none m-t-sm">Doctors</h3>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <section class="panel panel-default">
+                <header class="panel-heading">
+                  All Related Doctors of the Clinics
+                </header>
+                <div class="table-responsive">
+                  <table class="table table-striped b-t b-light">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>Clinic</th>
+                        <th>Address</th>
+                        <th>Statistics</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for doctor in doctors %}
+                          <tr>
+                            <td>{{ doctor.get_full_name }}</td>
+                            <td>{{ doctor.phone }}</td>
+                            <td>{{ doctor.clinic_names }}</td>
+                            <td>{{ doctor.formatted_address }}</td>
+                            <td>
+                                <a href="{% url 'portal:doctor_key_factors' doctor.id %}" class="btn btn-xs btn-info">Key Factors</a>
+                                <a href="{% url 'portal:doctor_stats' doctor.id %}" class="btn btn-xs btn-info">Statistics</a>
+                            </td>
+                          </tr>
+                        {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+                <footer class="panel-footer">
+                </footer>
+              </section>
+          </div>
+        </section>
+      </section>
+    </section>
+{% endblock %}
