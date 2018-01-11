@@ -40,7 +40,16 @@
                     <i class="fa fa-gear icon">
                       <b class="bg-nav-portal"></b>
                     </i>
-                    <span>Operations</span>
+                    <span>Holidays</span>
+                  </a>
+                </li>
+            {% elif type == 3 %}
+                <li >
+                  <a href="{% url 'portal:doctors'%}"  >
+                    <i class="fa fa-group icon">
+                      <b class="bg-nav-portal"></b>
+                    </i>
+                    <span>Doctors</span>
                   </a>
                 </li>
             {% endif %}

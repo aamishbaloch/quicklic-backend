@@ -1,0 +1,143 @@
+{% extends "portal/base.html" %}
+{% load static %}
+
+{% block body_block %}
+    <section id="content">
+      <section class="vbox">
+        <section class="scrollable padder">
+          <div class="m-b-md">
+            <div class="row">
+              <div class="col-sm-6">
+                <h3 class="m-b-none m-t-sm">Quick<b>Stats</b> <small>Last 7 days Statistics</small> </h3>
+              </div>
+            </div>
+          </div>
+
+            {% if stats %}
+                <!-- Doctor Statistics START-->
+                <div class="m-b-md">
+                        <div class="row">
+                          <div class="col-sm-6">
+                            <h3 class="m-b-none m-t-sm">{{ stats.user_name }}</h3>
+                          </div>
+                          <div class="col-sm-6">
+                            <div class="text-right text-left-xs">
+                              <div class="sparkline m-l m-r-lg pull-right" data-type="bar" data-height="35" data-bar-width="6" data-bar-spacing="2" data-bar-color="#fb6b5b">5,8,9,12,8,10,8,9,7,8,6</div>
+                              <div class="m-t-sm">
+                                <span class="text-uc">Total Appointments</span>
+                                <div class="h4"><strong>{{ stats.appointment_count }}</strong></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                <div class="row">
+                        <div class="col-lg-4">
+                          <section class="panel panel-default">
+                            <header class="panel-heading">
+                              Completed Appointments
+                            </header>
+                            <div class="panel-body text-center">
+                              <h4>{{ stats.appointment_done_count }}</h4>
+                              <small class="text-muted block">Appointments</small>
+                              <div class="inline">
+                                <div class="easypiechart" data-percent="{{ stats.appointment_done_percentage }}" data-line-width="30" data-track-color="#eee" data-bar-color="#65bd77" data-scale-color="#fff" data-size="188" data-line-cap='butt'>
+                                  <span class="h2 step">{{ stats.appointment_done_percentage|floatformat:1 }}</span>%
+                                </div>
+                              </div>
+                            </div>
+                            <div class="panel-footer"><small>% of Completed Appointments</small></div>
+                          </section>
+                        </div>
+                        <div class="col-lg-4">
+                          <section class="panel panel-default">
+                            <header class="panel-heading">
+                              Pending Appointments
+                            </header>
+                            <div class="panel-body text-center">
+                              <h4>{{ stats.appointment_pending_count }}</h4>
+                              <small class="text-muted block">Appointments</small>
+                              <div class="inline">
+                                <div class="easypiechart" data-percent="{{ stats.appointment_pending_percentage }}" data-line-width="30" data-track-color="#eee" data-bar-color="#65bd77" data-scale-color="#fff" data-size="188" data-line-cap='butt'>
+                                  <span class="h3 step">{{ stats.appointment_pending_percentage|floatformat:1 }}</span>%
+                                </div>
+                              </div>
+                            </div>
+                            <div class="panel-footer"><small>% of Pending Appointments</small></div>
+                          </section>
+                        </div>
+                        <div class="col-lg-4">
+                          <section class="panel panel-default">
+                            <header class="panel-heading">
+                              Confirmed Appointments
+                            </header>
+                            <div class="panel-body text-center">
+                              <h4>{{ stats.appointment_confirm_count }}</h4>
+                              <small class="text-muted block">Appointments</small>
+                              <div class="inline">
+                                <div class="easypiechart" data-percent="{{ stats.appointment_confirm_percentage }}" data-line-width="30" data-track-color="#eee" data-bar-color="#65bd77" data-scale-color="#fff" data-size="188" data-line-cap='butt'>
+                                  <span class="h3 step">{{ stats.appointment_confirm_percentage|floatformat:1 }}</span>%
+                                </div>
+                              </div>
+                            </div>
+                            <div class="panel-footer"><small>% of Confirmed Appointments</small></div>
+                          </section>
+                        </div>
+                        <div class="col-lg-4">
+                          <section class="panel panel-default">
+                            <header class="panel-heading">
+                              No Shows
+                            </header>
+                            <div class="panel-body text-center">
+                              <h4>{{ stats.appointment_noshow_count }}</h4>
+                              <small class="text-muted block">Appointments</small>
+                              <div class="inline">
+                                <div class="easypiechart" data-percent="{{ stats.appointment_noshow_percentage }}" data-line-width="30" data-track-color="#eee" data-bar-color="#65bd77" data-scale-color="#fff" data-size="188" data-line-cap='butt'>
+                                  <span class="h2 step">{{ stats.appointment_noshow_percentage|floatformat:1 }}</span>%
+                                </div>
+                              </div>
+                            </div>
+                            <div class="panel-footer"><small>% of No Shows</small></div>
+                          </section>
+                        </div>
+                        <div class="col-lg-4">
+                          <section class="panel panel-default">
+                            <header class="panel-heading">
+                              Cancelled Appointments
+                            </header>
+                            <div class="panel-body text-center">
+                              <h4>{{ stats.appointment_cancel_count }}</h4>
+                              <small class="text-muted block">Appointments</small>
+                              <div class="inline">
+                                <div class="easypiechart" data-percent="{{ stats.appointment_cancel_percentage }}" data-line-width="30" data-track-color="#eee" data-bar-color="#65bd77" data-scale-color="#fff" data-size="188" data-line-cap='butt'>
+                                  <span class="h2 step">{{ stats.appointment_cancel_percentage|floatformat:1 }}</span>%
+                                </div>
+                              </div>
+                            </div>
+                            <div class="panel-footer"><small>% of Cancelled Appointments</small></div>
+                          </section>
+                        </div>
+                        <div class="col-lg-4">
+                          <section class="panel panel-default">
+                            <header class="panel-heading">
+                              Discarded Appointments
+                            </header>
+                            <div class="panel-body text-center">
+                              <h4>{{ stats.appointment_discard_count }}</h4>
+                              <small class="text-muted block">Appointments</small>
+                              <div class="inline">
+                                <div class="easypiechart" data-percent="{{ stats.appointment_discard_percentage }}" data-line-width="30" data-track-color="#eee" data-bar-color="#65bd77" data-scale-color="#fff" data-size="188" data-line-cap='butt'>
+                                  <span class="h2 step">{{ stats.appointment_discard_percentage|floatformat:1 }}</span>%
+                                </div>
+                              </div>
+                            </div>
+                            <div class="panel-footer"><small>% of Discarded Appointments</small></div>
+                          </section>
+                        </div>
+                      </div>
+                <!-- Doctor Statistics END -->
+            {% endif %}
+        </section>
+      </section>
+    </section>
+{% endblock %}

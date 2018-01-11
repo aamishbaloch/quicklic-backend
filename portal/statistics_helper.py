@@ -6,13 +6,31 @@ from entities.notification.models import Notification
 from entities.person.models import Patient, Doctor
 
 
+def _get_appointments_of_doctor_for_last_n_days(doctor, n=7):
+    return Appointment.objects.filter(
+        start_datetime__gte=datetime.now()-timedelta(days=n),
+        end_datetime__lt=datetime.now(),
+        doctor_id=doctor.id
+    )
+
+
+def _get_appointments_of_admin_for_last_n_days(admin, n=7):
+    clinics = admin.clinic.all()
+    clinic_ids = clinics.values_list('id', flat=True).distinct()
+    return Appointment.objects.filter(
+        start_datetime__gte=datetime.now()-timedelta(days=n),
+        end_datetime__lt=datetime.now(),
+        clinic_id__in=clinic_ids
+    )
+
+
 def get_doctor_appointment_stats(doctor):
     """
     :param doctor:
     :return:
     dict = { Stats Dict }
     """
-    appointments = Appointment.objects.filter(created_at__gte=datetime.now()-timedelta(days=7), doctor_id=doctor.id)
+    appointments = _get_appointments_of_doctor_for_last_n_days(doctor)
     total_count = appointments.count()
 
     appointment_done_count = appointments.filter(status=Appointment.Status.DONE).count()
@@ -48,9 +66,7 @@ def get_admin_appointment_stats(admin):
     :return:
     dict = { Stats Dict }
     """
-    clinics = admin.clinic.all()
-    clinic_ids = clinics.values_list('id', flat=True).distinct()
-    appointments = Appointment.objects.filter(created_at__gte=datetime.now()-timedelta(days=7), clinic_id__in=clinic_ids)
+    appointments = _get_appointments_of_admin_for_last_n_days(admin)
     total_count = appointments.count()
 
     appointment_done_count = appointments.filter(status=Appointment.Status.DONE).count()
@@ -81,7 +97,7 @@ def get_admin_appointment_stats(admin):
 
 
 def get_key_factors_for_doctor(doctor):
-    appointments = Appointment.objects.filter(created_at__gte=datetime.now()-timedelta(days=14), doctor_id=doctor.id)
+    appointments = _get_appointments_of_doctor_for_last_n_days(doctor, 14)
     appointment_count = appointments.count()
     completed_appointments = appointments.filter(status=Appointment.Status.DONE).count()
 
@@ -120,6 +136,12 @@ def get_patients_for_admin(admin):
     return patients
 
 
+def get_doctors_for_admin(admin):
+    clinic_ids = admin.clinic.all().values_list("id", flat=True)
+    doctors = Doctor.objects.filter(clinic__id__in=clinic_ids, is_active=True).order_by('first_name')
+    return doctors
+
+
 def send_announcement_to_all_patients(person, message):
     """
     person can be doctor or admin
@@ -133,55 +155,3 @@ def send_announcement_to_all_doctors(admin, message):
     clinic_ids = admin.clinic.all().values_list("id", flat=True)
     doctors = Doctor.objects.filter(clinic__id__in=clinic_ids, is_active=True)
     Notification.create_batch_announcement(doctors, message)
-
-
-def get_doctor_ccr_stats(doctor):
-    """
-    ccr = Clinic Conversion Rate
-    :param doctor_id:
-    :return:
-    dict = { Stats Dict }
-    """
-    appointments = Appointment.objects.filter(created_at__gte=datetime.now()-timedelta(days=7), doctor_id=doctor.id)
-    total_count = appointments.count()
-
-    appointment_done_count = appointments.filter(status=Appointment.Status.DONE).count()
-    appointment_noshow_count = appointments.filter(status=Appointment.Status.NOSHOW).count()
-    appointment_cancel_count = appointments.filter(status=Appointment.Status.CANCEL).count()
-    appointment_discard_count = appointments.filter(status=Appointment.Status.DISCARD).count()
-    appointment_pending_count = appointments.filter(status=Appointment.Status.PENDING).count()
-    appointment_confirm_count = appointments.filter(status=Appointment.Status.CONFIRM).count()
-
-    clinics = appointments.values_list('clinic_id', flat=True).distinct()
-    clinic_count = clinics.count()
-
-    appointment_clinics = []
-    for clinic in clinics:
-        clinic = Clinic.objects.get(pk=clinic)
-        appointment_clinics.append({
-            "id": clinic.id,
-            "name": clinic.name,
-            "percentage": appointments.filter(clinic_id=clinic.id).count()*100/total_count if total_count > 0 else 0,
-            "color": clinic.color,
-        })
-
-    stats = {
-        "doctor_id": doctor.id,
-        "doctor_name": doctor.get_full_name(),
-        "appointment_count": total_count,
-        "appointment_done_count": appointment_done_count,
-        "appointment_done_percentage": (appointment_done_count*100)/total_count if total_count > 0 else 0,
-        "appointment_noshow_count": appointment_noshow_count,
-        "appointment_noshow_percentage": (appointment_noshow_count*100)/total_count if total_count > 0 else 0,
-        "appointment_cancel_count": appointment_cancel_count,
-        "appointment_cancel_percentage": (appointment_cancel_count*100)/total_count if total_count > 0 else 0,
-        "appointment_discard_count": appointment_discard_count,
-        "appointment_discard_percentage": (appointment_discard_count*100)/total_count if total_count > 0 else 0,
-        "appointment_pending_count": appointment_discard_count,
-        "appointment_pending_percentage": (appointment_discard_count*100)/total_count if total_count > 0 else 0,
-        "appointment_confirm_count": appointment_discard_count,
-        "appointment_confirm_percentage": (appointment_discard_count*100)/total_count if total_count > 0 else 0,
-        "clinic_count": clinic_count,
-        "clinics_appointment_count": appointment_clinics,
-    }
-    return stats

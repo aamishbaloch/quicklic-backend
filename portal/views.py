@@ -14,7 +14,7 @@ from portal import constants
 from portal.forms import LoginForm, ProfileForm, DoctorHolidayForm
 from portal.statistics_helper import get_doctor_appointment_stats, get_admin_appointment_stats, \
     get_key_factors_for_doctor, get_doctor_future_holidays, get_patients_for_doctor, get_patients_for_admin, \
-    send_announcement_to_all_patients, send_announcement_to_all_doctors
+    send_announcement_to_all_patients, send_announcement_to_all_doctors, get_doctors_for_admin
 
 User = get_user_model()
 
@@ -26,6 +26,7 @@ class LoginView(TemplateView):
         context = super(LoginView, self).get_context_data(**kwargs)
         return context
 
+    @transaction.atomic
     def post(self, request):
         form = LoginForm(request.POST)
 
@@ -102,6 +103,7 @@ class ProfileView(TemplateView):
             context['user'] = self.request.user.moderator
         return context
 
+    @transaction.atomic
     def post(self, request):
         form = ProfileForm(request.POST, instance=self.request.user)
         if form.is_valid():
@@ -113,7 +115,7 @@ class ProfileView(TemplateView):
 
 class DoctorSettingView(APIView):
 
-    @transaction.atomic()
+    @transaction.atomic
     def post(self, request):
         data = request.POST
         setting = self.request.user.doctor.setting
@@ -203,12 +205,48 @@ class DoctorKeyFactorsView(TemplateView):
 
         try:
             doctor = Doctor.objects.get(pk=self.kwargs['pk'])
-            context['type'] = User.Role.DOCTOR
-            context['user'] = doctor
+            if self.request.user.is_admin():
+                context['type'] = User.Role.ADMIN
+                context['user'] = self.request.user.moderator
+            else:
+                context['type'] = User.Role.DOCTOR
+                context['user'] = doctor
             context['factors'] = get_key_factors_for_doctor(doctor)
+            context['doctor'] = doctor
         except Doctor.DoesNotExist:
             messages.error(self.request, constants.OPERATION_UNSUCCESSFUL)
             context['type'] = User.Role.DOCTOR if self.request.user.is_doctor() else None
+            context['factors'] = None
+
+        return context
+
+
+class DoctorStatsView(TemplateView):
+    template_name = "portal/stats.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated():
+            return HttpResponseRedirect(reverse('portal:login'))
+
+        return super(DoctorStatsView, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(DoctorStatsView, self).get_context_data(**kwargs)
+
+        try:
+            doctor = Doctor.objects.get(pk=self.kwargs['pk'])
+            if self.request.user.is_admin():
+                context['type'] = User.Role.ADMIN
+                context['user'] = self.request.user.moderator
+            else:
+                context['type'] = User.Role.DOCTOR
+                context['user'] = doctor
+            context['stats'] = get_doctor_appointment_stats(doctor)
+            context['doctor'] = doctor
+        except Doctor.DoesNotExist:
+            messages.error(self.request, constants.OPERATION_UNSUCCESSFUL)
+            context['type'] = User.Role.DOCTOR if self.request.user.is_doctor() else None
+            context['stats'] = None
 
         return context
 
@@ -234,6 +272,7 @@ class DoctorOperationsView(TemplateView):
 
         return context
 
+    @transaction.atomic
     def post(self, request):
         data = {
             'physician': self.request.user.doctor.id,
@@ -243,7 +282,7 @@ class DoctorOperationsView(TemplateView):
         form = DoctorHolidayForm(data)
         if form.is_valid():
             holiday = form.save()
-            self.request.user.doctor.cancel_appointment_on_holiday(self, holiday.day)
+            request.user.doctor.cancel_appointment_on_holiday(holiday.day)
         else:
             messages.error(request, constants.OPERATION_UNSUCCESSFUL)
         return HttpResponseRedirect(reverse('portal:doctor_operations'))
@@ -269,6 +308,29 @@ class PatientsView(TemplateView):
             context['type'] = User.Role.ADMIN
             context['user'] = self.request.user.moderator
             context['patients'] = get_patients_for_admin(self.request.user.moderator)
+
+        return context
+
+
+class DoctorsView(TemplateView):
+    template_name = "portal/doctors.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated():
+            return HttpResponseRedirect(reverse('portal:login'))
+
+        return super(DoctorsView, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(DoctorsView, self).get_context_data(**kwargs)
+
+        if self.request.user.is_doctor():
+            context['type'] = User.Role.DOCTOR
+            context['user'] = self.request.user.doctor
+        elif self.request.user.is_admin():
+            context['type'] = User.Role.ADMIN
+            context['user'] = self.request.user.moderator
+            context['doctors'] = get_doctors_for_admin(self.request.user.moderator)
 
         return context
 
@@ -299,6 +361,7 @@ class AnnouncementsView(TemplateView):
 
         return context
 
+    @transaction.atomic
     def post(self, request):
         if request.user.is_doctor():
             message = request.POST['message']

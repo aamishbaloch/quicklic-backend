@@ -12,16 +12,16 @@
               </div>
             </div>
           </div>
-            {% if type == 1 %}
+            {% if factors %}
           <div class="m-b-md">
             <div class="row">
               <div class="col-sm-6">
-                <h3 class="m-b-none m-t-sm">{{ user.first_name }} {{ user.last_name }}</h3>
+                <h3 class="m-b-none m-t-sm">{{ doctor.first_name }} {{ doctor.last_name }}</h3>
               </div>
               <div class="col-sm-6">
                 <div class="text-right text-left-xs">
                   <div class="m-t-sm">
-                    <span class="text-uc">{{ user.phone }}</span>
+                    <span class="text-uc">{{ doctor.phone }}</span>
                     <div class="h4"><strong>Doctor</strong></div>
                   </div>
                 </div>
