@@ -30,6 +30,11 @@ def get_datetime_now_by_date():
     return pytz.timezone(settings.TIME_ZONE).localize(unaware_date)
 
 
+def get_datetime_by_datetime_string(datetime_string):
+    unaware_date = datetime.strptime(datetime_string, "%Y-%m-%d %H:%M:%S")
+    return pytz.timezone(settings.TIME_ZONE).localize(unaware_date)
+
+
 def get_datetime_from_date_string(datetime_str):
     datetime_str = "{} {}".format(datetime_str, "00:00:00")
     unaware_date = datetime.strptime(datetime_str, "%Y-%m-%d %H:%M:%S")

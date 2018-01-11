@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin as OrigUserAdmin
 from django.utils.translation import ugettext_lazy as _
 
-from entities.person.models import VerificationCode, Doctor, Patient, DoctorSetting, Moderator
+from entities.person.models import VerificationCode, Doctor, Patient, DoctorSetting, Moderator, DoctorHoliday
 
 User = get_user_model()
 
@@ -119,6 +119,13 @@ class DoctorSettingAdmin(admin.ModelAdmin):
     search_fields = ('physician__phone',)
 
 admin.site.register(DoctorSetting, DoctorSettingAdmin)
+
+
+class DoctorHolidaysAdmin(admin.ModelAdmin):
+    list_display = ('id', 'day')
+    search_fields = ('physician__phone',)
+
+admin.site.register(DoctorHoliday, DoctorHolidaysAdmin)
 
 
 class PatientAdmin(UserAdmin):

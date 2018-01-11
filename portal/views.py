@@ -11,9 +11,9 @@ from rest_framework.views import APIView
 
 from entities.person.models import Doctor
 from portal import constants
-from portal.forms import LoginForm, ProfileForm
+from portal.forms import LoginForm, ProfileForm, DoctorHolidayForm
 from portal.statistics_helper import get_doctor_appointment_stats, get_admin_appointment_stats, \
-    get_key_factors_for_doctor
+    get_key_factors_for_doctor, get_doctor_future_holidays
 
 User = get_user_model()
 
@@ -201,7 +201,7 @@ class DoctorKeyFactorsView(TemplateView):
         context = super(DoctorKeyFactorsView, self).get_context_data(**kwargs)
 
         try:
-            doctor = Doctor.objects.get(pk=self.kwargs['id'])
+            doctor = Doctor.objects.get(pk=self.kwargs['pk'])
             context['type'] = User.Role.DOCTOR
             context['user'] = doctor
             context['factors'] = get_key_factors_for_doctor(doctor)
@@ -227,8 +227,22 @@ class DoctorOperationsView(TemplateView):
         if self.request.user.is_doctor():
             context['type'] = User.Role.DOCTOR
             context['user'] = self.request.user.doctor
-            context['factors'] = get_key_factors_for_doctor(self.request.user.doctor)
+            context['holidays'] = get_doctor_future_holidays(self.request.user.doctor)
         else:
             context['type'] = User.Role.ADMIN
 
         return context
+
+    def post(self, request):
+        data = {
+            'physician': self.request.user.doctor.id,
+            'day': request.POST['day'],
+        }
+
+        form = DoctorHolidayForm(data)
+        if form.is_valid():
+            holiday = form.save()
+            self.request.user.doctor.cancel_appointment_on_holiday(self, holiday.day)
+        else:
+            messages.error(request, constants.OPERATION_UNSUCCESSFUL)
+        return HttpResponseRedirect(reverse('portal:doctor_operations'))

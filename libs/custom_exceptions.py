@@ -27,6 +27,11 @@ class VerificationException(APIException):
     default_detail = "User Not Verified"
 
 
+class DoctorUnavailableException(APIException):
+    status_code = 400
+    default_detail = "Doctor Not Available"
+
+
 class InvalidCredentialsException(APIException):
     status_code = 401
     default_detail = "Invalid Credentials"
