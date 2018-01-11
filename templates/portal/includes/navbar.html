@@ -26,34 +26,16 @@
                 <span>Statistics</span>
               </a>
             </li>
-              {% if doctor_stats %}
-                  <li >
-                  <a href="index.html"  >
-                    <i class="fa fa-dashboard icon">
-                      <b class="bg-nav-portal"></b>
-                    </i>
-                    <span>Appointments</span>
-                  </a>
-                </li>
-              {% endif %}
-                {% if admin_stats %}
-                  <li >
-                  <a href="index.html"  >
-                    <i class="fa fa-dashboard icon">
-                      <b class="bg-nav-portal"></b>
-                    </i>
-                    <span>Doctors Statistics</span>
-                  </a>
-                </li>
-              {% endif %}
-              <li >
-              <a href="index.html"  >
+            {% if type == 1 %}
+            <li >
+              <a href="{% url 'portal:doctor_key_factors' user.id %}"  >
                 <i class="fa fa-dashboard icon">
                   <b class="bg-nav-portal"></b>
                 </i>
-                <span>Settings</span>
+                <span>Key Factors</span>
               </a>
             </li>
+            {% endif %}
           </ul>
         </nav>
         <!-- / nav -->

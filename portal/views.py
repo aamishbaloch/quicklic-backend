@@ -9,9 +9,11 @@ from django.contrib import messages
 from django.views.generic.base import View
 from rest_framework.views import APIView
 
+from entities.person.models import Doctor
 from portal import constants
 from portal.forms import LoginForm, ProfileForm
-from portal.statistics_helper import get_doctor_appointment_stats, get_admin_appointment_stats
+from portal.statistics_helper import get_doctor_appointment_stats, get_admin_appointment_stats, \
+    get_key_factors_for_doctor
 
 User = get_user_model()
 
@@ -68,8 +70,12 @@ class PortalHomeView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(PortalHomeView, self).get_context_data(**kwargs)
         if self.request.user.is_doctor():
+            context['type'] = User.Role.DOCTOR
+            context['user'] = self.request.user.doctor
             context['stats'] = get_doctor_appointment_stats(self.request.user.doctor)
         elif self.request.user.is_admin():
+            context['type'] = User.Role.ADMIN
+            context['user'] = self.request.user.moderator
             context['stats'] = get_admin_appointment_stats(self.request.user.moderator)
         return context
 
@@ -180,3 +186,49 @@ class DoctorSettingView(APIView):
             self.request.user.doctor.cancel_appointment_due_to_time_changed(6)
 
         return HttpResponseRedirect(reverse('portal:profile'))
+
+
+class DoctorKeyFactorsView(TemplateView):
+    template_name = "portal/key_factors.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated():
+            return HttpResponseRedirect(reverse('portal:login'))
+
+        return super(DoctorKeyFactorsView, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(DoctorKeyFactorsView, self).get_context_data(**kwargs)
+
+        try:
+            doctor = Doctor.objects.get(pk=self.kwargs['id'])
+            context['type'] = User.Role.DOCTOR
+            context['user'] = doctor
+            context['factors'] = get_key_factors_for_doctor(doctor)
+        except Doctor.DoesNotExist:
+            messages.error(self.request, constants.OPERATION_UNSUCCESSFUL)
+            context['type'] = User.Role.DOCTOR if self.request.user.is_doctor() else None
+
+        return context
+
+
+class DoctorOperationsView(TemplateView):
+    template_name = "portal/doctor_operations.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated():
+            return HttpResponseRedirect(reverse('portal:login'))
+
+        return super(DoctorOperationsView, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(DoctorOperationsView, self).get_context_data(**kwargs)
+
+        if self.request.user.is_doctor():
+            context['type'] = User.Role.DOCTOR
+            context['user'] = self.request.user.doctor
+            context['factors'] = get_key_factors_for_doctor(self.request.user.doctor)
+        else:
+            context['type'] = User.Role.ADMIN
+
+        return context

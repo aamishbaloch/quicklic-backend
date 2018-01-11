@@ -1,0 +1,94 @@
+{% extends "portal/base.html" %}
+{% load static %}
+
+{% block body_block %}
+    <section id="content">
+      <section class="vbox">
+        <section class="scrollable padder">
+          <div class="m-b-md">
+            <div class="row">
+              <div class="col-sm-6">
+                <h3 class="m-b-none m-t-sm">Quicklic<b> Key Factors</b></h3>
+              </div>
+            </div>
+          </div>
+            {% if type == 1 %}
+          <div class="m-b-md">
+            <div class="row">
+              <div class="col-sm-6">
+                <h3 class="m-b-none m-t-sm">{{ user.first_name }} {{ user.last_name }}</h3>
+              </div>
+              <div class="col-sm-6">
+                <div class="text-right text-left-xs">
+                  <div class="m-t-sm">
+                    <span class="text-uc">{{ user.phone }}</span>
+                    <div class="h4"><strong>Doctor</strong></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <section class="panel panel-default">
+                <div class="row m-l-none m-r-none bg-light lter">
+                  <div class="col-lg-12 col-md-3 padder-v b-r b-light text-center">
+                    <h1 class="patient_seen_counter">{{ factors.patient_seen }}</h1>
+                    <p class="patient_seen_text">Patients Dealt With</p>
+                  </div>
+                </div>
+              </section>
+            </div>
+            <div class="row">
+                <section class="panel panel-default">
+                <div class="row m-l-none m-r-none bg-light lter">
+                  <div class="col-sm-6 col-md-3 padder-v b-r b-light">
+                    <span class="fa-stack fa-2x pull-left m-r-sm">
+                      <i class="fa fa-circle fa-stack-2x text-info"></i>
+                      <i class="fa fa-trophy fa-stack-1x text-white"></i>
+                    </span>
+                    <a class="clear" href="#">
+                      <span class="h3 block m-t-xs"><strong>{{ factors.top_clinic_name }}</strong></span>
+                      <small class="text-muted text-uc">Top Clinic</small>
+                    </a>
+                  </div>
+                  <div class="col-sm-6 col-md-3 padder-v b-r b-light lt">
+                    <span class="fa-stack fa-2x pull-left m-r-sm">
+                      <i class="fa fa-circle fa-stack-2x text-warning"></i>
+                      <i class="fa fa-bell fa-stack-1x text-white"></i>
+                    </span>
+                    <a class="clear" href="#">
+                      <span class="h3 block m-t-xs"><strong>{{ factors.dcr }}</strong></span>
+                      <small class="text-muted text-uc">DCR Value</small>
+                    </a>
+                  </div>
+                  <div class="col-sm-6 col-md-3 padder-v b-r b-light">
+                    <span class="fa-stack fa-2x pull-left m-r-sm">
+                      <i class="fa fa-circle fa-stack-2x text-danger"></i>
+                      <i class="fa fa-star fa-stack-1x text-white"></i>
+                    </span>
+                    <a class="clear">
+                      <span class="h3 block m-t-xs"><strong>{{ factors.rating }}</strong></span>
+                      <small class="text-muted text-uc">Rating</small>
+                    </a>
+                  </div>
+                  <div class="col-sm-6 col-md-3 padder-v b-r b-light lt">
+                    <span class="fa-stack fa-2x pull-left m-r-sm">
+                      <i class="fa fa-circle fa-stack-2x icon-muted"></i>
+                      <i class="fa fa-clock-o fa-stack-1x text-white"></i>
+                    </span>
+                    <a class="clear">
+                      <span class="h3 block m-t-xs"><strong>{{ factors.slot_time }}</strong></span>
+                      <small class="text-muted text-uc">Slot Time (Minutes)</small>
+                    </a>
+                  </div>
+                </div>
+              </section>
+            <p class="text-center text-muted">All Factors are of Last Two Weeks Data</p>
+            </div>
+            {% else %}
+                <p>No Data</p>
+            {% endif %}
+        </section>
+      </section>
+    </section>
+{% endblock %}
