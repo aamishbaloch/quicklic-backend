@@ -192,8 +192,12 @@ class Doctor(User):
         date_to_cancel = next_weekday(current, day_number)
 
         while date_to_cancel <= limit:
-            cancel_appointments_of_day_and_send_notify(date_to_cancel)
+            cancel_appointments_of_day_and_send_notify(date_to_cancel.date(), self.id)
             date_to_cancel = next_weekday(date_to_cancel, day_number)
+
+    def cancel_appointment_on_holiday(self, day):
+        from libs.quicklic_utils import cancel_appointments_of_day_and_send_notify
+        cancel_appointments_of_day_and_send_notify(day, self.id)
 
 
 class DoctorSetting(models.Model):
@@ -331,8 +335,16 @@ def doctor_post_save_callback(sender, **kwargs):
         setting.save()
 
 
-class Patient(User):
+class DoctorHoliday(models.Model):
+    physician = models.ForeignKey(Doctor, related_name='holidays')
+    day = models.DateField()
+    notes = models.TextField(default="")
 
+    def __str__(self):
+        return self.physician.get_full_name()
+
+
+class Patient(User):
     class MaritalStatus:
         MARRIED = 1
         SINGLE = 2

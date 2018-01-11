@@ -8,11 +8,10 @@
           <div class="m-b-md">
             <div class="row">
               <div class="col-sm-6">
-                <h3 class="m-b-none m-t-sm">Quicklic<b> Key Factors</b></h3>
+                <h3 class="m-b-none m-t-sm">Operations</h3>
               </div>
             </div>
           </div>
-            {% if type == 1 %}
           <div class="m-b-md">
             <div class="row">
               <div class="col-sm-6">
@@ -29,65 +28,65 @@
             </div>
           </div>
           <div class="row">
-            <section class="panel panel-default">
-                <div class="row m-l-none m-r-none bg-light lter">
-                  <div class="col-lg-12 col-md-3 padder-v b-r b-light text-center">
-                    <h1 class="patient_seen_counter">{{ factors.patient_seen }}</h1>
-                    <p class="patient_seen_text">Patients Dealt With</p>
-                  </div>
-                </div>
-              </section>
-            </div>
-            <div class="row">
+            <div class="col-sm-6">
+              <form class="form-horizontal" data-validate="parsley" action="{% url 'portal:doctor_operations' %}" method="post">
+              {% csrf_token %}
                 <section class="panel panel-default">
-                <div class="row m-l-none m-r-none bg-light lter">
-                  <div class="col-sm-6 col-md-3 padder-v b-r b-light">
-                    <span class="fa-stack fa-2x pull-left m-r-sm">
-                      <i class="fa fa-circle fa-stack-2x text-info"></i>
-                      <i class="fa fa-trophy fa-stack-1x text-white"></i>
-                    </span>
-                    <a class="clear" href="#">
-                      <span class="h3 block m-t-xs"><strong>{{ factors.top_clinic_name }}</strong></span>
-                      <small class="text-muted text-uc">Top Clinic</small>
-                    </a>
+                  <header class="panel-heading">
+                    <strong>Mark a Holiday</strong>
+                  </header>
+                  <div class="panel-body">
+                    <p>
+                        <small>Allow doctors to mark a future holiday.</small>
+                    </p>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Holiday</label>
+                        <div class="col-sm-10">
+                            <input class="input-sm input-s datepicker-input form-control" name="day" size="16" type="text" data-date-format="dd-mm-yyyy" placeholder="dd-mm-yyyy">
+                        </div>
+                    </div>
+                    <p>
+                        <small>All future appointments of the day will be discarded. Notification to all patients will be sent so that they can create a new one with you.</small>
+                    </p>
                   </div>
-                  <div class="col-sm-6 col-md-3 padder-v b-r b-light lt">
-                    <span class="fa-stack fa-2x pull-left m-r-sm">
-                      <i class="fa fa-circle fa-stack-2x text-warning"></i>
-                      <i class="fa fa-bell fa-stack-1x text-white"></i>
-                    </span>
-                    <a class="clear" href="#">
-                      <span class="h3 block m-t-xs"><strong>{{ factors.dcr }}</strong></span>
-                      <small class="text-muted text-uc">DCR Value</small>
-                    </a>
-                  </div>
-                  <div class="col-sm-6 col-md-3 padder-v b-r b-light">
-                    <span class="fa-stack fa-2x pull-left m-r-sm">
-                      <i class="fa fa-circle fa-stack-2x text-danger"></i>
-                      <i class="fa fa-star fa-stack-1x text-white"></i>
-                    </span>
-                    <a class="clear">
-                      <span class="h3 block m-t-xs"><strong>{{ factors.rating }}</strong></span>
-                      <small class="text-muted text-uc">Rating</small>
-                    </a>
-                  </div>
-                  <div class="col-sm-6 col-md-3 padder-v b-r b-light lt">
-                    <span class="fa-stack fa-2x pull-left m-r-sm">
-                      <i class="fa fa-circle fa-stack-2x icon-muted"></i>
-                      <i class="fa fa-clock-o fa-stack-1x text-white"></i>
-                    </span>
-                    <a class="clear">
-                      <span class="h3 block m-t-xs"><strong>{{ factors.slot_time }}</strong></span>
-                      <small class="text-muted text-uc">Slot Time (Minutes)</small>
-                    </a>
-                  </div>
-                </div>
-              </section>
-            <p class="text-center text-muted">All Factors are of Last Two Weeks Data</p>
+                    <footer class="panel-footer text-right bg-light lter">
+                    <button type="submit" class="btn btn-success btn-s-xs">Submit</button>
+                  </footer>
+                </section>
+              </form>
             </div>
-            {% else %}
-                <p>No Data</p>
-            {% endif %}
+            <div class="col-lg-6">
+              <section class="panel panel-default">
+                  <header class="panel-heading">
+                    <strong>Upcoming Holidays</strong>
+                  </header>
+              </section>
+              <section class="comment-list block">
+                  {% if holidays|length > 0 %}
+                    {% for holiday in holidays %}
+                      <article class="comment-item">
+                      <span class="arrow left"></span>
+                      <section class="comment-body panel panel-default">
+                        <header class="panel-heading bg-white">
+                          <a>Holiday on {{ holiday.day }}</a>
+                        </header>
+                        <div class="panel-body">
+                            {% if holiday.note|length > 0 %}
+                                <div>{{ holiday.note }}</div>
+                            {% else %}
+                                <div>No note found for this.</div>
+                            {% endif %}
+                        </div>
+                      </section>
+                    </article>
+                    {% endfor %}
+                  {% else %}
+                    <p>No Holiday for Future</p>
+                  {% endif %}
+              </section>
+                  <!-- / .comment-list -->
+            </div>
+          </div>
         </section>
       </section>
     </section>

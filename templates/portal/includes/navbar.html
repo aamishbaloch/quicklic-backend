@@ -27,14 +27,22 @@
               </a>
             </li>
             {% if type == 1 %}
-            <li >
-              <a href="{% url 'portal:doctor_key_factors' user.id %}"  >
-                <i class="fa fa-dashboard icon">
-                  <b class="bg-nav-portal"></b>
-                </i>
-                <span>Key Factors</span>
-              </a>
-            </li>
+                <li >
+                  <a href="{% url 'portal:doctor_key_factors' user.id %}"  >
+                    <i class="fa fa-key icon">
+                      <b class="bg-nav-portal"></b>
+                    </i>
+                    <span>Key Factors</span>
+                  </a>
+                </li>
+                <li >
+                  <a href="{% url 'portal:doctor_operations'%}"  >
+                    <i class="fa fa-gear icon">
+                      <b class="bg-nav-portal"></b>
+                    </i>
+                    <span>Operations</span>
+                  </a>
+                </li>
             {% endif %}
           </ul>
         </nav>
