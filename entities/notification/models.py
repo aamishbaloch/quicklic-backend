@@ -11,24 +11,31 @@ class Notification(models.Model):
 
     class Message:
         HEADING = "Quicklic Notification!"
+        ANNOUNCEMENT_HEADING = "Quicklic Announcement!"
 
         APPOINTMENT_CREATED = {
             "contents": "{patient} has scheduled a new appointment {appointment_id} with you.",
+            "heading": "{patient} has scheduled a new appointment with you.",
         }
         APPOINTMENT_CANCELED = {
             "contents": "{patient} has canceled an appointment {appointment_id} with you.",
+            "heading": "{patient} has canceled an appointment with you.",
         }
         APPOINTMENT_UPDATED = {
             "contents": "{patient} has updated an appointment {appointment_id} with you.",
+            "heading": "{patient} has updated an appointment with you.",
         }
         APPOINTMENT_CONFIRMED = {
             "contents": "{doctor} has confirmed your appointment {appointment_id}.",
+            "heading": "{doctor} has confirmed your appointment.",
         }
         APPOINTMENT_NOSHOW = {
             "contents": "{doctor} has marked your appointment {appointment_id} as no show.",
+            "heading": "{doctor} has marked your appointment as no show.",
         }
         APPOINTMENT_DISCARD = {
             "contents": "{doctor} has discarded your appointment {appointment_id}.",
+            "heading": "{doctor} has discarded your appointment.",
         }
 
     class Type:
@@ -54,13 +61,13 @@ class Notification(models.Model):
     content = models.CharField(_('content'), max_length=255)
     heading = models.CharField(_('heading'), max_length=255)
     type = models.IntegerField(_('type'), db_index=True, choices=Type.Choices, default=Type.ANNOUNCEMENT)
-    user_type = models.IntegerField(_('user type'), db_index=True, choices=UserType.Choices, default=UserType.DOCTOR)
+    user_type = models.IntegerField(_('user type'), db_index=True, choices=UserType.Choices, blank=True, null=True)
 
     user = models.ForeignKey(User, related_name='notifications')
-    patient = models.ForeignKey(Patient, related_name='patient_notifications')
-    doctor = models.ForeignKey(Doctor, related_name='doctor_notifications')
+    patient = models.ForeignKey(Patient, related_name='patient_notifications', blank=True, null=True)
+    doctor = models.ForeignKey(Doctor, related_name='doctor_notifications', blank=True, null=True)
     moderator = models.ForeignKey(Moderator, related_name='moderator_notifications', blank=True, null=True)
-    clinic = models.ForeignKey(Clinic, related_name='clinic_notifications')
+    clinic = models.ForeignKey(Clinic, related_name='clinic_notifications', blank=True, null=True)
     appointment = models.ForeignKey(Appointment, related_name='notifications', blank=True, null=True)
 
     is_read = models.BooleanField(default=False)
@@ -87,9 +94,10 @@ class Notification(models.Model):
             Notification.objects.create(
                 user=appointment.patient,
                 user_type=Notification.UserType.PATIENT,
-                type=Notification.Type.APPOINTMENT,
+                type=Notification.Message.APPOINTMENT_DISCARD["heading"].format(
+                        doctor=appointment.doctor.get_full_name()),
                 content=Notification.Message.APPOINTMENT_DISCARD["contents"].format(
-                        patient=appointment.doctor.get_full_name(), appointment_id=appointment.qid),
+                        doctor=appointment.doctor.get_full_name(), appointment_id=appointment.qid),
                 heading=Notification.Message.HEADING,
                 appointment_id=appointment.id,
                 patient=appointment.patient,
@@ -100,3 +108,18 @@ class Notification(models.Model):
 
         one_signal_sdk = OneSignalSdk()
         one_signal_sdk.create_notification(contents="Your appointment has been discarded by the doctor.", heading=Notification.Message.HEADING, player_ids=player_ids)
+
+    @staticmethod
+    def create_batch_announcement(users, message):
+        player_ids = []
+        for user in users:
+            Notification.objects.create(
+                user=user,
+                type=Notification.Type.ANNOUNCEMENT,
+                content=message,
+                heading=Notification.Message.ANNOUNCEMENT_HEADING,
+            )
+            player_ids.append(user.device_id)
+
+        one_signal_sdk = OneSignalSdk()
+        one_signal_sdk.create_notification(contents=message, heading=Notification.Message.ANNOUNCEMENT_HEADING, player_ids=player_ids)

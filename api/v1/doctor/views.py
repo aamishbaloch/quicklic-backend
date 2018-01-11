@@ -300,17 +300,20 @@ class DoctorStatusView(APIView):
                 appointment.save()
 
                 if status_code == Appointment.Status.CONFIRM:
-                    heading = Notification.Message.HEADING
+                    heading = Notification.Message.APPOINTMENT_CONFIRMED["heading"].format(
+                        doctor=appointment.doctor.get_full_name())
                     content = Notification.Message.APPOINTMENT_CONFIRMED["contents"].format(
-                        patient=appointment.doctor.get_full_name(), appointment_id=appointment.qid)
+                        doctor=appointment.doctor.get_full_name(), appointment_id=appointment.qid)
                 elif status_code == Appointment.Status.DISCARD:
-                    heading = Notification.Message.HEADING
-                    content = Notification.Message.APPOINTMENT_CONFIRMED["contents"].format(
-                        patient=appointment.doctor.get_full_name(), appointment_id=appointment.qid)
+                    heading = Notification.Message.APPOINTMENT_DISCARD["heading"].format(
+                        doctor=appointment.doctor.get_full_name())
+                    content = Notification.Message.APPOINTMENT_DISCARD["contents"].format(
+                        doctor=appointment.doctor.get_full_name(), appointment_id=appointment.qid)
                 else:
-                    heading = Notification.Message.HEADING
+                    heading = Notification.Message.APPOINTMENT_NOSHOW["heading"].format(
+                        doctor=appointment.doctor.get_full_name())
                     content = Notification.Message.APPOINTMENT_NOSHOW["contents"].format(
-                        patient=appointment.doctor.get_full_name(), appointment_id=appointment.qid)
+                        doctor=appointment.doctor.get_full_name(), appointment_id=appointment.qid)
 
                 Notification.create_notification(
                     user=appointment.patient,

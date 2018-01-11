@@ -2,7 +2,8 @@ from django.db.models import Q
 from datetime import datetime, timedelta
 from entities.appointment.models import Appointment
 from entities.clinic.models import Clinic
-from entities.person.models import Patient
+from entities.notification.models import Notification
+from entities.person.models import Patient, Doctor
 
 
 def get_doctor_appointment_stats(doctor):
@@ -117,6 +118,21 @@ def get_patients_for_admin(admin):
     clinic_ids = admin.clinic.all().values_list("id", flat=True)
     patients = Patient.objects.filter(clinic__id__in=clinic_ids, is_active=True).order_by('first_name')
     return patients
+
+
+def send_announcement_to_all_patients(person, message):
+    """
+    person can be doctor or admin
+    """
+    clinic_ids = person.clinic.all().values_list("id", flat=True)
+    patients = Patient.objects.filter(clinic__id__in=clinic_ids, is_active=True)
+    Notification.create_batch_announcement(patients, message)
+
+
+def send_announcement_to_all_doctors(admin, message):
+    clinic_ids = admin.clinic.all().values_list("id", flat=True)
+    doctors = Doctor.objects.filter(clinic__id__in=clinic_ids, is_active=True)
+    Notification.create_batch_announcement(doctors, message)
 
 
 def get_doctor_ccr_stats(doctor):
