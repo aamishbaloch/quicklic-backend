@@ -11,4 +11,5 @@ urlpatterns = [
     url(r'^doctor/(?P<pk>[\d]+)/key_factors$', views.DoctorKeyFactorsView.as_view(), name='doctor_key_factors'),
     url(r'^doctor/operations$', views.DoctorOperationsView.as_view(), name='doctor_operations'),
     url(r'^patients$', views.PatientsView.as_view(), name='patients'),
+    url(r'^announcements$', views.AnnouncementsView.as_view(), name='announcements'),
 ]

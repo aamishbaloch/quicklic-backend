@@ -13,7 +13,8 @@ from entities.person.models import Doctor
 from portal import constants
 from portal.forms import LoginForm, ProfileForm, DoctorHolidayForm
 from portal.statistics_helper import get_doctor_appointment_stats, get_admin_appointment_stats, \
-    get_key_factors_for_doctor, get_doctor_future_holidays, get_patients_for_doctor, get_patients_for_admin
+    get_key_factors_for_doctor, get_doctor_future_holidays, get_patients_for_doctor, get_patients_for_admin, \
+    send_announcement_to_all_patients, send_announcement_to_all_doctors
 
 User = get_user_model()
 
@@ -270,3 +271,50 @@ class PatientsView(TemplateView):
             context['patients'] = get_patients_for_admin(self.request.user.moderator)
 
         return context
+
+
+class AnnouncementsView(TemplateView):
+    template_name = "portal/announcements.html"
+
+    SEND_TO_ALL_PATIENTS = 1
+    SEND_TO_ALL_DOCTORS = 2
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated():
+            return HttpResponseRedirect(reverse('portal:login'))
+
+        return super(AnnouncementsView, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(AnnouncementsView, self).get_context_data(**kwargs)
+
+        if self.request.user.is_doctor():
+            context['type'] = User.Role.DOCTOR
+            context['user'] = self.request.user.doctor
+            context['patients'] = get_patients_for_doctor(self.request.user.doctor)
+        elif self.request.user.is_admin():
+            context['type'] = User.Role.ADMIN
+            context['user'] = self.request.user.moderator
+            context['patients'] = get_patients_for_admin(self.request.user.moderator)
+
+        return context
+
+    def post(self, request):
+        if request.user.is_doctor():
+            message = request.POST['message']
+            send_to = request.POST['send_to']
+
+            if int(send_to) == AnnouncementsView.SEND_TO_ALL_PATIENTS:
+                send_announcement_to_all_patients(request.user.doctor, message)
+
+        elif request.user.is_admin():
+            message = request.POST['message']
+            send_to = request.POST['send_to']
+
+            if int(send_to) == AnnouncementsView.SEND_TO_ALL_PATIENTS:
+                send_announcement_to_all_patients(request.user.doctor, message)
+            elif int(send_to) == AnnouncementsView.SEND_TO_ALL_DOCTORS:
+                send_announcement_to_all_doctors(request.user.moderator, message)
+
+        return HttpResponseRedirect(reverse('portal:home'))
+
