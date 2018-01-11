@@ -2,7 +2,9 @@ from django.contrib.auth import get_user_model
 from rest_framework.generics import ListCreateAPIView, CreateAPIView, RetrieveUpdateAPIView
 
 from entities.appointment.models import Appointment, Visit
+from entities.person.models import DoctorHoliday
 from libs.authentication import UserAuthentication
+from libs.custom_exceptions import DoctorUnavailableException
 from libs.mixins import AtomicMixin
 from libs.permission import (
     PatientDoctorPermission,
@@ -10,7 +12,7 @@ from libs.permission import (
     PKAppointmentOwnerPermission,
     AppointmentOwnerPermission, AppointmentVisitPermission)
 from api.v1.serializers import AppointmentSerializer, VisitSerializer
-from libs.utils import get_datetime_from_date_string, get_start_datetime_from_date_string
+from libs.utils import get_start_datetime_from_date_string, get_datetime_by_datetime_string
 
 User = get_user_model()
 
@@ -29,6 +31,10 @@ class AppointmentView(ListCreateAPIView):
     serializer_class = AppointmentSerializer
 
     def post(self, request, *args, **kwargs):
+        data = request.data.copy()
+        day = get_datetime_by_datetime_string(data['start_datetime'])
+        if DoctorHoliday.objects.filter(physician_id=data['doctor'], day=day.date()).exists():
+            raise DoctorUnavailableException()
         return super(AppointmentView, self).post(request, *args, **kwargs)
 
     def get_queryset(self):

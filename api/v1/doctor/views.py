@@ -10,7 +10,7 @@ from datetime import datetime, timedelta
 from entities.notification.models import Notification
 from quicklic_backend import settings
 from entities.appointment.models import Appointment, Visit
-from entities.person.models import Doctor, Patient
+from entities.person.models import Doctor, Patient, DoctorHoliday
 from libs.authentication import UserAuthentication
 from libs.custom_exceptions import InvalidInputDataException, InvalidAppointmentStatusException, \
     DoctorDoesNotExistsException, InvalidDateTimeException
@@ -343,8 +343,11 @@ class DoctorAppointmentSlotView(APIView):
         date = self.request.query_params.get('date', None)
         if date:
             doctor = Doctor.objects.get(pk=pk)
-            start_time, end_time = doctor.setting.get_day_timings(get_date_from_date_string(date).weekday())
 
+            if DoctorHoliday.objects.filter(physician_id=doctor.id, day=get_date_from_date_string(date)).exists():
+                return Response([], status=status.HTTP_200_OK)
+
+            start_time, end_time = doctor.setting.get_day_timings(get_date_from_date_string(date).weekday())
             if start_time and end_time:
                 intervals = get_interval_between_time(start_time, end_time, doctor.setting.slot_time, date)
                 day_start, day_end = get_datetime_range_from_date_string(date)
