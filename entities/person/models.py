@@ -360,6 +360,21 @@ class Patient(User):
     occupation = models.ForeignKey(Occupation, related_name="patient", blank=True, null=True)
     marital_status = models.IntegerField(_('marital status'), choices=MaritalStatus.Choices, blank=True, null=True)
 
+    @property
+    def formatted_address(self):
+        formatted_address = []
+        if self.address:
+            formatted_address.append(self.address)
+        if self.city:
+            formatted_address.append(self.city.name)
+        if self.country:
+            formatted_address.append(self.country.name)
+        return ",".join(formatted_address)
+
+    @property
+    def clinic_names(self):
+        return ",".join(self.clinic.all().values_list('name', flat=True))
+
 
 class VerificationCode(models.Model):
     user = models.OneToOneField(User, related_name="verification_code")

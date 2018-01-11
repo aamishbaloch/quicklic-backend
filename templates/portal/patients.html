@@ -1,0 +1,49 @@
+{% extends "portal/base.html" %}
+{% load static %}
+
+{% block body_block %}
+    <section id="content">
+      <section class="vbox">
+        <section class="scrollable padder">
+          <div class="m-b-md">
+            <div class="row">
+              <div class="col-sm-6">
+                <h3 class="m-b-none m-t-sm">Patients</h3>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <section class="panel panel-default">
+                <header class="panel-heading">
+                  All Related Patients
+                </header>
+                <div class="table-responsive">
+                  <table class="table table-striped b-t b-light">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>Clinic</th>
+                        <th>Address</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for patient in patients %}
+                          <tr>
+                            <td>{{ patient.get_full_name }}</td>
+                            <td>{{ patient.phone }}</td>
+                            <td>{{ patient.clinic_names }}</td>
+                            <td>{{ patient.formatted_address }}</td>
+                          </tr>
+                        {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+                <footer class="panel-footer">
+                </footer>
+              </section>
+          </div>
+        </section>
+      </section>
+    </section>
+{% endblock %}

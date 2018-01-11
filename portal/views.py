@@ -13,7 +13,7 @@ from entities.person.models import Doctor
 from portal import constants
 from portal.forms import LoginForm, ProfileForm, DoctorHolidayForm
 from portal.statistics_helper import get_doctor_appointment_stats, get_admin_appointment_stats, \
-    get_key_factors_for_doctor, get_doctor_future_holidays
+    get_key_factors_for_doctor, get_doctor_future_holidays, get_patients_for_doctor, get_patients_for_admin
 
 User = get_user_model()
 
@@ -246,3 +246,27 @@ class DoctorOperationsView(TemplateView):
         else:
             messages.error(request, constants.OPERATION_UNSUCCESSFUL)
         return HttpResponseRedirect(reverse('portal:doctor_operations'))
+
+
+class PatientsView(TemplateView):
+    template_name = "portal/patients.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated():
+            return HttpResponseRedirect(reverse('portal:login'))
+
+        return super(PatientsView, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(PatientsView, self).get_context_data(**kwargs)
+
+        if self.request.user.is_doctor():
+            context['type'] = User.Role.DOCTOR
+            context['user'] = self.request.user.doctor
+            context['patients'] = get_patients_for_doctor(self.request.user.doctor)
+        elif self.request.user.is_admin():
+            context['type'] = User.Role.ADMIN
+            context['user'] = self.request.user.moderator
+            context['patients'] = get_patients_for_admin(self.request.user.moderator)
+
+        return context

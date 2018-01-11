@@ -2,6 +2,7 @@ from django.db.models import Q
 from datetime import datetime, timedelta
 from entities.appointment.models import Appointment
 from entities.clinic.models import Clinic
+from entities.person.models import Patient
 
 
 def get_doctor_appointment_stats(doctor):
@@ -104,6 +105,18 @@ def get_top_clinic_name_for_doctor(doctor, appointments):
         if appointments.filter(clinic_id=clinic.id).count() > clinic_appointments:
             top_clinic_name = clinic.name
     return top_clinic_name
+
+
+def get_patients_for_doctor(doctor):
+    clinic_ids = doctor.clinic.all().values_list("id", flat=True)
+    patients = Patient.objects.filter(clinic__id__in=clinic_ids, is_active=True).order_by('first_name')
+    return patients
+
+
+def get_patients_for_admin(admin):
+    clinic_ids = admin.clinic.all().values_list("id", flat=True)
+    patients = Patient.objects.filter(clinic__id__in=clinic_ids, is_active=True).order_by('first_name')
+    return patients
 
 
 def get_doctor_ccr_stats(doctor):
