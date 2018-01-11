@@ -147,11 +147,11 @@ def send_announcement_to_all_patients(person, message):
     person can be doctor or admin
     """
     clinic_ids = person.clinic.all().values_list("id", flat=True)
-    patients = Patient.objects.filter(clinic__id__in=clinic_ids, is_active=True)
+    patients = Patient.objects.filter(clinic__id__in=clinic_ids, is_active=True).distinct()
     Notification.create_batch_announcement(patients, message)
 
 
 def send_announcement_to_all_doctors(admin, message):
     clinic_ids = admin.clinic.all().values_list("id", flat=True)
-    doctors = Doctor.objects.filter(clinic__id__in=clinic_ids, is_active=True)
+    doctors = Doctor.objects.filter(clinic__id__in=clinic_ids, is_active=True).distinct()
     Notification.create_batch_announcement(doctors, message)
