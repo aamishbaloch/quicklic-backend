@@ -78,6 +78,30 @@ def get_admin_appointment_stats(admin):
     return stats
 
 
+def get_key_factors_for_doctor(doctor):
+    appointments = Appointment.objects.filter(created_at__gte=datetime.now()-timedelta(days=14), doctor_id=doctor.id)
+    appointment_count = appointments.count()
+    completed_appointments = appointments.filter(status=Appointment.Status.DONE).count()
+
+    data = {
+        "patient_seen": appointments.filter(status=Appointment.Status.DONE).count(),
+        "slot_time": doctor.setting.slot_time,
+        "rating": doctor.rating,
+        "dcr": (completed_appointments*100)/appointment_count if appointment_count > 0 else 0,
+        "top_clinic_name": get_top_clinic_name_for_doctor(doctor, appointments),
+    }
+    return data
+
+
+def get_top_clinic_name_for_doctor(doctor, appointments):
+    top_clinic_name = "Not Found"
+    clinic_appointments = 0
+    for clinic in doctor.clinic.all():
+        if appointments.filter(clinic_id=clinic.id).count() > clinic_appointments:
+            top_clinic_name = clinic.name
+    return top_clinic_name
+
+
 def get_doctor_ccr_stats(doctor):
     """
     ccr = Clinic Conversion Rate
