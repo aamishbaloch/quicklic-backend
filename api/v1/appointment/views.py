@@ -12,7 +12,8 @@ from libs.permission import (
     PKAppointmentOwnerPermission,
     AppointmentOwnerPermission, AppointmentVisitPermission)
 from api.v1.serializers import AppointmentSerializer, VisitSerializer
-from libs.utils import get_start_datetime_from_date_string, get_datetime_by_datetime_string
+from libs.utils import get_start_datetime_from_date_string, get_datetime_by_datetime_string, \
+    get_datetime_by_datetime_string_with_tz
 
 User = get_user_model()
 
@@ -32,7 +33,7 @@ class AppointmentView(ListCreateAPIView):
 
     def post(self, request, *args, **kwargs):
         data = request.data.copy()
-        day = get_datetime_by_datetime_string(data['start_datetime'])
+        day = get_datetime_by_datetime_string_with_tz(data['start_datetime'])
         if DoctorHoliday.objects.filter(physician_id=data['doctor'], day=day.date()).exists():
             raise DoctorUnavailableException()
         return super(AppointmentView, self).post(request, *args, **kwargs)

@@ -375,7 +375,7 @@ class AnnouncementsView(TemplateView):
             send_to = request.POST['send_to']
 
             if int(send_to) == AnnouncementsView.SEND_TO_ALL_PATIENTS:
-                send_announcement_to_all_patients(request.user.doctor, message)
+                send_announcement_to_all_patients(request.user.moderator, message)
             elif int(send_to) == AnnouncementsView.SEND_TO_ALL_DOCTORS:
                 send_announcement_to_all_doctors(request.user.moderator, message)
 

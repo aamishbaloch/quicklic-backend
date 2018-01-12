@@ -196,21 +196,10 @@ class DoctorAppointmentHistoryView(ListAPIView):
 
     def get_queryset(self):
         appointments = self.request.user.doctor.appointments.\
-            filter(Q(status=Appointment.Status.NOSHOW) | Q(visit__isnull=False)).order_by('start_datetime')
+            filter(visit__isnull=False).order_by('start_datetime')
 
-        date_time_now = get_datetime_now_by_date()
-
-        if 'start_date' in self.request.query_params:
-            start_datetime = get_start_datetime_from_date_string(self.request.query_params.get("start_date"))
-            if start_datetime >= date_time_now:
-                raise InvalidDateTimeException()
-            appointments = appointments.filter(start_datetime__gte=start_datetime)
-
-        if 'end_date' in self.request.query_params:
-            end_datetime = get_end_datetime_from_date_string(self.request.query_params.get("end_date"))
-            if end_datetime >= date_time_now:
-                raise InvalidDateTimeException()
-            appointments = appointments.filter(end_datetime__lte=end_datetime)
+        date_time_now = get_end_datetime_from_date_string(datetime.now().date())
+        appointments = appointments.filter(start_datetime__lte=date_time_now)
 
         if 'status' in self.request.query_params:
             statuses = [int(id) for id in self.request.query_params.get('status').split(',')]
@@ -246,22 +235,12 @@ class DoctorAppointmentVisitView(ListAPIView):
     serializer_class = AppointmentSerializer
 
     def get_queryset(self):
+        statuses = [Appointment.Status.PENDING, Appointment.Status.CONFIRM]
         appointments = self.request.user.doctor.appointments.\
-            filter(~Q(status=Appointment.Status.NOSHOW) & Q(visit__isnull=True)).order_by('start_datetime')
+            filter(status__in=statuses, visit__isnull=True).order_by('start_datetime')
 
-        date_time_now = get_datetime_now_by_date()
-
-        if 'start_date' in self.request.query_params:
-            start_datetime = get_start_datetime_from_date_string(self.request.query_params.get("start_date"))
-            if start_datetime >= date_time_now:
-                raise InvalidDateTimeException()
-            appointments = appointments.filter(start_datetime__gte=start_datetime)
-
-        if 'end_date' in self.request.query_params:
-            end_datetime = get_end_datetime_from_date_string(self.request.query_params.get("end_date"))
-            if end_datetime >= date_time_now:
-                raise InvalidDateTimeException()
-            appointments = appointments.filter(end_datetime__lte=end_datetime)
+        date_time_now = get_end_datetime_from_date_string(datetime.now().date())
+        appointments = appointments.filter(start_datetime__lte=date_time_now)
 
         if 'status' in self.request.query_params:
             statuses = [int(id) for id in self.request.query_params.get('status').split(',')]
@@ -300,20 +279,17 @@ class DoctorStatusView(APIView):
                 appointment.save()
 
                 if status_code == Appointment.Status.CONFIRM:
-                    heading = Notification.Message.APPOINTMENT_CONFIRMED["heading"].format(
-                        doctor=appointment.doctor.get_full_name())
+                    heading = Notification.Message.APPOINTMENT_CONFIRMED["heading"]
                     content = Notification.Message.APPOINTMENT_CONFIRMED["contents"].format(
-                        doctor=appointment.doctor.get_full_name(), appointment_id=appointment.qid)
+                        doctor=appointment.doctor.get_full_name())
                 elif status_code == Appointment.Status.DISCARD:
-                    heading = Notification.Message.APPOINTMENT_DISCARD["heading"].format(
-                        doctor=appointment.doctor.get_full_name())
+                    heading = Notification.Message.APPOINTMENT_DISCARD["heading"]
                     content = Notification.Message.APPOINTMENT_DISCARD["contents"].format(
-                        doctor=appointment.doctor.get_full_name(), appointment_id=appointment.qid)
-                else:
-                    heading = Notification.Message.APPOINTMENT_NOSHOW["heading"].format(
                         doctor=appointment.doctor.get_full_name())
+                else:
+                    heading = Notification.Message.APPOINTMENT_NOSHOW["heading"]
                     content = Notification.Message.APPOINTMENT_NOSHOW["contents"].format(
-                        doctor=appointment.doctor.get_full_name(), appointment_id=appointment.qid)
+                        doctor=appointment.doctor.get_full_name())
 
                 Notification.create_notification(
                     user=appointment.patient,
@@ -356,6 +332,7 @@ class DoctorAppointmentSlotView(APIView):
                 day_start, day_end = get_datetime_range_from_date_string(date)
 
                 appointments = doctor.appointments.filter(start_datetime__gte=day_start, end_datetime__lte=day_end)
+                appointments = appointments.filter(~Q(status=Appointment.Status.CANCEL))
                 appointments = [{
                         "start": appointment.start_datetime,
                         "end": appointment.end_datetime
@@ -393,7 +370,7 @@ class DoctorVisitView(ListAPIView):
     serializer_class = VisitSerializer
 
     def get_queryset(self):
-        appointments = self.request.user.doctor.appointments.all()
+        appointments = self.request.user.doctor.appointments.filter(Q(status=Appointment.Status.PENDING) or Q(status=Appointment.Status.CONFIRM))
 
         if 'clinic_id' in self.request.query_params:
             appointments = appointments.filter(clinic=self.request.query_params.get('clinic_id'))
@@ -435,7 +412,7 @@ class DoctorReviewView(ListAPIView):
     def get_queryset(self):
         try:
             doctor = Doctor.objects.get(pk=int(self.kwargs['pk']))
-            reviews = doctor.reviews.all().order_by('created_at')
+            reviews = doctor.reviews.all().order_by('-created_at')
 
             if 'clinic_id' in self.request.query_params:
                 reviews = reviews.filter(clinic=self.request.query_params.get('clinic_id'))
