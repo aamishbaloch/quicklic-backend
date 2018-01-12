@@ -39,13 +39,13 @@ class UserAdmin(OrigUserAdmin):
     search_fields = ('phone',)
     list_filter = ('verified',)
     list_display = (
-        'id', 'first_name', 'last_name', 'verified', 'phone', 'email', 'gender', 'avatar', 'is_active',
+        'id', 'first_name', 'last_name', 'verified', 'phone', 'email', 'gender', 'avatar', 'is_active', 'address',
         'is_staff', 'is_superuser', 'last_login', 'joined_on', 'device_id', 'device_type')
     ordering = ('first_name',)
     fieldsets = (
         (_('Personal Info'), {
             'fields': (
-                'phone', 'verified', 'email', 'first_name', 'last_name', 'gender', 'avatar', 'city', 'country',
+                'phone', 'verified', 'email', 'first_name', 'last_name', 'gender', 'avatar', 'city', 'country', 'address',
                 'clinic', 'device_id', 'device_type'
             )
         }),
@@ -70,7 +70,7 @@ class Admin(UserAdmin):
     fieldsets = (
         (_('Personal Info'), {
             'fields': (
-                'phone', 'first_name', 'last_name', 'verified', 'email', 'dob',
+                'phone', 'first_name', 'last_name', 'verified', 'email', 'dob', 'address',
                 'gender', 'avatar', 'clinic', 'city', 'country'
             )
         }),
@@ -81,7 +81,7 @@ class Admin(UserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('phone', 'first_name', 'last_name', 'verified', 'email', 'password1', 'password2', 'dob',
+            'fields': ('phone', 'first_name', 'last_name', 'verified', 'email', 'password1', 'password2', 'dob', 'address',
                        'gender', 'avatar', 'clinic', 'city', 'country')}
          ),
     )
@@ -93,7 +93,7 @@ class DoctorAdmin(UserAdmin):
     fieldsets = (
         (_('Personal Info'), {
             'fields': (
-                'phone', 'first_name', 'last_name', 'verified', 'email', 'dob', 'rating',
+                'phone', 'first_name', 'last_name', 'verified', 'email', 'dob', 'rating', 'address',
                 'gender', 'avatar', 'clinic', 'city', 'country', 'services', 'specialization', 'degree',
                 'device_id', 'device_type',
             )
@@ -107,7 +107,7 @@ class DoctorAdmin(UserAdmin):
             'classes': ('wide',),
             'fields': ('phone', 'first_name', 'last_name', 'verified', 'email', 'password1', 'password2', 'dob',
                        'gender', 'avatar', 'clinic', 'city', 'country', 'services', 'specialization', 'degree',
-                       'rating')}
+                       'rating', 'address')}
          ),
     )
 
@@ -132,7 +132,7 @@ class PatientAdmin(UserAdmin):
     fieldsets = (
         (_('Personal Info'), {
             'fields': (
-                'phone', 'first_name', 'last_name', 'verified', 'email', 'dob',
+                'phone', 'first_name', 'last_name', 'verified', 'email', 'dob', 'address',
                 'gender', 'avatar', 'clinic', 'city', 'country', 'height', 'weight', 'occupation', 'marital_status'
             )
         }),
@@ -144,7 +144,7 @@ class PatientAdmin(UserAdmin):
         (None, {
             'classes': ('wide',),
             'fields': ('phone', 'first_name', 'last_name', 'verified', 'email', 'password1', 'password2', 'dob', 'gender',
-                       'avatar', 'clinic', 'city', 'country', 'height', 'weight', 'occupation', 'marital_status')}
+                       'avatar', 'clinic', 'city', 'country', 'height', 'weight', 'occupation', 'marital_status', 'address')}
          ),
     )
 
