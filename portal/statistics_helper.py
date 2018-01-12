@@ -112,7 +112,7 @@ def get_key_factors_for_doctor(doctor):
 
 
 def get_doctor_future_holidays(doctor):
-    return doctor.holidays.filter(day__gt=datetime.now().date(), day__lte=(datetime.now()+timedelta(days=14)).date()).order_by('day')
+    return doctor.holidays.filter(day__gte=datetime.now().date(), day__lte=(datetime.now()+timedelta(days=14)).date()).order_by('day')
 
 
 def get_top_clinic_name_for_doctor(doctor, appointments):

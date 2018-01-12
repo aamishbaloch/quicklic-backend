@@ -220,10 +220,9 @@ class PatientAppointmentCancelView(APIView):
         Notification.create_notification(
             user=appointment.doctor,
             user_type=Notification.UserType.DOCTOR,
-            heading=Notification.Message.APPOINTMENT_CANCELED["heading"].format(
-                        patient=appointment.patient.get_full_name()),
+            heading=Notification.Message.APPOINTMENT_CANCELED["heading"],
             content=Notification.Message.APPOINTMENT_CANCELED["contents"].format(
-                        patient=appointment.patient.get_full_name(), appointment_id=appointment.qid),
+                        patient=appointment.patient.get_full_name()),
             type=Notification.Type.APPOINTMENT,
             appointment_id=appointment.id,
             patient=appointment.patient,

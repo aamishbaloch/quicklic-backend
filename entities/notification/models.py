@@ -10,32 +10,32 @@ from libs.onesignal_sdk import OneSignalSdk
 class Notification(models.Model):
 
     class Message:
-        HEADING = "Quicklic Notification!"
-        ANNOUNCEMENT_HEADING = "Quicklic Announcement!"
+        HEADING = "Notification!"
+        ANNOUNCEMENT_HEADING = "Announcement!"
 
         APPOINTMENT_CREATED = {
-            "contents": "{patient} has scheduled a new appointment {appointment_id} with you.",
-            "heading": "{patient} has scheduled a new appointment with you.",
+            "contents": "{patient} has scheduled a new appointment with you.",
+            "heading": "New appointment scheduled!",
         }
         APPOINTMENT_CANCELED = {
-            "contents": "{patient} has canceled an appointment {appointment_id} with you.",
-            "heading": "{patient} has canceled an appointment with you.",
+            "contents": "{patient} has canceled an appointment with you.",
+            "heading": "Appointment Canceled!",
         }
         APPOINTMENT_UPDATED = {
-            "contents": "{patient} has updated an appointment {appointment_id} with you.",
-            "heading": "{patient} has updated an appointment with you.",
+            "contents": "{patient} has updated an appointment.",
+            "heading": "Appointment Updated!",
         }
         APPOINTMENT_CONFIRMED = {
-            "contents": "{doctor} has confirmed your appointment {appointment_id}.",
-            "heading": "{doctor} has confirmed your appointment.",
+            "contents": "{doctor} has confirmed your appointment.",
+            "heading": "Appointment Confirmed!",
         }
         APPOINTMENT_NOSHOW = {
-            "contents": "{doctor} has marked your appointment {appointment_id} as no show.",
-            "heading": "{doctor} has marked your appointment as no show.",
+            "contents": "{doctor} has marked your appointment as no show.",
+            "heading": "Appointment marked as No Show!",
         }
         APPOINTMENT_DISCARD = {
-            "contents": "{doctor} has discarded your appointment {appointment_id}.",
-            "heading": "{doctor} has discarded your appointment.",
+            "contents": "{doctor} has discarded your appointment.",
+            "heading": "Appointment Discarded!",
         }
 
     class Type:
@@ -89,6 +89,7 @@ class Notification(models.Model):
 
     @staticmethod
     def create_batch_notification_for_discard(appointments):
+        heading = "Your appointment has been discarded by the doctor."
         player_ids = []
         for appointment in appointments:
             Notification.objects.create(
@@ -96,9 +97,8 @@ class Notification(models.Model):
                 user_type=Notification.UserType.PATIENT,
                 type=Notification.Type.APPOINTMENT,
                 content=Notification.Message.APPOINTMENT_DISCARD["contents"].format(
-                        doctor=appointment.doctor.get_full_name(), appointment_id=appointment.qid),
-                heading=Notification.Message.APPOINTMENT_DISCARD["heading"].format(
                         doctor=appointment.doctor.get_full_name()),
+                heading=Notification.Message.APPOINTMENT_DISCARD["heading"],
                 appointment_id=appointment.id,
                 patient=appointment.patient,
                 doctor=appointment.doctor,
@@ -107,7 +107,7 @@ class Notification(models.Model):
             player_ids.append(appointment.patient.device_id)
 
         one_signal_sdk = OneSignalSdk()
-        one_signal_sdk.create_notification(contents="Your appointment has been discarded by the doctor.", heading=Notification.Message.HEADING, player_ids=player_ids)
+        one_signal_sdk.create_notification(contents=heading, heading=heading, player_ids=player_ids)
 
     @staticmethod
     def create_batch_announcement(users, message):
