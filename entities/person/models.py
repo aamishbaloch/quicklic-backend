@@ -403,7 +403,7 @@ class VerificationCode(models.Model):
         if hasattr(user, "verification_code"):
             user.verification_code.code = get_verification_code()
             user.verification_code.save()
-            return user.verification_code
+            return user.verification_code.code
         else:
             verification_code = VerificationCode.objects.create(user=user, code=get_verification_code())
             return verification_code.code
