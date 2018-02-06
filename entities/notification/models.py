@@ -58,8 +58,8 @@ class Notification(models.Model):
             (ADMIN, 'ADMIN'),
         )
 
-    content = models.CharField(_('content'), max_length=255)
-    heading = models.CharField(_('heading'), max_length=255)
+    content = models.TextField(_('content'))
+    heading = models.TextField(_('heading'))
     type = models.IntegerField(_('type'), db_index=True, choices=Type.Choices, default=Type.ANNOUNCEMENT)
     user_type = models.IntegerField(_('user type'), db_index=True, choices=UserType.Choices, blank=True, null=True)
 
