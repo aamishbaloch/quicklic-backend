@@ -144,7 +144,7 @@ class DoctorSerializer(serializers.ModelSerializer):
                     services.append(service)
                 data['services'] = services
             else:
-                data['specialization'] = None
+                data['services'] = []
         return data
 
     def get_extra_kwargs(self):
