@@ -16,7 +16,7 @@ class JWTHelper:
     """
     JWT_ALGORITHM = 'HS256'
     JWT_UTF = 'utf-8'
-    JWT_TOKEN_EXPIRY = getattr(settings, 'JWT_TOKEN_EXPIRY', 7)
+    JWT_TOKEN_EXPIRY = getattr(settings, 'JWT_TOKEN_EXPIRY', 5)
 
     @staticmethod
     def encode_token(user):
@@ -25,7 +25,7 @@ class JWTHelper:
         """
         if user:
             data = {
-                "exp": datetime.utcnow() + timedelta(days=JWTHelper.JWT_TOKEN_EXPIRY),
+                "exp": datetime.utcnow() + timedelta(minutes=JWTHelper.JWT_TOKEN_EXPIRY),
                 "phone": user.phone,
             }
             token = jwt.encode(data, 'secret', algorithm=JWTHelper.JWT_ALGORITHM)
