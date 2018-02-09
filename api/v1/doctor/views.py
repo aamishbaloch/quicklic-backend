@@ -151,7 +151,7 @@ class DoctorAppointmentView(ListAPIView):
     serializer_class = AppointmentSerializer
 
     def get_queryset(self):
-        appointments = self.request.user.doctor.appointments.all().order_by('start_datetime')
+        appointments = self.request.user.doctor.appointments.all().order_by('-start_datetime')
 
         if 'start_date' in self.request.query_params:
             start_datetime = get_start_datetime_from_date_string(self.request.query_params.get("start_date"))
@@ -196,7 +196,7 @@ class DoctorAppointmentHistoryView(ListAPIView):
 
     def get_queryset(self):
         appointments = self.request.user.doctor.appointments.\
-            filter(visit__isnull=False).order_by('start_datetime')
+            filter(visit__isnull=False).order_by('-start_datetime')
 
         date_time_now = get_end_datetime_from_date_string(datetime.now().date())
         appointments = appointments.filter(start_datetime__lte=date_time_now)
@@ -237,7 +237,7 @@ class DoctorAppointmentVisitView(ListAPIView):
     def get_queryset(self):
         statuses = [Appointment.Status.PENDING, Appointment.Status.CONFIRM]
         appointments = self.request.user.doctor.appointments.\
-            filter(status__in=statuses, visit__isnull=True).order_by('start_datetime')
+            filter(status__in=statuses, visit__isnull=True).order_by('-start_datetime')
 
         date_time_now = get_end_datetime_from_date_string(datetime.now().date())
         appointments = appointments.filter(start_datetime__lte=date_time_now)

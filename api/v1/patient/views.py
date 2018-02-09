@@ -177,7 +177,7 @@ class PatientAppointmentView(ListAPIView):
     serializer_class = AppointmentSerializer
 
     def get_queryset(self):
-        appointments = self.request.user.patient.appointments.all().order_by('start_datetime')
+        appointments = self.request.user.patient.appointments.all().order_by('-start_datetime')
 
         if 'start_date' in self.request.query_params:
             start_datetime = get_start_datetime_from_date_string(self.request.query_params.get("start_date"))
@@ -271,7 +271,7 @@ class PatientVisitView(ListAPIView):
     serializer_class = VisitSerializer
 
     def get_queryset(self):
-        appointments = self.request.user.patient.appointments.all()
+        appointments = self.request.user.patient.appointments.all().order_by('-start_datetime')
 
         if 'clinic_id' in self.request.query_params:
             appointments = appointments.filter(clinic=self.request.query_params.get('clinic_id'))
