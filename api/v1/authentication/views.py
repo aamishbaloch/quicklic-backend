@@ -90,6 +90,24 @@ class LoginView(APIView):
         raise InvalidCredentialsException()
 
 
+class LogoutView(APIView):
+    """
+    View for logout a user to your system.
+
+    **Example requests**:
+
+        POST /api/auth/logout/
+    """
+
+    authentication_classes = (UserAuthentication,)
+
+    def post(self, request):
+        user = request.user
+        user.device_id = None
+        user.save()
+        return Response({}, status=status.HTTP_200_OK)
+
+
 class VerificationView(APIView):
     """
     View for verifying a user to your system.
