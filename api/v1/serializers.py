@@ -312,9 +312,9 @@ class AppointmentSerializer(serializers.ModelSerializer):
         if instance.clinic:
             data['clinic'] = BasicClinicSerializer(instance.clinic, context={"request": self.context['request']}).data
         if instance.patient:
-            data['patient'] = BasicPatientSerializer(instance.patient, context={"request": self.context['request']}).data
+            data['patient'] = PatientSerializer(instance.patient, context={"request": self.context['request']}).data
         if instance.doctor:
-            data['doctor'] = BasicDoctorSerializer(instance.doctor, context={"request": self.context['request']}).data
+            data['doctor'] = DoctorSerializer(instance.doctor, context={"request": self.context['request']}).data
         return data
 
     def create(self, validated_data):
