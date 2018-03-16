@@ -126,19 +126,19 @@ def get_top_clinic_name_for_doctor(doctor, appointments):
 
 def get_patients_for_doctor(doctor):
     clinic_ids = doctor.clinic.all().values_list("id", flat=True)
-    patients = Patient.objects.filter(clinic__id__in=clinic_ids, is_active=True).order_by('first_name')
+    patients = Patient.objects.filter(clinic__id__in=clinic_ids, is_active=True).distinct().order_by('first_name')
     return patients
 
 
 def get_patients_for_admin(admin):
     clinic_ids = admin.clinic.all().values_list("id", flat=True)
-    patients = Patient.objects.filter(clinic__id__in=clinic_ids, is_active=True).order_by('first_name')
+    patients = Patient.objects.filter(clinic__id__in=clinic_ids, is_active=True).distinct().order_by('first_name')
     return patients
 
 
 def get_doctors_for_admin(admin):
     clinic_ids = admin.clinic.all().values_list("id", flat=True)
-    doctors = Doctor.objects.filter(clinic__id__in=clinic_ids, is_active=True).order_by('first_name')
+    doctors = Doctor.objects.filter(clinic__id__in=clinic_ids, is_active=True).distinct().order_by('first_name')
     return doctors
 
 
