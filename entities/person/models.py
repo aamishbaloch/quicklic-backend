@@ -87,6 +87,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     is_active = models.BooleanField(_('active'), default=True)
     avatar = models.ImageField(upload_to='uploads/avatars/', null=True, blank=True)
+    thumb = models.ImageField(upload_to='uploads/avatars/thumbs', null=True, blank=True)
     gender = models.IntegerField(_('gender'), choices=Gender.Choices, default=Gender.UNKNOWN)
     address = models.CharField(_('address'), max_length=255, blank=True, null=True)
     phone = models.CharField(_('phone'), max_length=255, unique=True)
@@ -164,6 +165,43 @@ class User(AbstractBaseUser, PermissionsMixin):
         if self.avatar:
             return "{}{}{}".format(MEDIA_ROOT, MEDIA_URL, self.avatar.url)
 
+    def create_thumbnail(self):
+        if not self.avatar:
+            return
+
+        if not hasattr(self.avatar.file, "content_type"):
+            return
+
+        from PIL import Image
+        from io import BytesIO
+        from django.core.files.uploadedfile import SimpleUploadedFile
+        import os
+
+        THUMBNAIL_SIZE = (200, 200)
+
+        DJANGO_TYPE = self.avatar.file.content_type
+
+        if DJANGO_TYPE == 'image/jpeg':
+            PIL_TYPE = 'jpeg'
+            FILE_EXTENSION = 'jpg'
+        elif DJANGO_TYPE == 'image/png':
+            PIL_TYPE = 'png'
+            FILE_EXTENSION = 'png'
+
+        image = Image.open(BytesIO(self.avatar.read()))
+        image.thumbnail(THUMBNAIL_SIZE, Image.ANTIALIAS)
+
+        temp_handle = BytesIO()
+        image.save(temp_handle, PIL_TYPE)
+        temp_handle.seek(0)
+
+        suf = SimpleUploadedFile(os.path.split(self.avatar.name)[-1], temp_handle.read(), content_type=DJANGO_TYPE)
+        self.thumb.save('%s_thumbnail.%s'%(os.path.splitext(suf.name)[0], FILE_EXTENSION), suf, save=False)
+
+    def save(self, *args, **kwargs):
+        self.create_thumbnail()
+        return super(User, self).save(*args, **kwargs)
+
 
 class Moderator(User):
     role = models.IntegerField(default=User.Role.ADMIN)
@@ -218,6 +256,7 @@ class Doctor(User):
 class DoctorSetting(models.Model):
     physician = models.OneToOneField(Doctor, related_name='setting')
     slot_time = models.IntegerField(db_index=True, default=10)
+    # clinic = models.ManyToManyField(Clinic, related_name="sett", blank=True)
     monday_start = models.TimeField(blank=True, null=True)
     monday_end = models.TimeField(blank=True, null=True)
     tuesday_start = models.TimeField(blank=True, null=True)
