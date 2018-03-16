@@ -58,7 +58,7 @@ class Clinic(models.Model):
         if not self.image:
             return
 
-        if not hasattr(self.avatar.file, "content_type"):
+        if not hasattr(self.image.file, "content_type"):
             return
 
         from PIL import Image

@@ -8,7 +8,6 @@ from django.db.models import Q
 from datetime import datetime, timedelta
 
 from entities.notification.models import Notification
-from quicklic_backend import settings
 from entities.appointment.models import Appointment, Visit
 from entities.person.models import Doctor, Patient, DoctorHoliday
 from libs.authentication import UserAuthentication
@@ -312,39 +311,41 @@ class DoctorAppointmentSlotView(APIView):
     View for getting slots
 
     **Example requests**:
-        GET /doctor/{id}/appointment_slots/?date=2017-06-18
+        GET /doctor/{id}/clinic/{clinic_id}/appointment_slots/?date=2017-06-18
     """
 
     authentication_classes = (UserAuthentication,)
     permission_classes = (PatientDoctorPermission, PatientBelongsDoctorPermission)
 
-    def get(self, request, pk):
-        date = self.request.query_params.get('date', None)
+    def get(self, request, pk, clinic_id):
+        date = request.query_params.get('date', None)
         if date:
             doctor = Doctor.objects.get(pk=pk)
 
             if DoctorHoliday.objects.filter(physician_id=doctor.id, day=get_date_from_date_string(date)).exists():
                 return Response([], status=status.HTTP_200_OK)
 
-            start_time, end_time = doctor.setting.get_day_timings(get_date_from_date_string(date).weekday())
-            if start_time and end_time:
-                intervals = get_interval_between_time(start_time, end_time, doctor.setting.slot_time, date)
-                day_start, day_end = get_datetime_range_from_date_string(date)
+            setting = doctor.settings.filter(clinic_id=clinic_id).first()
+            if setting:
+                start_time, end_time = setting.get_day_timings(get_date_from_date_string(date).weekday())
+                if start_time and end_time:
+                    intervals = get_interval_between_time(start_time, end_time, setting.slot_time, date)
+                    day_start, day_end = get_datetime_range_from_date_string(date)
 
-                appointments = doctor.appointments.filter(start_datetime__gte=day_start, end_datetime__lte=day_end)
-                appointments = appointments.filter(~Q(status=Appointment.Status.CANCEL))
-                appointments = [{
-                        "start": appointment.start_datetime,
-                        "end": appointment.end_datetime
-                    } for appointment in appointments]
+                    appointments = doctor.appointments.filter(start_datetime__gte=day_start, end_datetime__lte=day_end)
+                    appointments = appointments.filter(~Q(status=Appointment.Status.CANCEL))
+                    appointments = [{
+                            "start": appointment.start_datetime,
+                            "end": appointment.end_datetime
+                        } for appointment in appointments]
 
-                for interval in intervals:
-                    for appointment in appointments:
-                        is_overlap = (interval['start'] <= appointment['start'] <= interval['end']) or (appointment['start'] <= interval['start'] <= appointment['end'])
-                        if is_overlap:
-                            interval['available'] = False
+                    for interval in intervals:
+                        for appointment in appointments:
+                            is_overlap = (interval['start'] <= appointment['start'] <= interval['end']) or (appointment['start'] <= interval['start'] <= appointment['end'])
+                            if is_overlap:
+                                interval['available'] = False
 
-                return Response(intervals, status=status.HTTP_200_OK)
+                    return Response(intervals, status=status.HTTP_200_OK)
             return Response([], status=status.HTTP_200_OK)
 
         raise InvalidInputDataException()

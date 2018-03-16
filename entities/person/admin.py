@@ -115,7 +115,7 @@ admin.site.register(Doctor, DoctorAdmin)
 
 
 class DoctorSettingAdmin(admin.ModelAdmin):
-    list_display = ('id', 'slot_time', 'physician')
+    list_display = ('id', 'slot_time', 'physician', 'clinic')
     search_fields = ('physician__phone',)
 
 admin.site.register(DoctorSetting, DoctorSettingAdmin)

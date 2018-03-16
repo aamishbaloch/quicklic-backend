@@ -1,0 +1,179 @@
+{% extends "portal/base.html" %}
+{% load static %}
+
+{% block body_block %}
+    <section id="content">
+      <section class="vbox">
+        <section class="scrollable padder">
+          <div class="m-b-md">
+            <div class="row">
+              <div class="col-sm-6">
+                <h3 class="m-b-none m-t-sm"><b>Clinic Details</b></h3>
+              </div>
+            </div>
+          </div>
+          <div class="m-b-md">
+            <div class="row">
+              <div class="col-sm-6">
+                <h3 class="m-b-none m-t-sm">{{ clinic.name }}</h3>
+              </div>
+              <div class="col-sm-6">
+                <div class="text-right text-left-xs">
+                  <div class="m-t-sm">
+                    <span class="text-uc">{{ user.phone }}</span>
+                    <div class="h4"><strong>
+                        {% if type == 1 %}
+                            Doctor
+                        {% elif type == 3 %}
+                            Admin
+                        {% endif %}
+                    </strong></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+                <section class="panel panel-default">
+                    <header class="panel-heading">
+                        <strong>{{ clinic.name }}</strong>
+                    </header>
+                    <div class="panel-body">
+                        <h4>Code: <b>{{ clinic.code }}</b></h4>
+                        <p>Rating: {{ clinic.rating }}</p>
+                        <p>{{ clinic.location }}<br>{{ clinic.city }}<br>{{ clinic.country }}</p>
+                        <p>Telephone: {{ clinic.phone }}</p>
+                    </div>
+                </section>
+            </div>
+            {% if type == 1 %}
+                <div class="col-sm-6">
+                    {% if doctor_timings %}
+                        <form class="form-horizontal" data-validate="parsley" action="{% url 'portal:doctor_setting' clinic.id %}" method="post">
+                  {% csrf_token %}
+                    <section class="panel panel-default">
+                      <header class="panel-heading">
+                        <strong>Doctor Timings</strong>
+                      </header>
+                      <div class="panel-body">
+                        <p>
+                            <small>Allow doctors to update their operational timings.</small>
+                        </p>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Monday</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="combodate form-control" data-format="HH:mm" data-template="HH : mm" name="monday_start" value="{{ doctor_timings.monday.start }}">
+                                -
+                                <input type="text" class="combodate form-control" data-format="HH:mm" data-template="HH : mm" name="monday_end" value="{{ doctor_timings.monday.end }}">
+                            </div>
+                            <div class="col-sm-4">
+                                <label class="switch">
+                                    <input type="checkbox" name="monday_check" {% if doctor_timings.monday.switch %} checked {% endif %}>
+                                    <span></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Tuesday</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="combodate form-control" data-format="HH:mm" data-template="HH : mm" name="tuesday_start" value="{{ doctor_timings.tuesday.start }}">
+                                -
+                                <input type="text" class="combodate form-control" data-format="HH:mm" data-template="HH : mm" name="tuesday_end" value="{{ doctor_timings.tuesday.end }}">
+                            </div>
+                            <div class="col-sm-4">
+                                <label class="switch">
+                                    <input type="checkbox" name="tuesday_check" {% if doctor_timings.tuesday.switch %} checked {% endif %}>
+                                    <span></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Wednesday</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="combodate form-control" data-format="HH:mm" data-template="HH : mm" name="wednesday_start" value="{{ doctor_timings.wednesday.start }}">
+                                -
+                                <input type="text" class="combodate form-control" data-format="HH:mm" data-template="HH : mm" name="wednesday_end" value="{{ doctor_timings.wednesday.end }}">
+                            </div>
+                            <div class="col-sm-4">
+                                <label class="switch">
+                                    <input type="checkbox" name="wednesday_check" {% if doctor_timings.wednesday.switch %} checked {% endif %}>
+                                    <span></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Thursday</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="combodate form-control" data-format="HH:mm" data-template="HH : mm" name="thursday_start" value="{{ doctor_timings.thursday.start }}">
+                                -
+                                <input type="text" class="combodate form-control" data-format="HH:mm" data-template="HH : mm" name="thursday_end" value="{{ doctor_timings.thursday.end }}">
+                            </div>
+                            <div class="col-sm-4">
+                                <label class="switch">
+                                    <input type="checkbox" name="thursday_check" {% if doctor_timings.thursday.switch %} checked {% endif %}>
+                                    <span></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Friday</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="combodate form-control" data-format="HH:mm" data-template="HH : mm" name="friday_start" value="{{ doctor_timings.friday.start }}">
+                                -
+                                <input type="text" class="combodate form-control" data-format="HH:mm" data-template="HH : mm" name="friday_end" value="{{ doctor_timings.friday.end }}">
+                            </div>
+                            <div class="col-sm-4">
+                                <label class="switch">
+                                    <input type="checkbox" name="friday_check" {% if doctor_timings.friday.switch %} checked {% endif %}>
+                                    <span></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Saturday</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="combodate form-control" data-format="HH:mm" data-template="HH : mm" name="saturday_start" value="{{ doctor_timings.saturday.start }}">
+                                -
+                                <input type="text" class="combodate form-control" data-format="HH:mm" data-template="HH : mm" name="saturday_end" value="{{ doctor_timings.saturday.end }}">
+                            </div>
+                            <div class="col-sm-4">
+                                <label class="switch">
+                                    <input type="checkbox" name="saturday_check" {% if doctor_timings.saturday.switch %} checked {% endif %}>
+                                    <span></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Sunday</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="combodate form-control" data-format="HH:mm" data-template="HH : mm" name="sunday_start" value="{{ doctor_timings.sunday.start }}">
+                                -
+                                <input type="text" class="combodate form-control" data-format="HH:mm" data-template="HH : mm" name="sunday_end" value="{{ doctor_timings.sunday.end }}">
+                            </div>
+                            <div class="col-sm-4">
+                                <label class="switch">
+                                    <input type="checkbox" name="sunday_check" {% if doctor_timings.sunday.switch %} checked {% endif %}>
+                                    <span></span>
+                                </label>
+                            </div>
+                        </div>
+                        <p>
+                            <small>All future appointments of the day (you change time for) will be discarded. Notification to all patients will be sent so that they can create a new one with you.</small>
+                        </p>
+                      </div>
+                        <footer class="panel-footer text-right bg-light lter">
+                        <button type="submit" class="btn btn-success btn-s-xs">Submit</button>
+                      </footer>
+                    </section>
+                  </form>
+                    {% else %}
+                        <p>No Settings Available</p>
+                    {% endif %}
+                </div>
+            {% endif %}
+          </div>
+        </section>
+      </section>
+    </section>
+{% endblock %}

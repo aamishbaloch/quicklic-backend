@@ -9,6 +9,7 @@ from django.contrib import messages
 from django.views.generic.base import View
 from rest_framework.views import APIView
 
+from entities.clinic.models import Clinic
 from entities.person.models import Doctor
 from portal import constants
 from portal.forms import LoginForm, ProfileForm, DoctorHolidayForm
@@ -97,98 +98,150 @@ class ProfileView(TemplateView):
         if self.request.user.is_doctor():
             context['type'] = User.Role.DOCTOR
             context['user'] = self.request.user.doctor
-            context['doctor_timings'] = self.request.user.doctor.setting.get_timings_with_switch()
         elif self.request.user.is_admin():
             context['type'] = User.Role.ADMIN
             context['user'] = self.request.user.moderator
         return context
 
-    @transaction.atomic
-    def post(self, request):
-        form = ProfileForm(request.POST, instance=self.request.user)
-        if form.is_valid():
-            user = form.save()
-        else:
-            messages.error(request, constants.OPERATION_UNSUCCESSFUL)
-        return HttpResponseRedirect(reverse('portal:profile'))
+
+class ClinicsView(TemplateView):
+    template_name = "portal/clinics.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated():
+            return HttpResponseRedirect(reverse('portal:login'))
+
+        return super(ClinicsView, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(ClinicsView, self).get_context_data(**kwargs)
+
+        if self.request.user.is_doctor():
+            context['type'] = User.Role.DOCTOR
+            context['user'] = self.request.user.doctor
+        elif self.request.user.is_admin():
+            context['type'] = User.Role.ADMIN
+            context['user'] = self.request.user.moderator
+
+        context['clinics'] = self.request.user.clinic.all()
+        return context
+
+
+class ClinicView(TemplateView):
+    template_name = "portal/clinic.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated():
+            return HttpResponseRedirect(reverse('portal:login'))
+
+        clinic = Clinic.objects.filter(id=kwargs['pk']).first()
+        if not clinic:
+            return HttpResponseRedirect(reverse('portal:clinics'))
+
+        return super(ClinicView, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, pk, **kwargs):
+        context = super(ClinicView, self).get_context_data(**kwargs)
+        context['doctor_timings'] = None
+
+        clinic = self.request.user.clinic.filter(id=pk).first()
+
+        if self.request.user.is_doctor():
+            context['type'] = User.Role.DOCTOR
+            context['user'] = self.request.user.doctor
+
+            clinic_setting = self.request.user.doctor.settings.filter(clinic=clinic).first()
+            if clinic_setting:
+                context['doctor_timings'] = clinic_setting.get_timings_with_switch()
+
+        elif self.request.user.is_admin():
+            context['type'] = User.Role.ADMIN
+            context['user'] = self.request.user.moderator
+        context['clinic'] = clinic
+
+        return context
 
 
 class DoctorSettingView(APIView):
 
     @transaction.atomic
-    def post(self, request):
+    def post(self, request, clinic_id):
         data = request.POST
-        setting = self.request.user.doctor.setting
+        setting = self.request.user.doctor.settings.filter(clinic_id=clinic_id).first()
 
-        previous_timings = setting.get_timings_with_switch()
-
-        if "monday_check" in data:
-            setting.monday_start = data['monday_start']
-            setting.monday_end = data['monday_end']
+        if not setting:
+            messages.error(request, constants.OPERATION_UNSUCCESSFUL)
         else:
-            setting.monday_start = "00:00"
-            setting.monday_end = "00:00"
+            previous_timings = setting.get_timings_with_switch()
 
-        if "tuesday_check" in data:
-            setting.tuesday_start = data['tuesday_start']
-            setting.tuesday_end = data['tuesday_end']
-        else:
-            setting.tuesday_start = "00:00"
-            setting.tuesday_end = "00:00"
+            if "monday_check" in data:
+                setting.monday_start = data['monday_start']
+                setting.monday_end = data['monday_end']
+            else:
+                setting.monday_start = "00:00"
+                setting.monday_end = "00:00"
 
-        if "wednesday_check" in data:
-            setting.wednesday_start = data['wednesday_start']
-            setting.wednesday_end = data['wednesday_end']
-        else:
-            setting.wednesday_start = "00:00"
-            setting.wednesday_end = "00:00"
+            if "tuesday_check" in data:
+                setting.tuesday_start = data['tuesday_start']
+                setting.tuesday_end = data['tuesday_end']
+            else:
+                setting.tuesday_start = "00:00"
+                setting.tuesday_end = "00:00"
 
-        if "thursday_check" in data:
-            setting.thursday_start = data['thursday_start']
-            setting.thursday_end = data['thursday_end']
-        else:
-            setting.thursday_start = "00:00"
-            setting.thursday_end = "00:00"
+            if "wednesday_check" in data:
+                setting.wednesday_start = data['wednesday_start']
+                setting.wednesday_end = data['wednesday_end']
+            else:
+                setting.wednesday_start = "00:00"
+                setting.wednesday_end = "00:00"
 
-        if "friday_check" in data:
-            setting.friday_start = data['friday_start']
-            setting.friday_end = data['friday_end']
-        else:
-            setting.friday_start = "00:00"
-            setting.friday_end = "00:00"
+            if "thursday_check" in data:
+                setting.thursday_start = data['thursday_start']
+                setting.thursday_end = data['thursday_end']
+            else:
+                setting.thursday_start = "00:00"
+                setting.thursday_end = "00:00"
 
-        if "saturday_check" in data:
-            setting.saturday_start = data['saturday_start']
-            setting.saturday_end = data['saturday_end']
-        else:
-            setting.saturday_start = "00:00"
-            setting.saturday_end = "00:00"
+            if "friday_check" in data:
+                setting.friday_start = data['friday_start']
+                setting.friday_end = data['friday_end']
+            else:
+                setting.friday_start = "00:00"
+                setting.friday_end = "00:00"
 
-        if "sunday_check" in data:
-            setting.sunday_start = data['sunday_start']
-            setting.sunday_end = data['sunday_end']
-        else:
-            setting.sunday_start = "00:00"
-            setting.sunday_end = "00:00"
+            if "saturday_check" in data:
+                setting.saturday_start = data['saturday_start']
+                setting.saturday_end = data['saturday_end']
+            else:
+                setting.saturday_start = "00:00"
+                setting.saturday_end = "00:00"
 
-        setting.save()
+            if "sunday_check" in data:
+                setting.sunday_start = data['sunday_start']
+                setting.sunday_end = data['sunday_end']
+            else:
+                setting.sunday_start = "00:00"
+                setting.sunday_end = "00:00"
 
-        if previous_timings['monday']['start'] != setting.monday_start or previous_timings['monday']['end'] != setting.monday_end:
-            self.request.user.doctor.cancel_appointment_due_to_time_changed(0)
-        elif previous_timings['tuesday']['start'] != setting.tuesday_start or previous_timings['tuesday']['end'] != setting.tuesday_end:
-            self.request.user.doctor.cancel_appointment_due_to_time_changed(1)
-        elif previous_timings['wednesday']['start'] != setting.wednesday_start or previous_timings['wednesday']['end'] != setting.wednesday_end:
-            self.request.user.doctor.cancel_appointment_due_to_time_changed(2)
-        elif previous_timings['thursday']['start'] != setting.thursday_start or previous_timings['thursday']['end'] != setting.thursday_end:
-            self.request.user.doctor.cancel_appointment_due_to_time_changed(3)
-        elif previous_timings['friday']['start'] != setting.friday_start or previous_timings['friday']['end'] != setting.friday_end:
-            self.request.user.doctor.cancel_appointment_due_to_time_changed(4)
-        elif previous_timings['saturday']['start'] != setting.saturday_start or previous_timings['saturday']['end'] != setting.saturday_end:
-            self.request.user.doctor.cancel_appointment_due_to_time_changed(5)
-        elif previous_timings['sunday']['start'] != setting.sunday_start or previous_timings['sunday']['end'] != setting.sunday_end:
-            self.request.user.doctor.cancel_appointment_due_to_time_changed(6)
+            setting.save()
+
+            if previous_timings['monday']['start'] != setting.monday_start or previous_timings['monday']['end'] != setting.monday_end:
+                self.request.user.doctor.cancel_appointment_due_to_time_changed(0)
+            elif previous_timings['tuesday']['start'] != setting.tuesday_start or previous_timings['tuesday']['end'] != setting.tuesday_end:
+                self.request.user.doctor.cancel_appointment_due_to_time_changed(1)
+            elif previous_timings['wednesday']['start'] != setting.wednesday_start or previous_timings['wednesday']['end'] != setting.wednesday_end:
+                self.request.user.doctor.cancel_appointment_due_to_time_changed(2)
+            elif previous_timings['thursday']['start'] != setting.thursday_start or previous_timings['thursday']['end'] != setting.thursday_end:
+                self.request.user.doctor.cancel_appointment_due_to_time_changed(3)
+            elif previous_timings['friday']['start'] != setting.friday_start or previous_timings['friday']['end'] != setting.friday_end:
+                self.request.user.doctor.cancel_appointment_due_to_time_changed(4)
+            elif previous_timings['saturday']['start'] != setting.saturday_start or previous_timings['saturday']['end'] != setting.saturday_end:
+                self.request.user.doctor.cancel_appointment_due_to_time_changed(5)
+            elif previous_timings['sunday']['start'] != setting.sunday_start or previous_timings['sunday']['end'] != setting.sunday_end:
+                self.request.user.doctor.cancel_appointment_due_to_time_changed(6)
 
         return HttpResponseRedirect(reverse('portal:profile'))
+
 
 
 class DoctorKeyFactorsView(TemplateView):
