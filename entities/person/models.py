@@ -254,9 +254,9 @@ class Doctor(User):
 
 
 class DoctorSetting(models.Model):
-    physician = models.OneToOneField(Doctor, related_name='setting')
+    physician = models.ForeignKey(Doctor, related_name='settings')
     slot_time = models.IntegerField(db_index=True, default=10)
-    # clinic = models.ManyToManyField(Clinic, related_name="sett", blank=True)
+    clinic = models.ForeignKey(Clinic, related_name="settings")
     monday_start = models.TimeField(blank=True, null=True)
     monday_end = models.TimeField(blank=True, null=True)
     tuesday_start = models.TimeField(blank=True, null=True)
@@ -375,18 +375,6 @@ class DoctorSetting(models.Model):
             },
 
         ]
-
-
-@receiver(post_save, sender=Doctor)
-def doctor_post_save_callback(sender, **kwargs):
-    """
-    settings to be created after doctor's creation
-    """
-    doctor = kwargs['instance']
-    if not hasattr(doctor, 'setting'):
-        setting = DoctorSetting()
-        setting.physician = doctor
-        setting.save()
 
 
 class DoctorHoliday(models.Model):

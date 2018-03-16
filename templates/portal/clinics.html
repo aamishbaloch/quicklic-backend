@@ -1,0 +1,68 @@
+{% extends "portal/base.html" %}
+{% load static %}
+
+{% block body_block %}
+    <section id="content">
+      <section class="vbox">
+        <section class="scrollable padder">
+          <div class="m-b-md">
+            <div class="row">
+              <div class="col-sm-6">
+                <h3 class="m-b-none m-t-sm"><b>Clinics</b></h3>
+              </div>
+            </div>
+          </div>
+          <div class="m-b-md">
+            <div class="row">
+              <div class="col-sm-6">
+                <h3 class="m-b-none m-t-sm">{{ user.first_name }} {{ user.last_name }}</h3>
+              </div>
+              <div class="col-sm-6">
+                <div class="text-right text-left-xs">
+                  <div class="m-t-sm">
+                    <span class="text-uc">{{ user.phone }}</span>
+                    <div class="h4"><strong>
+                        {% if type == 1 %}
+                            Doctor
+                        {% elif type == 3 %}
+                            Admin
+                        {% endif %}
+                    </strong></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+                <section class="panel panel-default">
+                    <header class="panel-heading">
+                        <strong>My Clinics</strong>
+                    </header>
+                    <ul class="list-group alt">
+                        {% for clinic in clinics %}
+                            <li class="list-group-item">
+                                <div class="media">
+                                    <span class="pull-left thumb-sm">
+                                        <img src="{{ clinic.image.url }}" alt="No Image" class="img-circle">
+                                    </span>
+                                    <div class="pull-right text-success m-t-sm">
+                                        <a href="{% url 'portal:clinic_detail' clinic.id %}"> Details </a>
+                                    </div>
+                                    <div class="media-body">
+                                        <div>
+                                            <a>{{ clinic.name }}</a>
+                                        </div>
+                                        <small class="text-muted">Code: {{ clinic.code }}</small>
+                                    </div>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </section>
+            </div>
+          </div>
+        </section>
+      </section>
+    </section>
+{% endblock %}
