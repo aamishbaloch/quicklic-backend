@@ -61,6 +61,7 @@ class ClinicSerializer(serializers.ModelSerializer):
     country = CountrySerializer()
     rating = serializers.DecimalField(read_only=True, max_digits=5, decimal_places=2)
     formatted_address = serializers.SerializerMethodField()
+    image_thumb = serializers.ImageField(read_only=True)
 
     class Meta:
         model = Clinic
