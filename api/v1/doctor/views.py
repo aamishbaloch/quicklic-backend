@@ -182,8 +182,6 @@ class DoctorAppointmentHistoryView(ListAPIView):
         GET /doctor/{id}/appointments/history
 
     **filters**:
-        - start_date
-        - end_date
         - status=1
         - clinic_id=1
         - reason_id=1
