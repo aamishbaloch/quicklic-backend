@@ -184,8 +184,8 @@ class PatientAppointmentView(ListAPIView):
             appointments = appointments.filter(start_datetime__gte=start_datetime)
 
         if 'end_date' in self.request.query_params:
-            end_datetime = get_start_datetime_from_date_string(self.request.query_params.get("end_date"))
-            appointments = appointments.filter(end_datetime__lt=end_datetime)
+            end_datetime = get_end_datetime_from_date_string(self.request.query_params.get("end_date"))
+            appointments = appointments.filter(end_datetime__lte=end_datetime)
 
         if 'status' in self.request.query_params:
             statuses = [int(id) for id in self.request.query_params.get('status').split(',')]
