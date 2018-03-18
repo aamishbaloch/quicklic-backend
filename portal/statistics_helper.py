@@ -103,7 +103,7 @@ def get_key_factors_for_doctor(doctor):
 
     data = {
         "patient_seen": appointments.filter(status=Appointment.Status.DONE).count(),
-        "slot_time": doctor.setting.slot_time,
+        "clinic_count": doctor.clinic.count(),
         "rating": doctor.rating,
         "dcr": (completed_appointments*100)/appointment_count if appointment_count > 0 else 0,
         "top_clinic_name": get_top_clinic_name_for_doctor(doctor, appointments),
