@@ -219,8 +219,7 @@ class PatientAppointmentHistoryView(ListAPIView):
     serializer_class = AppointmentSerializer
 
     def get_queryset(self):
-        appointments = self.request.user.patient.appointments.\
-            filter(visit__isnull=False).order_by('-start_datetime')
+        appointments = self.request.user.patient.appointments.all().order_by('-start_datetime')
 
         date_time_now = get_start_datetime_from_date_string(datetime.now().date())
         appointments = appointments.filter(start_datetime__lt=date_time_now)
