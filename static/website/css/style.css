@@ -46,7 +46,7 @@ Description: App Landing Page with Page Builder
 /*                      MAIN CONFIGURATION                              
 /*=================================================================*/
 body {
-    color: #37B874;
+    color: #777;
     background-color: #FFF;
     font-family: "Roboto",sans-serif;
     overflow-x: hidden;
@@ -879,11 +879,11 @@ section.colored {
 }
 
 .hero-bg-colored .cta h2,.hero-bg-colored .cta p {
-    color: #37B874;
+    color: #777;
 }
 
 .hero-bg-video .cta h2,.hero-bg-video .cta p {
-    color: #37B874;
+    color: #777;
 }
 
 .hero-bg-video video {
@@ -2745,7 +2745,24 @@ ul#countdown li p {
     }
 }
 
+.navbar-default .navbar-toggle .icon-bar {
+    background-color: #fff;
+    color: #37B874;
+}
+
+.navbar-default .navbar-toggle:hover {
+    background-color: #37B874;
+}
+
 @media only screen and (max-width: 991px) {
+    .navbar-light.shrink .navbar-nav li a{
+        color: #37B874 !important;
+        text-decoration: none;
+    }
+    .navbar-light.shrink .navbar-nav li a.current {
+        color: #37B874 !important;
+        text-decoration: none;
+    }
     .navbar-nav {
         background: #FFF;
         padding: 0 20px;
@@ -2824,7 +2841,7 @@ ul#countdown li p {
     }
 
     .navbar-light .navbar-nav li a {
-        color: #111;
+        color: #37B874;
     }
 
     .navbar-light .navbar-nav.social li a {
