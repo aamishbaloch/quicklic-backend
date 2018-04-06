@@ -79,15 +79,19 @@ class LoginView(APIView):
 
         user = authenticate(phone=phone, password=password)
         if user:
-            user.update_device_information(device_id, device_type)
-            if hasattr(user, 'doctor'):
-                serializer = DoctorTokenSerializer(user.doctor, context={"request": request})
-            elif hasattr(user, 'patient'):
-                serializer = PatientTokenSerializer(user.patient, context={"request": request})
+            if user.verified:
+                user.update_device_information(device_id, device_type)
+                if hasattr(user, 'doctor'):
+                    serializer = DoctorTokenSerializer(user.doctor, context={"request": request})
+                elif hasattr(user, 'patient'):
+                    serializer = PatientTokenSerializer(user.patient, context={"request": request})
+                else:
+                    raise UserNotAllowedException()
+                return Response(serializer.data, status=status.HTTP_200_OK)
             else:
                 raise UserNotAllowedException()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        raise InvalidCredentialsException()
+        else:
+            raise InvalidCredentialsException()
 
 
 class LogoutView(APIView):
